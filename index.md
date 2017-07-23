@@ -1,8 +1,8 @@
 #
 
 # Building
-[Back Sleepout](/bach-sleepout)
-[House](/house-build)
+* [Back Sleepout](/bach-sleepout)
+* [House](/house-build)
 
 # Software
-[XOSD](/xosd)
+* [XOSD](/xosd)
