@@ -3,7 +3,7 @@ title: Ignavus
 ---
 
 # Building
-* [Back Sleepout](/bach-sleepout)
+* [Bach Sleepout](/bach-sleepout)
 * [House](/house-build)
 
 # Software
