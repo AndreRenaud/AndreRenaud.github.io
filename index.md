@@ -1,4 +1,7 @@
-#
+---
+title: Ignavus
+layout: post
+---
 
 # Building
 * [Back Sleepout](/bach-sleepout)
