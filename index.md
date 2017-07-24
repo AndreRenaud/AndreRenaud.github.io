@@ -2,9 +2,11 @@
 title: Ignavus
 ---
 
+![Ignavus Porcupine](ignavus-porcupine.png)
+
 # Building
 * [Bach Sleepout](/bach-sleepout)
 * [House](/house-build)
 
-# Software
+# [Software](/software)
 * [XOSD](/xosd)
