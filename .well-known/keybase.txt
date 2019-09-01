@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/andrerenaud
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://ignavus.net
+  * I am andrerenaud (https://keybase.io/andrerenaud) on keybase.
+  * I have a public key ASDCxMX-umtmmECc-F4O2MraFZzeg3bPqZM3hXrdnQ72zwo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120c2c4c5feba6b6698409cf85e0ed8cada159cde8376cfa99337857add9d0ef6cf0a",
+      "host": "keybase.io",
+      "kid": "0120c2c4c5feba6b6698409cf85e0ed8cada159cde8376cfa99337857add9d0ef6cf0a",
+      "uid": "efc15b51e02a3539837be64f3c50f019",
+      "username": "andrerenaud"
+    },
+    "merkle_root": {
+      "ctime": 1567375208,
+      "hash": "680dde297cf2fe8ff81f34bf2c9eac59106f025061f4b8e814e98e74813caf5c16d4eae532d8f60a3796488bea4dac0b4580e6c29715fe6c0557be4c3782323c",
+      "hash_meta": "ac4679863069a30fb26eea133cc013de4dcaf60bdc6648443cba7292c643b497",
+      "seqno": 6147312
+    },
+    "service": {
+      "entropy": "PA2YxXh6QO8FvRZoY0Xl610O",
+      "hostname": "ignavus.net",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "4.2.1"
+  },
+  "ctime": 1567375214,
+  "expire_in": 504576000,
+  "prev": "1e03384a853bb9642ff23511904197251a9575e4cddabbfd6ee590afa5bc4413",
+  "seqno": 12,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgwsTF/rprZphAnPheDtjK2hWc3oN2z6mTN4V63Z0O9s8Kp3BheWxvYWTESpcCDMQgHgM4SoU7uWQv8jURkEGXJRqVdeTN2rv9buWQr6W8RBPEILz3/ShE7p97jYbBmFc8XuDNHjFIoNm53l4mdSLGyVX7AgHCo3NpZ8RAUHGrkBFvLe1jUdb9WsZfIZZ0UnDfgnMnpEq4d39e9/V5zBkPs5Te2mO9K34PIXoOCZRAvnyo7hFViiVK98t3CqhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEII8w03aEE4AoDF4fgpKWccI3jYeflyow/JDmbDSn0d2Go3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/andrerenaud
+
+==================================================================
