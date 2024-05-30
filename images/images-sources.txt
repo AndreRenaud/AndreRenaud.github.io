@@ -1,1 +1,6 @@
 git@github.com:darealshinji/haiku-icons
+
+% convert -density 1200 -resize 128x128 -background none ./svg/Action_GoUp_3_Large.svg ../images/main-icon.png
+% convert -density 1200 -resize 128x128 -background none ./svg/Misc_YouTube.svg ../images/xosd-icon.png
+% convert -density 1200 -resize 128x128 -background none ./svg/Action_GoHome_2.svg ../images/bach-icon.png
+% convert -density 1200 -resize 128x128 -background none ./svg/Prefs_VirtualMemory.svg ../images/r36s-icon.png

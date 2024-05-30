@@ -14,7 +14,7 @@ body {
     margin-left: 10%;
     margin-right: 10%;
 
-    background-color: #a3abe2;
+    background-color: #d8dcf3;
 }
 
 nav {
@@ -30,6 +30,7 @@ nav a {
 
 nav img {
     display: block;
+    max-width: 4em;
 }
 
 img {
@@ -95,4 +96,8 @@ article h1 {
 
 details[open] summary ~ * {
     animation: fadeIn .5s ease-in-out;
+}
+
+details summary {
+    font-size: larger;
 }
