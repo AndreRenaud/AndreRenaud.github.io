@@ -48,8 +48,10 @@
     <details>
         <summary>Hardware details</summary>
         <p>
-            The R36S appears to be very similar to the <a href="https://wiki.odroid.com/odroid_go_super/start">ODroid Go
-                Super</a>
+            The R36S appears to be very similar to the
+            <a href="https://wiki.odroid.com/odroid_go_super/start">ODroid Go Super</a>.
+            Or the <a href="https://anbernic.com/products/anbernic-new-rg351v">ANBERNIC RG351V</a>
+
         </p>
         <ul>
             <li>LCD: Elida KD35T133. DSI attached 640x480 panel. No datasheet available?</li>
@@ -452,18 +454,30 @@ Starting kernel ...
                     Device Tree from AmberELEC</a></li>
             <li><a href="https://dn.odroid.com/ODROID_GO_ADVANCE/ODROID_GO_ADVANCE_rev1.1.pdf">ODroid Go Advance
                     Schematics</a></li>
+            <li>Garlic OS might support it - <a href="https://github.com/GarlicOS/buildroot/releases">Releases</a></li>
         </ul>
         </p>
     </details>
 
     <details>
         <summary>Build Instructions</summary>
+        All these instructions assume that you are running a relatively recent Debian-based Linux machine on x86_64.
+        They should work without too many changes on other distributions - your milage may vary.
         <h2>Linux</h2>
         <pre>
-sudo apt update && sudo apt install gcc-aarch64-linux-gnu device-tree-compiler build-essential gcc git
-git clone git@github.com:hardkernel/linux.git linux-r36s # This will take a while
+# Install the necessary tools on your Linux machine
+sudo apt update && sudo apt install device-tree-compiler build-essential gcc git
+
+# We need an older toolchain, so download & enable this one from Linaro
+wget "https://releases.linaro.org/components/toolchain/binaries/6.3-2017.05/aarch64-linux-gnu/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz"
+tar xf gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz
+export PATH=$PWD/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/bin:$PATH
+
+# Grab the Linux kernel & buildt he images
+git clone git@github.com:hardkernel/linux.git -b odroidgoA-4.4.y linux-r36s # This will take a while
 cd linux-r36s
-git checkout e8824042a0 # This is not a proper branch, we're using the exact hash
+sed -i '/^YYLTYPE yylloc;$/d' ./scripts/dtc/dtc-lexer.l # This is to fix a bug in the older kernel when using newer tools
+sed -i 's/YYLTYPE yylloc;/extern YYLTYPE yylloc;/' scripts/dtc/dtc-lexer.lex.c_shipped
 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- make odroidgoa_defconfig
 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- make Image dtbs -j$(nproc)</pre>
         At this point, the <code>Image</code> and <code>arch/arm64/boot/dts/xxx</code> files should be present
