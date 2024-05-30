@@ -1,2 +1,2 @@
--include: [".well-known"]
--permalink: .well-known/keybase.txt
+include: [".well-known"]
+permalink: .well-known/keybase.txt
