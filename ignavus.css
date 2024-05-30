@@ -34,6 +34,9 @@ figure img {
 img {
     display: inherit;
     margin: 0 auto;
+}
+
+article img {
     max-width: 90%;
 }
 
@@ -63,18 +66,20 @@ article {
     padding-left: 0.5em;
     padding-right: 0.5em;
     padding-bottom: 0.5em;
-    overflow: auto;
+    padding-top: 0.75em;
+    overflow: hidden;
 }
 
 article h1 {
     border: black solid 2px;
     border-radius: 0.5em;
-    margin-top: -1ex;
+    margin-top: -2ex;
     background-color: white;
     padding-left: 0.5em;
     margin-left: 1em;
     width: fit-content;
     padding-right: 0.5em;
+    position: absolute;
 
     font-family: "Lucida Sans";
 }
