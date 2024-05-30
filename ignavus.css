@@ -11,8 +11,8 @@
 body {
     animation: 0.2s ease-in 0s 1 fadeIn;
 
-    margin-left: 10%;
-    margin-right: 10%;
+    margin: auto;
+    max-width: 60em;
 
     background-color: #d8dcf3;
 }
