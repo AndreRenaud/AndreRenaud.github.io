@@ -17,17 +17,18 @@ body {
     background-color: #a3abe2;
 }
 
-figure {
-    display: inline-block;
-    margin: 0 auto;
-}
-
-figcaption {
+nav {
     width: fit-content;
     margin: 0 auto;
 }
 
-figure img {
+nav a {
+    display: inline-block;
+    text-align: center;
+    padding-left: 1ex;
+}
+
+nav img {
     display: block;
 }
 
@@ -38,11 +39,6 @@ img {
 
 article img {
     max-width: 90%;
-}
-
-nav {
-    width: fit-content;
-    margin: 0 auto;
 }
 
 pre {
