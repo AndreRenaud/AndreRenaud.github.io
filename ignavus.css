@@ -13,6 +13,8 @@ body {
 
     margin-left: 10%;
     margin-right: 10%;
+
+    background-color: #a3abe2;
 }
 
 figure {
@@ -61,6 +63,7 @@ article {
     padding-left: 0.5em;
     padding-right: 0.5em;
     padding-bottom: 0.5em;
+    overflow: auto;
 }
 
 article h1 {
@@ -76,6 +79,6 @@ article h1 {
     font-family: "Lucida Sans";
 }
 
-body {
-    background-color: #a3abe2;
+details[open] summary ~ * {
+    animation: fadeIn .5s ease-in-out;
 }
