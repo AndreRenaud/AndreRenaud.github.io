@@ -90,7 +90,7 @@ article h1 {
     padding-right: 0.5em;
     position: absolute;
 
-    font-family: "Lucida Sans";
+    font-family: "Lucida Sans", sans-serif;
 }
 
 details[open] summary ~ * {
