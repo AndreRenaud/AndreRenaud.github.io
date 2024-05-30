@@ -1,4 +1,0 @@
-theme: jekyll-theme-slate
-title: "Ignavus"
-include: [".well-known"]
-permalink: .well-known/keybase.txt
