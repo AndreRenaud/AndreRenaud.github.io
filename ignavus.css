@@ -54,7 +54,20 @@ pre {
     padding-right: 0.5em;
     padding-bottom: 0.5em;
     margin-left: 1em;
+    font-size: smaller;
+    max-width: 80%;
+    overflow: auto;
 }
+
+table {
+    border-collapse: collapse;
+    border: 1px solid;
+    margin: 25px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    width: 80%;
+
+}
+table tr:nth-child(even) {background-color: #f2f2f2;}
 
 article {
     border: black solid 2px;

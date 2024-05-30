@@ -4,10 +4,18 @@
 <title>R36S Hacking - Ignavus.net</title>
 
 <nav>
-    <figure> <a href="index.html"> <img src="images/main-icon.png" alt="Main home page"> <figcaption>Home</figcaption> </a> </figure>
-    <figure> <a href="xosd.html"> <img src="images/xosd-icon.png" alt="XOSD - X11 On Screen Display library"> <figcaption>XOSD</figcaption> </a> </figure>
-    <figure> <a href="bach-sleepout.html"> <img src="images/bach-icon.png" alt="My Back/Sleepout plans & info"> <figcaption>Bach/Sleepout</figcaption> </a> </figure>
-    <figure> <a href="r36s.html"> <img src="images/r36s-icon.png" alt="R36S handheld game console Linux info"> <figcaption>R36S Hacking</figcaption> </a> </figure>
+    <figure> <a href="index.html"> <img src="images/main-icon.png" alt="Main home page">
+            <figcaption>Home</figcaption>
+        </a> </figure>
+    <figure> <a href="xosd.html"> <img src="images/xosd-icon.png" alt="XOSD - X11 On Screen Display library">
+            <figcaption>XOSD</figcaption>
+        </a> </figure>
+    <figure> <a href="bach-sleepout.html"> <img src="images/bach-icon.png" alt="My Back/Sleepout plans & info">
+            <figcaption>Bach/Sleepout</figcaption>
+        </a> </figure>
+    <figure> <a href="r36s.html"> <img src="images/r36s-icon.png" alt="R36S handheld game console Linux info">
+            <figcaption>R36S Hacking</figcaption>
+        </a> </figure>
 </nav>
 
 <article>
@@ -33,8 +41,6 @@
         </ul>
         <li>1GB DDR3L</li>
         <li>640*480 3.5-inch LCD</li>
-        <li>2.4/5G WIFI 802.11a/b/g/n/ac</li>
-        <li>Bluetooth 4.2</li>
         <li>3200 mAh Battery (Replaceable)</li>
         <li>2x TF/microSD Slot</li>
         <li>2x USB-C connectors (1x data, 1x charge)</li>
@@ -53,6 +59,52 @@
             The R36S appears to be very similar to the <a href="https://wiki.odroid.com/odroid_go_super/start">ODroid Go
                 Super</a>
         </p>
+        <ul>
+            <li>LCD: Elida KD35T133. DSI attached 640x480 panel. No datasheet available?</li>
+            <li>SPI flash: ??</li>
+        </ul>
+
+        <h4>GPIO Assignments</h4>
+            Note: Pins that are using an alternative function may not be listed here yet.
+            <table>
+                <tr><th>Bank</th><th>Pin</th><th>Function</th></tr>
+
+                <tr><td>GPIO0</td><td>RK_PA3</td><td>DWMMC Card Detect</td></tr>
+                <tr><td>GPIO0</td><td>RK_PB3</td><td>PMIC DC Detect</td></tr>
+                <tr><td>GPIO0</td><td>RK_PB15</td><td>PWM0 - Attached to Joypad ?</td></tr>
+                <tr><td>GPIO0</td><td>RK_PC0</td><td>PWM1 - LCD Backlight</td></tr>
+                <tr><td>GPIO0</td><td>RK_PC1</td><td>Blue Heartbeat LED</td></tr>
+
+                <tr><td>GPIO1</td><td>RK_PA2</td><td>Button A</td></tr>
+                <tr><td>GPIO1</td><td>RK_PA5</td><td>Button B</td></tr>
+                <tr><td>GPIO1</td><td>RK_PA6</td><td>Button Y</td></tr>
+                <tr><td>GPIO1</td><td>RK_PA7</td><td>Button X</td></tr>
+                <tr><td>GPIO1</td><td>RK_PB4</td><td>DPad Up</td></tr>
+                <tr><td>GPIO1</td><td>RK_PB5</td><td>DPad Down</td></tr>
+                <tr><td>GPIO1</td><td>RK_PB6</td><td>DPad Left</td></tr>
+                <tr><td>GPIO1</td><td>RK_PB7</td><td>DPad Right</td></tr>
+
+                <tr><td>GPIO2</td><td>RK_PA0</td><td>Button Volume Up</td></tr>
+                <tr><td>GPIO2</td><td>RK_PA1</td><td>Button Volume Down</td></tr>
+                <tr><td>GPIO2</td><td>RK_PA2</td><td>Button F3</td></tr>
+                <tr><td>GPIO2</td><td>RK_PA3</td><td>Button F4</td></tr>
+                <tr><td>GPIO2</td><td>RK_PA4</td><td>Button F5</td></tr>
+                <tr><td>GPIO2</td><td>RK_PA6</td><td>Button Top Left</td></tr>
+                <tr><td>GPIO2</td><td>RK_PA7</td><td>Button Top Right</td></tr>
+                <tr><td>GPIO2</td><td>RK_PB5</td><td>PMIC Battery Low Detect</td></tr>
+                <tr><td>GPIO2</td><td>RK_PC6</td><td>Headphone Detect</td></tr>
+
+                <tr><td>GPIO3</td><td>RK_PB0</td><td>Joypad AMux-B</td></tr>
+                <tr><td>GPIO3</td><td>RK_PB1</td><td>Button F1</td></tr>
+                <tr><td>GPIO3</td><td>RK_PB2</td><td>Button Top Left 2</td></tr>
+                <tr><td>GPIO3</td><td>RK_PB3</td><td>Joypad AMux-A</td></tr>
+                <tr><td>GPIO3</td><td>RK_PB4</td><td>Button F2</td></tr>
+                <tr><td>GPIO3</td><td>RK_PB5</td><td>Joypad AMux Enable</td></tr>
+                <tr><td>GPIO3</td><td>RK_PB6</td><td>DWMMC (2)? Card Detect</td></tr>
+                <tr><td>GPIO3</td><td>RK_PB7</td><td>Button Top Right 2</td></tr>
+                <tr><td>GPIO3</td><td>RK_PC0</td><td>LCD Reset</td></tr>
+            </table>
+        </h4>
     </details>
 
     <details>
@@ -238,18 +290,35 @@ Starting kernel ...
     </details>
 
     <details>
+        <summary>Original Software Info</summary>
+        <pre>Linux version 4.4.189 (dev@rk3326-dev) (gcc version 6.3.1 20170404 (Linaro GCC 6.3-2017.05) ) #3 SMP Wed Oct 13 23:24:26 EDT 2021</pre>
+        <pre>U-Boot 2017.09-00048-ge8824042a0-dirty (Oct 07 2021 - 18:03:21 -0400)</pre>
+    </details>
+    <details>
         <summary>Upstream support</summary>
         <p>
-        TBD
-        <br>
+        <H3>TBD - this is still entirely untested</H3>
         Possible sources:
         <ul>
-            <li><a href="https://github.com/hardkernel/linux/commits/odroidgoA-4.4.y/">Odroid Go A 4.4.y linux kernel</a></li>
-            <li><a href="https://github.com/hardkernel/u-boot/tree/odroidgoA-v2017.09">Odroid Go A v2017.09 U-Boot</a></li>
+            <li>
+                <a href="https://github.com/hardkernel/linux/commits/odroidgoA-4.4.y/">
+                    Odroid Go A 4.4.y linux kernel</a>
+            </li>
+            <li>
+                <a href="https://github.com/hardkernel/u-boot/tree/odroidgoA-v2017.09">Odroid Go A v2017.09 U-Boot</a> -
+                <a href="https://wiki.odroid.com/odroid_go_advance/build_uboot">Build Instructions</a></a>
+            </li>
+            <li><a
+                    href="https://github.com/torvalds/linux/blob/master/arch/arm64/boot/dts/rockchip/rk3326-odroid-go3.dts">
+                    ODroid Go Super Device Tree support in mainline</a>
+            </li>
+            <li><a
+                    href="https://github.com/AmberELEC/kernel_rg351/blob/main/arch/arm64/boot/dts/rockchip/rk3326-rg351mp-linux.dts">RG351MP
+                    Device Tree from AmberELEC</a></li>
+            <li><a href="https://dn.odroid.com/ODROID_GO_ADVANCE/ODROID_GO_ADVANCE_rev1.1.pdf">ODroid Go Advance
+                    Schematics</a></li>
         </ul>
         </p>
     </details>
-
-
     </p>
 </article>
