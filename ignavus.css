@@ -100,4 +100,5 @@ details[open] summary ~ * {
 
 details summary {
     font-size: larger;
+    cursor: pointer;
 }
