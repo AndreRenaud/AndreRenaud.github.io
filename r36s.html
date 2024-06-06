@@ -5,12 +5,13 @@
 <title>R36S Hacking - Ignavus.net</title>
 
 <nav>
-    <a href="index.html"> <img src="images/main-icon.png" alt="Main home page">Home</a>
-    <a href="xosd.html"> <img src="images/xosd-icon.png" alt="XOSD - X11 On Screen Display library">XOSD</a>
-    <a href="bach-sleepout.html"> <img src="images/bach-icon.png" alt="My Bach/Sleepout plans & info">Bach/Sleepout</a>
-    <a href="r36s.html"> <img src="images/r36s-icon.png" alt="R36S handheld game console Linux info">R36S Hacking</a>
+    <a href="./"> <img src="images/main-icon.png" alt="Main home page">Home</a>
+    <a href="xosd"> <img src="images/xosd-icon.png" alt="XOSD - X11 On Screen Display library">XOSD</a>
+    <a href="bach-sleepout"> <img src="images/bach-icon.png" alt="My Bach/Sleepout plans & info">Bach/Sleepout</a>
+    <a href="r36s"> <img src="images/r36s-icon.png" alt="R36S handheld game console Linux info">R36S Hacking</a>
 </nav>
 
+<main>
 <article>
     <h1>R36S Hacking</h1>
 
@@ -30,11 +31,11 @@
         <ul>
             <li>Quad-core ARM Cortex-A35 CPU (64-bit)</li>
             <li>Up to 1.5GHz</li>
-            <li><a href="https://rockchip.fr/RK3326%20datasheet%20V1.2.pdf">Datasheet</a></li>
+            <li><a href="https://rockchip.fr/RK3326%20datasheet%20V1.2.pdf" target="_blank">Datasheet</a></li>
         </ul>
         <li>1GB DDR3L</li>
         <li>640*480 3.5-inch LCD</li>
-        <li>3200 mAh Battery (Replaceable)</li>
+        <li>3200 mAh Battery (Replaceable) (JST 2mm/1.25mm? connector)</li>
         <li>2x TF/microSD Slot</li>
         <li>2x USB-C connectors (1x data, 1x charge)</li>
     </ul>
@@ -173,7 +174,7 @@
             <tr>
                 <td>GPIO2</td>
                 <td>RK_PB5</td>
-                <td>PMIC Battery Low Detect</td>
+                <td>PMIC Battery Low Detect or LED?</td>
             </tr>
             <tr>
                 <td>GPIO2</td>
@@ -414,9 +415,204 @@ Starting kernel ...
 
     <details>
         <summary>Original Software Info</summary>
+        <h4>Linux Version</h4>
         <pre>Linux version 4.4.189 (dev@rk3326-dev) (gcc version 6.3.1 20170404 (Linaro GCC 6.3-2017.05) ) #3 SMP Wed Oct 13 23:24:26 EDT 2021</pre>
-        <pre>U-Boot 2017.09-00048-ge8824042a0-dirty (Oct 07 2021 - 18:03:21 -0400)</pre>
+
+        <h4>U-Boot Version</h4>
+        <pre>
+U-Boot 2017.09-00048-ge8824042a0-dirty (Oct 07 2021 - 18:03:21 -0400)
+            
+aarch64-linux-gnu-gcc (Linaro GCC 6.3-2017.05) 6.3.1 20170404
+GNU ld (Linaro_Binutils-2017.05) 2.27.0.20161019</pre>
+
+        <h4>dmesg output (100 lines)</h4>
+        <pre>
+            [    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Initializing cgroup subsys cpuset
+[    0.000000] Initializing cgroup subsys cpu
+[    0.000000] Initializing cgroup subsys cpuacct
+[    0.000000] Linux version 4.4.189 (dev@rk3326-dev) (gcc version 6.3.1 20170404 (Linaro GCC 6.3-2017.05) ) #3 SMP Wed Oct 13 23:24:26 EDT 2021
+[    0.000000] Boot CPU: AArch64 Processor [410fd042]
+[    0.000000] Machine model: Game Console R35S/R36S fix by lxc
+[    0.000000] On node 0 totalpages: 253952
+[    0.000000]   DMA zone: 4088 pages used for memmap
+[    0.000000]   DMA zone: 0 pages reserved
+[    0.000000]   DMA zone: 253952 pages, LIFO batch:31
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.0 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: Trusted OS migration not required
+[    0.000000] PERCPU: Embedded 19 pages/cpu @ffffffc03ff35000 s40936 r8192 d28696 u77824
+[    0.000000] pcpu-alloc: s40936 r8192 d28696 u77824 alloc=19*4096
+[    0.000000] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3
+[    0.000000] Detected VIPT I-cache on CPU0
+[    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 249864
+[    0.000000] Kernel command line: root=UUID=e139ce78-9841-40fe-8823-96a304a09859 rootwait rw fsck.repair=yes net.ifnames=0 fbcon=rotate:0 console=/dev/ttyFIQ0 quiet splash plymouth.ignore-serial-consoles consoleblank=0
+[    0.000000] PID hash table entries: 4096 (order: 3, 32768 bytes)
+[    0.000000] Dentry cache hash table entries: 131072 (order: 8, 1048576 bytes)
+[    0.000000] Inode-cache hash table entries: 65536 (order: 7, 524288 bytes)
+[    0.000000] software IO TLB: mapped [mem 0x39e00000-0x3de00000] (64MB)
+[    0.000000] Memory: 902588K/1015808K available (7550K kernel code, 464K rwdata, 1948K rodata, 512K init, 1735K bss, 113220K reserved, 0K cma-reserved)
+[    0.000000] Virtual kernel memory layout:
+                   modules : 0xffffff8000000000 - 0xffffff8008000000   (   128 MB)
+                   vmalloc : 0xffffff8008000000 - 0xffffffbdbfff0000   (   246 GB)
+                     .init : 0xffffff80089d0000 - 0xffffff8008a50000   (   512 KB)
+                     .text : 0xffffff8008080000 - 0xffffff80087e0000   (  7552 KB)
+                   .rodata : 0xffffff80087e0000 - 0xffffff80089d0000   (  1984 KB)
+                     .data : 0xffffff8008a50000 - 0xffffff8008ac4008   (   465 KB)
+                   vmemmap : 0xffffffbdc0000000 - 0xffffffbfc0000000   (     8 GB maximum)
+                             0xffffffbdc0008000 - 0xffffffbdc1000000   (    15 MB actual)
+                   fixed   : 0xffffffbffe7fb000 - 0xffffffbffec00000   (  4116 KB)
+                   PCI I/O : 0xffffffbffee00000 - 0xffffffbfffe00000   (    16 MB)
+                   memory  : 0xffffffc000200000 - 0xffffffc040000000   (  1022 MB)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[    0.000000] Hierarchical RCU implementation.
+[    0.000000] 	Build-time adjustment of leaf fanout to 64.
+[    0.000000] NR_IRQS:64 nr_irqs:64 0
+[    0.000000] GIC: Using split EOI/Deactivate mode
+[    0.000000] rockchip_mmc_get_phase: invalid clk rate
+[    0.000000] rockchip_mmc_get_phase: invalid clk rate
+[    0.000000] rockchip_mmc_get_phase: invalid clk rate
+[    0.000000] rockchip_mmc_get_phase: invalid clk rate
+[    0.000000] rockchip_mmc_get_phase: invalid clk rate
+[    0.000000] rockchip_mmc_get_phase: invalid clk rate
+[    0.000000] Architected cp15 timer(s) running at 24.00MHz (phys).
+[    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x588fe9dc0, max_idle_ns: 440795202592 ns
+[    0.000009] sched_clock: 56 bits at 24MHz, resolution 41ns, wraps every 4398046511097ns
+[    0.001584] Console: colour dummy device 80x25
+[    0.001624] Calibrating delay loop (skipped), value calculated using timer frequency.. 48.00 BogoMIPS (lpj=96000)
+[    0.001646] pid_max: default: 32768 minimum: 301
+[    0.001837] Mount-cache hash table entries: 2048 (order: 2, 16384 bytes)
+[    0.001856] Mountpoint-cache hash table entries: 2048 (order: 2, 16384 bytes)
+[    0.002778] Initializing cgroup subsys devices
+[    0.002806] Initializing cgroup subsys freezer
+[    0.002832] Initializing cgroup subsys net_cls
+[    0.003253] sched-energy: CPU device node has no sched-energy-costs
+[    0.003270] Invalid sched_group_energy for CPU0
+[    0.003282] CPU0: update cpu_capacity 1024
+[    0.003302] ASID allocator initialised with 32768 entries
+[    0.005523] Detected VIPT I-cache on CPU1
+[    0.005603] Invalid sched_group_energy for CPU1
+[    0.005610] CPU1: update cpu_capacity 1024
+[    0.005615] CPU1: Booted secondary processor [410fd042]
+[    0.006401] Detected VIPT I-cache on CPU2
+[    0.006457] Invalid sched_group_energy for CPU2
+[    0.006463] CPU2: update cpu_capacity 1024
+[    0.006468] CPU2: Booted secondary processor [410fd042]
+[    0.007210] Detected VIPT I-cache on CPU3
+[    0.007260] Invalid sched_group_energy for CPU3
+[    0.007266] CPU3: update cpu_capacity 1024
+[    0.007271] CPU3: Booted secondary processor [410fd042]
+[    0.007373] Brought up 4 CPUs
+[    0.007506] SMP: Total of 4 processors activated.
+[    0.007523] CPU features: detected feature: 32-bit EL0 Support
+[    0.007540] CPU: All CPU(s) started at EL2
+[    0.007786] Invalid sched_group_energy for CPU3
+[    0.007803] Invalid sched_group_energy for Cluster3
+[    0.007814] Invalid sched_group_energy for CPU2
+[    0.007827] Invalid sched_group_energy for Cluster2
+[    0.007837] Invalid sched_group_energy for CPU1
+[    0.007849] Invalid sched_group_energy for Cluster1
+[    0.007859] Invalid sched_group_energy for CPU0
+[    0.007871] Invalid sched_group_energy for Cluster0
+[    0.008643] devtmpfs: initialized
+[    0.041316] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+[    0.041353] futex hash table entries: 1024 (order: 4, 65536 bytes)
+[    0.041805] pinctrl core: initialized pinctrl subsystem
+[    0.042249] regulator-dummy: no parameters
+[    0.043344] NET: Registered protocol family 16
+[    0.055798] cpuidle: using governor ladder
+[    0.067809] cpuidle: using governor menu
+[    0.067848] Registered FIQ tty driver
+[    0.068238] vdso: 2 pages (1 code @ ffffff80087e6000, 1 data @ ffffff8008a55000)
+[    0.068268] hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.
+[    0.068489] DMA: preallocated 256 KiB pool for atomic allocations
+        </pre>
+
+        <h4>/proc/cpuinfo</h4>
+        <pre>
+$ sudo cat /proc/cpuinfo
+processor	: 0
+BogoMIPS	: 48.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd04
+CPU revision	: 2
+            
+processor	: 1
+BogoMIPS	: 48.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd04
+CPU revision	: 2
+            
+processor	: 2
+BogoMIPS	: 48.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd04
+CPU revision	: 2
+            
+processor	: 3
+BogoMIPS	: 48.00
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd04
+CPU revision	: 2
+
+Hardware	: Game Console R35S/R36S fix by lxc
+Revision	: 0000
+Serial		: 4d7b3c7e39843fcd
+        </pre>
+
+        <h4>/proc/meminfo</h4>
+        <pre>
+$ cat /proc/meminfo
+MemTotal:         919232 kB
+MemFree:          553268 kB
+MemAvailable:     707612 kB
+Buffers:           20796 kB
+Cached:           140524 kB
+SwapCached:            0 kB
+Active:           196192 kB
+Inactive:         107440 kB
+Active(anon):     142548 kB
+Inactive(anon):     5136 kB
+Active(file):      53644 kB
+Inactive(file):   102304 kB
+Unevictable:          36 kB
+Mlocked:              36 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:                 0 kB
+Writeback:             0 kB
+AnonPages:        142344 kB
+Mapped:            71964 kB
+Shmem:              5376 kB
+Slab:              26036 kB
+SReclaimable:      13592 kB
+SUnreclaim:        12444 kB
+KernelStack:        2112 kB
+PageTables:         1372 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:      459616 kB
+Committed_AS:     242016 kB
+VmallocTotal:   258867136 kB
+VmallocUsed:           0 kB
+VmallocChunk:          0 kB
+        </pre>
     </details>
+
     <details>
         <summary>Upstream support</summary>
         <p>
@@ -453,7 +649,7 @@ Starting kernel ...
             <li><a
                     href="https://github.com/AmberELEC/kernel_rg351/blob/main/arch/arm64/boot/dts/rockchip/rk3326-rg351mp-linux.dts">RG351MP
                     Device Tree from AmberELEC</a></li>
-            <li><a href="https://dn.odroid.com/ODROID_GO_ADVANCE/ODROID_GO_ADVANCE_rev1.1.pdf">ODroid Go Advance
+            <li><a href="https://dn.odroid.com/ODROID_GO_ADVANCE/ODROID_GO_ADVANCE_rev1.1.pdf" target="_blank">ODroid Go Advance
                     Schematics</a></li>
             <li>Garlic OS might support it - <a href="https://github.com/GarlicOS/buildroot/releases">Releases</a></li>
         </ul>
@@ -493,7 +689,359 @@ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- make Image dtbs -j$(nproc)</pre>
         TBD
 
         <h2>Booting the new images</h2>
-        TBD
+        <ol>
+            <li>
+                Plug in a supported USB-C Ethernet adapter, attach a serial port to the debug console.
+                Power the unit on & stop it at the boot prompt
+            <pre>
+Hit ctrl+c key to enter uboot console
+ctrl+c key pressed - drop to console
+            </pre>
+            </li>
+            <li>
+                Download the new images
+                <pre>
+usb start && setenv autoload n && bootp && setenv serverip 192.168.2.141 && tftp 0x02000000 rockchip/Image && tftp 0x01f00000 rockchip/rk3326-r36s.dtb && tftp 0x10000000 rockchip/rootfs.cpio.uboot
+                </pre>
+            </li>
+            <li>
+                Set up the boot args & boot the new images
+                <pre>
+setenv bootargs console=ttyS2,115200n8 earlycon root=/dev/ram ip=any && booti 0x02000000 0x10000000 0x01f00000
+                </pre>
+            </li>
+        </ol>
     </details>
+
+    <details>
+        <summary>Benchmarks</summary>
+        <h4>Preamble</h4>
+        These benchmarks are run with the performance scheduler enabled, to ensure the CPU is always run as fast as possible.
+        <pre>
+# echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+# cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+performance
+        </pre>
+        <h4>MHz</h4>
+        <a href="https://github.com/wtarreau/mhz">github.com/wtarreau/mhz</a>
+        <pre>
+# mhz
+count=497425 us50=19997 us250=96924 diff=76927 cpu_MHz=1293.239
+        </pre>
+
+        <h4>Whetstone 1.2</h4>
+        <a href="https://www.netlib.org/benchmark/">www.netlib.org/benchmark/</a>
+        <pre>
+# whetstone 500000
+
+Loops: 500000, Iterations: 1, Duration: 10 sec.
+C Converted Double Precision Whetstones: 5000.0 MIPS
+        </pre>
+
+        <h4>Dhrystone 2</h4>
+        <a href="https://www.netlib.org/benchmark/">www.netlib.org/benchmark/</a>
+        <pre>
+# dhrystone 50000000
+
+Dhrystone Benchmark, Version 2.1 (Language: C)
+
+Program compiled without 'register' attribute
+
+Execution starts, 50000000 runs through Dhrystone
+Execution ends
+
+Final values of the variables used in the benchmark:
+
+Int_Glob:            5
+        should be:   5
+Bool_Glob:           1
+        should be:   1
+Ch_1_Glob:           A
+        should be:   A
+Ch_2_Glob:           B
+        should be:   B
+Arr_1_Glob[8]:       7
+        should be:   7
+Arr_2_Glob[8][7]:    50000010
+        should be:   Number_Of_Runs + 10
+Ptr_Glob->
+  Ptr_Comp:          -927526240
+        should be:   (implementation-dependent)
+  Discr:             0
+        should be:   0
+  Enum_Comp:         2
+        should be:   2
+  Int_Comp:          17
+        should be:   17
+  Str_Comp:          DHRYSTONE PROGRAM, SOME STRING
+        should be:   DHRYSTONE PROGRAM, SOME STRING
+Next_Ptr_Glob->
+  Ptr_Comp:          -927526240
+        should be:   (implementation-dependent), same as above
+  Discr:             0
+        should be:   0
+  Enum_Comp:         1
+        should be:   1
+  Int_Comp:          18
+        should be:   18
+  Str_Comp:          DHRYSTONE PROGRAM, SOME STRING
+        should be:   DHRYSTONE PROGRAM, SOME STRING
+Int_1_Loc:           5
+        should be:   5
+Int_2_Loc:           13
+        should be:   13
+Int_3_Loc:           7
+        should be:   7
+Enum_Loc:            1
+        should be:   1
+Str_1_Loc:           DHRYSTONE PROGRAM, 1'ST STRING
+        should be:   DHRYSTONE PROGRAM, 1'ST STRING
+Str_2_Loc:           DHRYSTONE PROGRAM, 2'ND STRING
+        should be:   DHRYSTONE PROGRAM, 2'ND STRING
+
+Microseconds for one run through Dhrystone:    0.2
+Dhrystones per Second:                      5313496.5
+        </pre>
+
+        <h4>RamSMP</h4>
+        <a href="https://github.com/cruvolo/ramspeed-smp">github.com/cruvolo/ramspeed-smp</a>
+        <pre style="font-size: x-smaller">
+# ramsmp -b 1
+RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
+            
+8Gb per pass mode, 2 processes
+            
+INTEGER & WRITING         1 Kb block: 31725.15 MB/s
+INTEGER & WRITING         2 Kb block: 32488.16 MB/s
+INTEGER & WRITING         4 Kb block: 31273.08 MB/s
+INTEGER & WRITING         8 Kb block: 30794.42 MB/s
+INTEGER & WRITING        16 Kb block: 28151.88 MB/s
+INTEGER & WRITING        32 Kb block: 25592.05 MB/s
+INTEGER & WRITING        64 Kb block: 23752.54 MB/s
+INTEGER & WRITING       128 Kb block: 16333.79 MB/s
+INTEGER & WRITING       256 Kb block: 4139.72 MB/s
+INTEGER & WRITING       512 Kb block: 3052.76 MB/s
+INTEGER & WRITING      1024 Kb block: 2687.96 MB/s
+INTEGER & WRITING      2048 Kb block: 2558.74 MB/s
+INTEGER & WRITING      4096 Kb block: 2495.56 MB/s
+INTEGER & WRITING      8192 Kb block: 2455.05 MB/s
+INTEGER & WRITING     16384 Kb block: 2444.15 MB/s
+INTEGER & WRITING     32768 Kb block: 2426.52 MB/s
+# ramsmp -b 2
+RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
+
+8Gb per pass mode, 2 processes
+
+INTEGER & READING         1 Kb block: 18657.31 MB/s
+INTEGER & READING         2 Kb block: 19117.18 MB/s
+INTEGER & READING         4 Kb block: 19015.44 MB/s
+INTEGER & READING         8 Kb block: 19224.95 MB/s
+INTEGER & READING        16 Kb block: 19315.28 MB/s
+INTEGER & READING        32 Kb block: 14500.51 MB/s
+INTEGER & READING        64 Kb block: 12601.52 MB/s
+INTEGER & READING       128 Kb block: 9393.90 MB/s
+INTEGER & READING       256 Kb block: 2493.20 MB/s
+INTEGER & READING       512 Kb block: 2113.54 MB/s
+INTEGER & READING      1024 Kb block: 2079.59 MB/s
+INTEGER & READING      2048 Kb block: 2128.96 MB/s
+INTEGER & READING      4096 Kb block: 2127.43 MB/s
+INTEGER & READING      8192 Kb block: 2127.84 MB/s
+INTEGER & READING     16384 Kb block: 2128.69 MB/s
+INTEGER & READING     32768 Kb block: 2129.91 MB/s
+# ramsmp -b 3
+RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
+
+8Gb per pass mode, 2 processes
+
+INTEGER   Copy:      2065.59 MB/s
+INTEGER   Scale:     1986.97 MB/s
+INTEGER   Add:       1615.27 MB/s
+INTEGER   Triad:     1580.92 MB/s
+---
+INTEGER   AVERAGE:   1812.19 MB/s
+# ramsmp -b 4
+RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
+
+8Gb per pass mode, 2 processes
+
+FL-POINT & WRITING        1 Kb block: 32645.77 MB/s
+FL-POINT & WRITING        2 Kb block: 32949.56 MB/s
+FL-POINT & WRITING        4 Kb block: 32244.32 MB/s
+FL-POINT & WRITING        8 Kb block: 31326.32 MB/s
+FL-POINT & WRITING       16 Kb block: 28502.43 MB/s
+FL-POINT & WRITING       32 Kb block: 25335.06 MB/s
+FL-POINT & WRITING       64 Kb block: 22989.79 MB/s
+FL-POINT & WRITING      128 Kb block: 10451.13 MB/s
+FL-POINT & WRITING      256 Kb block: 4236.35 MB/s
+FL-POINT & WRITING      512 Kb block: 3085.57 MB/s
+FL-POINT & WRITING     1024 Kb block: 2715.68 MB/s
+FL-POINT & WRITING     2048 Kb block: 2587.16 MB/s
+FL-POINT & WRITING     4096 Kb block: 2512.82 MB/s
+FL-POINT & WRITING     8192 Kb block: 2471.48 MB/s
+FL-POINT & WRITING    16384 Kb block: 2450.66 MB/s
+FL-POINT & WRITING    32768 Kb block: 2432.75 MB/s
+# ramsmp -b 5
+RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
+
+8Gb per pass mode, 2 processes
+
+FL-POINT & READING        1 Kb block: 19054.87 MB/s
+FL-POINT & READING        2 Kb block: 19404.67 MB/s
+FL-POINT & READING        4 Kb block: 19334.34 MB/s
+FL-POINT & READING        8 Kb block: 19506.71 MB/s
+FL-POINT & READING       16 Kb block: 19504.42 MB/s
+FL-POINT & READING       32 Kb block: 15559.88 MB/s
+FL-POINT & READING       64 Kb block: 12594.27 MB/s
+FL-POINT & READING      128 Kb block: 9090.03 MB/s
+FL-POINT & READING      256 Kb block: 2614.38 MB/s
+FL-POINT & READING      512 Kb block: 2149.01 MB/s
+FL-POINT & READING     1024 Kb block: 2112.19 MB/s
+FL-POINT & READING     2048 Kb block: 2148.63 MB/s
+FL-POINT & READING     4096 Kb block: 2148.72 MB/s
+FL-POINT & READING     8192 Kb block: 2149.29 MB/s
+FL-POINT & READING    16384 Kb block: 2150.60 MB/s
+FL-POINT & READING    32768 Kb block: 2149.96 MB/s
+# ramsmp -b 6
+RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
+
+8Gb per pass mode, 2 processes
+
+FL-POINT  Copy:      2066.56 MB/s
+FL-POINT  Scale:     1952.23 MB/s
+FL-POINT  Add:       1615.04 MB/s
+FL-POINT  Triad:     1246.41 MB/s
+---
+FL-POINT  AVERAGE:   1720.06 MB/s
+        </pre>
+
+        <h4>Memtester</h4>
+        <a href="https://pyropus.ca./software/memtester/">pyropus.ca./software/memtester</a>
+        This is less of a benchmark and more of a sanity check that the hardware appears to be functioning properly. This takes ~18 minutes to finish.
+        <pre>
+# memtester 500M 1
+memtester version 4.5.1 (64-bit)
+Copyright (C) 2001-2020 Charles Cazabon.
+Licensed under the GNU General Public License version 2 (only).
+            
+pagesize is 4096
+pagesizemask is 0xfffffffffffff000
+want 500MB (524288000 bytes)
+got  500MB (524288000 bytes), trying mlock ...locked.
+Loop 1/1:
+  Stuck Address       : ok
+  Random Value        : ok
+  Compare XOR         : ok
+  Compare SUB         : ok
+  Compare MUL         : ok
+  Compare DIV         : ok
+  Compare OR          : ok
+  Compare AND         : ok
+  Sequential Increment: ok
+  Solid Bits          : ok
+  Block Sequential    : ok
+  Checkerboard        : ok
+  Bit Spread          : ok
+  Bit Flip            : ok
+  Walking Ones        : ok
+  Walking Zeroes      : ok
+  8-bit Writes        : ok
+  16-bit Writes       : ok
+            
+Done.</pre>
+
+        <h4>bonnie++ - v1.03e (SD card)</h4>
+        Performance here is quite dependant on the SD card that is installed. This benchmark shows ~34MB/s write, 53MB/s read performance.
+        <a href="https://www.coker.com.au/bonnie++">www.coker.com.au/bonnie++</a>
+        <pre>
+# mount /dev/mmcblk0p2 /mnt/
+[ 2014.668991] EXT4-fs (mmcblk0p2): mounted filesystem e139ce78-9841-40fe-8823-96a304a09859 r/w without journal. Quota mode: none.            
+# df -h
+Filesystem                Size      Used Available Use% Mounted on
+devtmpfs                429.8M         0    429.8M   0% /dev
+tmpfs                   474.5M         0    474.5M   0% /dev/shm
+tmpfs                   474.5M     32.0K    474.4M   0% /tmp
+tmpfs                   474.5M    100.0K    474.4M   0% /run
+/dev/mmcblk0p2            6.4G      2.8G      3.3G  45% /mnt
+# mkdir /mnt/bonnie
+# bonnie++ -d /mnt/bonnie/ -u 0:0
+Using uid:0, gid:0.
+Writing with putc()...done
+Writing intelligently...done
+Rewriting...done
+Reading with getc()...done
+Reading intelligently...done
+start 'em...done...done...done...
+Create files in sequential order...done.
+Stat files in sequential order...done.
+Delete files in sequential order...done.
+Create files in random order...done.
+Stat files in random order...done.
+Delete files in random order...done.
+Version 1.03e       ------Sequential Output------ --Sequential Input- --Random-
+                    -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --Seeks--
+Machine        Size K/sec %CP K/sec %CP K/sec %CP K/sec %CP K/sec %CP  /sec %CP
+buildroot        2G 24834  98 33960  13 18684  14 24672  97 52645  24  2682  32
+                    ------Sequential Create------ --------Random Create--------
+                    -Create-- --Read--- -Delete-- -Create-- --Read--- -Delete--
+              files  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
+                 16 13161  98 +++++ +++ 20575  95   709  98 +++++ +++ 18645  95
+buildroot,2G,24834,98,33960,13,18684,14,24672,97,52645,24,2681.8,32,16,13161,98,+++++,+++,20575,95,709,98,+++++,+++,18645,95
+        </pre>
+
+        <h4>glmark2-es2-drm</h4>
+        Note: This test was run when still mid-way through kernel porting. Results may not be accurate now.
+        This test takes ~5m to run.
+        <pre>
+# glmark2-es2-drm
+Warning: DRM_CAP_ASYNC_PAGE_FLIP not supported, falling back to 'mailbox' mode for SwapInterval(0).
+=======================================================
+    glmark2 2023.01
+=======================================================
+    OpenGL Information
+    GL_VENDOR:      Mesa
+    GL_RENDERER:    Mali-G31 (Panfrost)
+    GL_VERSION:     OpenGL ES 3.1 Mesa 24.0.7
+    Surface Config: buf=32 r=8 g=8 b=8 a=8 depth=24 stencil=0 samples=0
+    Surface Size:   480x640 fullscreen
+=======================================================
+[build] use-vbo=false: FPS: 230 FrameTime: 4.349 ms
+[build] use-vbo=true: FPS: 228 FrameTime: 4.386 ms
+[texture] texture-filter=nearest: FPS: 679 FrameTime: 1.473 ms
+[texture] texture-filter=linear: FPS: 668 FrameTime: 1.499 ms
+[texture] texture-filter=mipmap: FPS: 694 FrameTime: 1.443 ms
+[shading] shading=gouraud: FPS: 148 FrameTime: 6.803 ms
+[shading] shading=blinn-phong-inf: FPS: 147 FrameTime: 6.804 ms
+[shading] shading=phong: FPS: 144 FrameTime: 6.964 ms
+[shading] shading=cel: FPS: 144 FrameTime: 6.975 ms
+[bump] bump-render=high-poly: FPS: 49 FrameTime: 20.752 ms
+[bump] bump-render=normals: FPS: 753 FrameTime: 1.329 ms
+[bump] bump-render=height: FPS: 720 FrameTime: 1.390 ms
+[effect2d] kernel=0,1,0;1,-4,1;0,1,0;: FPS: 554 FrameTime: 1.805 ms
+[effect2d] kernel=1,1,1,1,1;1,1,1,1,1;1,1,1,1,1;: FPS: 195 FrameTime: 5.151 ms
+[pulsar] light=false:quads=5:texture=false: FPS: 776 FrameTime: 1.289 ms
+[desktop] blur-radius=5:effect=blur:passes=1:separable=true:windows=4: FPS: 156 FrameTime: 6.415 ms
+[desktop] effect=shadow:windows=4: FPS: 440 FrameTime: 2.275 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 43 FrameTime: 23.706 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=subdata: FPS: 43 FrameTime: 23.572 ms
+[buffer] columns=200:interleave=true:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 52 FrameTime: 19.542 ms
+[ideas] speed=duration: FPS: 190 FrameTime: 5.290 ms
+[jellyfish] <default>: FPS: 196 FrameTime: 5.127 ms
+[terrain] <default>: FPS: 14 FrameTime: 74.175 ms
+[shadow] <default>: FPS: 106 FrameTime: 9.457 ms
+[refract] <default>: FPS: 12 FrameTime: 84.059 ms
+[conditionals] fragment-steps=0:vertex-steps=0: FPS: 544 FrameTime: 1.839 ms
+[conditionals] fragment-steps=5:vertex-steps=0: FPS: 437 FrameTime: 2.292 ms
+[conditionals] fragment-steps=0:vertex-steps=5: FPS: 543 FrameTime: 1.843 ms
+[function] fragment-complexity=low:fragment-steps=5: FPS: 539 FrameTime: 1.857 ms
+[function] fragment-complexity=medium:fragment-steps=5: FPS: 303 FrameTime: 3.305 ms
+[loop] fragment-loop=false:fragment-steps=5:vertex-steps=5: FPS: 531 FrameTime: 1.885 ms
+[loop] fragment-steps=5:fragment-uniform=false:vertex-steps=5: FPS: 531 FrameTime: 1.885 ms
+[loop] fragment-steps=5:fragment-uniform=true:vertex-steps=5: FPS: 317 FrameTime: 3.159 ms
+=======================================================
+                                  glmark2 Score: 336
+=======================================================
+    </details>
+
     </p>
 </article>
+</main>
