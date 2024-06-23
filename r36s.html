@@ -30,6 +30,7 @@
             <br>
 
             It has the following basic hardware:
+        </p>
         <ul>
             <li>RK3326 processor</li>
             <ul>
@@ -304,7 +305,6 @@
                     <td>LCD Reset</td>
                 </tr>
             </table>
-            </h4>
         </details>
 
         <details>
@@ -323,15 +323,13 @@
                 The R36S is not supported directly by mainline Linux or U-Boot. However the core chip (RK3326) is, so it
                 mostly just needs a custom device tree and kernel configuration to work.
             </p>
-            <p>
-                The customised sources are available from:
+            <p> The customised sources are available from:</p>
             <ul>
                 <li><a href="https://github.com/AndreRenaud/linux-r36s">github.com/AndreRenaud/linux-r36s</a></li>
                 <li><a href="https://github.com/AndreRenaud/u-boot-r36s">github.com/AndreRenaud/u-boot-r36s</a></li>
                 <li><a href="https://github.com/AndreRenaud/buildroot-r36s">github.com/AndreRenaud/buildroot-r36s</a>
                 </li>
             </ul>
-            </p>
             <p>
                 These images (in particular the buildroot image, which is responsible for packaging the other
                 repositories up) are capable of producing
@@ -358,8 +356,8 @@ make
         </pre>
             The final command takes quite a while - this will download and build everything that is required.
             On my machine (AMD Ryzen 9 7950X 16-Core Processor), this takes around 45 minutes.
-            When finished, it will create <code>output/images/sdcard.img</code>. This is suitable for booting the R36S to a Linux
-            prompt.
+            When finished, it will create <code>output/images/sdcard.img</code>. This is suitable for booting the R36S
+            to a Linux prompt.
             It includes a demonstration application to confirm things are functioning.
 
             <h2>Network booting the new images</h2>
@@ -391,7 +389,7 @@ setenv bootargs console=ttyS2,1500000n8 earlycon root=/dev/ram ip=any vt.global_
                 </pre>
                 </li>
             </ol>
-       </details>
+        </details>
 
         <details>
             <summary>Building an SDL application</summary>
@@ -748,7 +746,5 @@ Warning: DRM_CAP_ASYNC_PAGE_FLIP not supported, falling back to 'mailbox' mode f
             <pre>amixer sset Master 255 && curl -L -o /tmp/sample.wav https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand3.wav && aplay /tmp/sample.wav</pre>
 
         </details>
-
-        </p>
     </article>
 </main>
