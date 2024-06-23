@@ -1,351 +1,388 @@
 <!doctype html>
 <html lang="en">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="ignavus.css">
-<title>R36S Custom Systems - Ignavus.net</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="ignavus.css" />
 
-<nav>
-    <a href="./"> <img src="images/main-icon.png" alt="Main home page">Home</a>
-    <a href="xosd"> <img src="images/xosd-icon.png" alt="XOSD - X11 On Screen Display library">XOSD</a>
-    <a href="bach-sleepout"> <img src="images/bach-icon.png" alt="My Bach/Sleepout plans & info">Bach/Sleepout</a>
-    <a href="r36s"> <img src="images/r36s-icon.png" alt="R36S handheld game console Linux info">R36S Hacking</a>
-</nav>
+  <title>R36S Custom Systems - Ignavus.net</title>
 
-<main>
+  <nav>
+    <a href="./"> <img src="images/main-icon.png" alt="Main home page" />Home</a>
+    <a href="xosd">
+      <img src="images/xosd-icon.png" alt="XOSD - X11 On Screen Display library" />
+      XOSD
+    </a>
+    <a href="bach-sleepout">
+      <img src="images/bach-icon.png" alt="My Bach/Sleepout plans & info" />
+      Bach/Sleepout
+    </a>
+    <a href="r36s">
+      <img src="images/r36s-icon.png" alt="R36S handheld game console Linux info" />
+      R36S Hacking
+    </a>
+  </nav>
+
+  <main>
     <article>
-        <h1>R36S-based Custom Systems</h1>
+      <h1>R36S-based Custom Systems</h1>
 
+      <p>
+        <img src="images/r36s.jpg" style="float: right; max-width: 20%" alt="Pristine R36S unit" />
+        The R36S is a hand-held gaming console available online.
+        <br />
+        This page is about re-purposing it as a generic Linux device for custom software - ie:
+        writing & running your own applications on it. If you want to use the R36S for its normal
+        purpose (gaming etc..), then I would recommend you look at
+        <a href="https://github.com/christianhaitian/arkos/wiki">ArkOS</a>, or one of
+        <a href="https://retrohandheldguides.com/r36s-custom-firmware/">
+          the other custom firmware
+        </a>
+        systems that support it.
+        <br />
+        <b
+          >This page is for doing fully custom developments, using the R36S as a hardware platform.
+        </b>
+        <br />
+
+        It has the following basic hardware:
+      </p>
+      <ul>
+        <li>RK3326 processor</li>
+        <ul>
+          <li>Quad-core ARM Cortex-A35 CPU (64-bit)</li>
+          <li>
+            Up to 1.5GHz (although it appears to only be capable of 1.3GHz with current timing
+            settings)
+          </li>
+          <li>
+            <a href="https://rockchip.fr/RK3326%20datasheet%20V1.2.pdf" target="_blank"
+              >Datasheet</a
+            >
+          </li>
+        </ul>
+        <li>1GB DDR3L</li>
+        <li>640*480 3.5-inch LCD</li>
+        <li>3200 mAh Battery (Replaceable) (JST connector)</li>
+        <li>Built in mono speaker</li>
+        <li>2x TF/microSD Slot</li>
+        <li>2x USB-C connectors (1x data, 1x charge)</li>
+        <li>Dual analog joysticks, direction pad and 10 additional buttons</li>
+      </ul>
+
+      <details>
+        <summary>Labeled internal photo</summary>
         <p>
-            <img src="images/r36s.jpg" style="float: right; max-width: 20%" alt="Pristine R36S unit">
-            The R36S is a hand-held gaming console available online.
-            <br>
-            This page is about re-purposing it as a generic Linux device for custom software - ie: writing & running
-            your
-            own applications on it. If you want to use the R36S for its normal purpose (gaming etc..), then I would
-            recommend you look at <a href="https://github.com/christianhaitian/arkos/wiki">ArkOS</a>, or one of
-            <a href="https://retrohandheldguides.com/r36s-custom-firmware/">the other custom firmware</a> systems that
-            support it.
-            <br>
-            <b>This page is for doing fully custom developments, using the R36S as a hardware platform.</b>
-            <br>
+          <svg viewBox="0 0 360 480">
+            <style>
+              text {
+                text-anchor: middle;
+                dominant-baseline: middle;
+                fill: white;
+                font-size: 30px;
+                font-family: sans-serif;
 
-            It has the following basic hardware:
+                paint-order: stroke;
+                stroke: darkred;
+                stroke-width: 4px;
+                stroke-linecap: butt;
+                stroke-linejoin: miter;
+              }
+
+              rect {
+                rx: 15;
+                ry: 15;
+                fill: purple;
+                opacity: 20%;
+                stroke-width: 5;
+                stroke: orange;
+              }
+            </style>
+            <g transform="scale(0.3)">
+              <image x="0" y="0" href="images/r36s-internal-large.png"></image>
+              <g transform="translate(229,212)">
+                <rect width="160" height="238" />
+                <text x="80" y="80">DDR</text>
+              </g>
+              <g transform="translate(447, 207)">
+                <rect width="174" height="174" />
+                <text x="87" y="87">RK3326 Quad Core</text>
+              </g>
+              <g transform="translate(840, 244)">
+                <rect width="78" height="78" />
+                <text x="39" y="39">RK817 PMIC</text>
+              </g>
+              <g transform="translate(155, 589)">
+                <rect width="118" height="113" />
+                <text x="59" y="56">3v3 UART</text>
+              </g>
+              <g transform="translate(442, 810)">
+                <rect width="306" height="190" />
+                <text x="153" y="95">Speaker</text>
+              </g>
+              <g transform="translate(169, 873)">
+                <rect width="108" height="67" />
+                <text x="54" y="33">Battery</text>
+              </g>
+              <g transform="translate(543, 472)">
+                <rect width="248" height="72" />
+                <text x="124" y="36">LCD</text>
+              </g>
+              <g transform="translate(784, 420)">
+                <rect width="160" height="150"></rect>
+                <text x="80" y="65">
+                  <tspan x="80">Vibrator</tspan>
+                  <tspan x="80" dy="1em">(not loaded)</tspan>
+                </text>
+              </g>
+              <g transform="translate(563, 1350)">
+                <rect width="86" height="175" />
+                <text y="77">
+                  <tspan x="43">3.5mm</tspan>
+                  <tspan x="43" dy="1em">audio jack</tspan>
+                </text>
+              </g>
+            </g>
+            Sorry, your browser does not support inline SVG.
+          </svg>
+        </p>
+      </details>
+
+      <details>
+        <summary>Hardware details</summary>
+        <p>
+          The R36S is very similar to the
+          <a href="https://wiki.odroid.com/odroid_go_super/start">ODroid Go Super</a>. Or the
+          <a href="https://anbernic.com/products/anbernic-new-rg351v">ANBERNIC RG351V</a>
         </p>
         <ul>
-            <li>RK3326 processor</li>
-            <ul>
-                <li>Quad-core ARM Cortex-A35 CPU (64-bit)</li>
-                <li>Up to 1.5GHz (although it appears to only be capable of 1.3GHz with current timing settings)</li>
-                <li><a href="https://rockchip.fr/RK3326%20datasheet%20V1.2.pdf" target="_blank">Datasheet</a></li>
-            </ul>
-            <li>1GB DDR3L</li>
-            <li>640*480 3.5-inch LCD</li>
-            <li>3200 mAh Battery (Replaceable) (JST connector)</li>
-            <li>Built in mono speaker</li>
-            <li>2x TF/microSD Slot</li>
-            <li>2x USB-C connectors (1x data, 1x charge)</li>
-            <li>Dual analog joysticks, direction pad and 10 additional buttons</li>
+          <li>
+            LCD: DSI attached 640x480 panel. No datasheet available, put looks like it uses an
+            NV3051D controller
+          </li>
         </ul>
 
-        <details>
-            <summary>Labeled internal photo</summary>
-            <p>
-                <svg viewBox="0 0 360 480">
-                    <style>
-                        text {
-                            text-anchor: middle;
-                            dominant-baseline: middle;
-                            fill: white;
-                            font-size: 30px;
-                            font-family: sans-serif;
+        <h4>GPIO Assignments</h4>
+        Note: Pins that are using an alternative function may not be listed here yet.
+        <table>
+          <tr>
+            <th>Bank</th>
+            <th>Pin</th>
+            <th>Function</th>
+          </tr>
 
-                            paint-order: stroke;
-                            stroke: darkred;
-                            stroke-width: 4px;
-                            stroke-linecap: butt;
-                            stroke-linejoin: miter;
-                        }
+          <tr>
+            <td>GPIO0</td>
+            <td>RK_PA3</td>
+            <td>DWMMC Card Detect</td>
+          </tr>
+          <tr>
+            <td>GPIO0</td>
+            <td>RK_PB3</td>
+            <td>PMIC DC Detect</td>
+          </tr>
+          <tr>
+            <td>GPIO0</td>
+            <td>RK_PB15</td>
+            <td>PWM0 - Attached to Joypad ?</td>
+          </tr>
+          <tr>
+            <td>GPIO0</td>
+            <td>RK_PC0</td>
+            <td>PWM1 - LCD Backlight</td>
+          </tr>
+          <tr>
+            <td>GPIO0</td>
+            <td>RK_PC1</td>
+            <td>Blue Heartbeat LED</td>
+          </tr>
 
-                        rect {
-                            rx: 15;
-                            ry: 15;
-                            fill: purple;
-                            opacity: 20%;
-                            stroke-width: 5;
-                            stroke: orange;
-                        }
-                    </style>
-                    <g transform="scale(0.3)">
-                        <image x="0" y="0" href="images/r36s-internal-large.png"></image>
-                        <g transform="translate(229,212)">
-                            <rect width="160" height="238" />
-                            <text x="80" y="80">DDR</text>
-                        </g>
-                        <g transform="translate(447, 207)">
-                            <rect width="174" height="174" />
-                            <text x="87" y="87">RK3326 Quad Core</text>
-                        </g>
-                        <g transform="translate(840, 244)">
-                            <rect width="78" height="78" />
-                            <text x="39" y="39">RK817 PMIC</text>
-                        </g>
-                        <g transform="translate(155, 589)">
-                            <rect width="118" height="113" />
-                            <text x="59" y="56">3v3 UART</text>
-                        </g>
-                        <g transform="translate(442, 810)">
-                            <rect width="306" height="190" />
-                            <text x="153" y="95">Speaker</text>
-                        </g>
-                        <g transform="translate(169, 873)">
-                            <rect width="108" height="67" />
-                            <text x="54" y="33">Battery</text>
-                        </g>
-                        <g transform="translate(543, 472)">
-                            <rect width="248" height="72" />
-                            <text x="124" y="36">LCD</text>
-                        </g>
-                        <g transform="translate(784, 420)">
-                            <rect width="160" height="150"></rect>
-                            <text x="80" y="65">
-                                <tspan x="80">Vibrator</tspan>
-                                <tspan x="80" dy="1em">(not loaded)</tspan>
-                            </text>
-                        </g>
-                        <g transform="translate(563, 1350)">
-                            <rect width="86" height="175" />
-                            <text y="77">
-                                <tspan x="43">3.5mm</tspan>
-                                <tspan x="43" dy="1em">audio jack</tspan>
-                            </text>
-                        </g>
-                    </g>
-                    Sorry, your browser does not support inline SVG.
-                </svg>
-            </p>
-        </details>
+          <tr>
+            <td>GPIO1</td>
+            <td>RK_PA2</td>
+            <td>Button A</td>
+          </tr>
+          <tr>
+            <td>GPIO1</td>
+            <td>RK_PA5</td>
+            <td>Button B</td>
+          </tr>
+          <tr>
+            <td>GPIO1</td>
+            <td>RK_PA6</td>
+            <td>Button Y</td>
+          </tr>
+          <tr>
+            <td>GPIO1</td>
+            <td>RK_PA7</td>
+            <td>Button X</td>
+          </tr>
+          <tr>
+            <td>GPIO1</td>
+            <td>RK_PB4</td>
+            <td>DPad Up</td>
+          </tr>
+          <tr>
+            <td>GPIO1</td>
+            <td>RK_PB5</td>
+            <td>DPad Down</td>
+          </tr>
+          <tr>
+            <td>GPIO1</td>
+            <td>RK_PB6</td>
+            <td>DPad Left</td>
+          </tr>
+          <tr>
+            <td>GPIO1</td>
+            <td>RK_PB7</td>
+            <td>DPad Right</td>
+          </tr>
 
-        <details>
-            <summary>Hardware details</summary>
-            <p>
-                The R36S is very similar to the
-                <a href="https://wiki.odroid.com/odroid_go_super/start">ODroid Go Super</a>.
-                Or the <a href="https://anbernic.com/products/anbernic-new-rg351v">ANBERNIC RG351V</a>
-            </p>
-            <ul>
-                <li>LCD: DSI attached 640x480 panel. No datasheet available, put looks like it uses an NV3051D
-                    controller</li>
-            </ul>
+          <tr>
+            <td>GPIO2</td>
+            <td>RK_PA0</td>
+            <td>Button Volume Up</td>
+          </tr>
+          <tr>
+            <td>GPIO2</td>
+            <td>RK_PA1</td>
+            <td>Button Volume Down</td>
+          </tr>
+          <tr>
+            <td>GPIO2</td>
+            <td>RK_PA2</td>
+            <td>Button F3</td>
+          </tr>
+          <tr>
+            <td>GPIO2</td>
+            <td>RK_PA3</td>
+            <td>Button F4</td>
+          </tr>
+          <tr>
+            <td>GPIO2</td>
+            <td>RK_PA4</td>
+            <td>Button F5</td>
+          </tr>
+          <tr>
+            <td>GPIO2</td>
+            <td>RK_PA6</td>
+            <td>Button Top Left</td>
+          </tr>
+          <tr>
+            <td>GPIO2</td>
+            <td>RK_PA7</td>
+            <td>Button Top Right</td>
+          </tr>
+          <tr>
+            <td>GPIO2</td>
+            <td>RK_PB5</td>
+            <td>PMIC Battery Low Detect or LED?</td>
+          </tr>
+          <tr>
+            <td>GPIO2</td>
+            <td>RK_PC6</td>
+            <td>Headphone Detect</td>
+          </tr>
 
-            <h4>GPIO Assignments</h4>
-            Note: Pins that are using an alternative function may not be listed here yet.
-            <table>
-                <tr>
-                    <th>Bank</th>
-                    <th>Pin</th>
-                    <th>Function</th>
-                </tr>
+          <tr>
+            <td>GPIO3</td>
+            <td>RK_PB0</td>
+            <td>Joypad AMux-B</td>
+          </tr>
+          <tr>
+            <td>GPIO3</td>
+            <td>RK_PB1</td>
+            <td>Button F1</td>
+          </tr>
+          <tr>
+            <td>GPIO3</td>
+            <td>RK_PB2</td>
+            <td>Button Top Left 2</td>
+          </tr>
+          <tr>
+            <td>GPIO3</td>
+            <td>RK_PB3</td>
+            <td>Joypad AMux-A</td>
+          </tr>
+          <tr>
+            <td>GPIO3</td>
+            <td>RK_PB4</td>
+            <td>Button F2</td>
+          </tr>
+          <tr>
+            <td>GPIO3</td>
+            <td>RK_PB5</td>
+            <td>Joypad AMux Enable</td>
+          </tr>
+          <tr>
+            <td>GPIO3</td>
+            <td>RK_PB6</td>
+            <td>DWMMC (2)? Card Detect</td>
+          </tr>
+          <tr>
+            <td>GPIO3</td>
+            <td>RK_PB7</td>
+            <td>Button Top Right 2</td>
+          </tr>
+          <tr>
+            <td>GPIO3</td>
+            <td>RK_PC0</td>
+            <td>LCD Reset</td>
+          </tr>
+        </table>
+      </details>
 
-                <tr>
-                    <td>GPIO0</td>
-                    <td>RK_PA3</td>
-                    <td>DWMMC Card Detect</td>
-                </tr>
-                <tr>
-                    <td>GPIO0</td>
-                    <td>RK_PB3</td>
-                    <td>PMIC DC Detect</td>
-                </tr>
-                <tr>
-                    <td>GPIO0</td>
-                    <td>RK_PB15</td>
-                    <td>PWM0 - Attached to Joypad ?</td>
-                </tr>
-                <tr>
-                    <td>GPIO0</td>
-                    <td>RK_PC0</td>
-                    <td>PWM1 - LCD Backlight</td>
-                </tr>
-                <tr>
-                    <td>GPIO0</td>
-                    <td>RK_PC1</td>
-                    <td>Blue Heartbeat LED</td>
-                </tr>
+      <details>
+        <summary>Original Software Info</summary>
+        The unit that I purchased came with the following software version info:
+        <ul>
+          <li>
+            Linux version 4.4.189 (dev@rk3326-dev) (gcc version 6.3.1 20170404 (Linaro GCC
+            6.3-2017.05) ) #3 SMP Wed Oct 13 23:24:26 EDT 2021
+          </li>
+          <li>U-Boot 2017.09-00048-ge8824042a0-dirty (Oct 07 2021 - 18:03:21 -0400)</li>
+        </ul>
+      </details>
 
-                <tr>
-                    <td>GPIO1</td>
-                    <td>RK_PA2</td>
-                    <td>Button A</td>
-                </tr>
-                <tr>
-                    <td>GPIO1</td>
-                    <td>RK_PA5</td>
-                    <td>Button B</td>
-                </tr>
-                <tr>
-                    <td>GPIO1</td>
-                    <td>RK_PA6</td>
-                    <td>Button Y</td>
-                </tr>
-                <tr>
-                    <td>GPIO1</td>
-                    <td>RK_PA7</td>
-                    <td>Button X</td>
-                </tr>
-                <tr>
-                    <td>GPIO1</td>
-                    <td>RK_PB4</td>
-                    <td>DPad Up</td>
-                </tr>
-                <tr>
-                    <td>GPIO1</td>
-                    <td>RK_PB5</td>
-                    <td>DPad Down</td>
-                </tr>
-                <tr>
-                    <td>GPIO1</td>
-                    <td>RK_PB6</td>
-                    <td>DPad Left</td>
-                </tr>
-                <tr>
-                    <td>GPIO1</td>
-                    <td>RK_PB7</td>
-                    <td>DPad Right</td>
-                </tr>
+      <details>
+        <summary>Mainline support</summary>
+        <p>
+          The R36S is not supported directly by mainline Linux or U-Boot. However the core chip
+          (RK3326) is, so it mostly just needs a custom device tree and kernel configuration to
+          work.
+        </p>
+        <p>The customised sources are available from:</p>
+        <ul>
+          <li>
+            <a href="https://github.com/AndreRenaud/linux-r36s">
+              github.com/AndreRenaud/linux-r36s
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/AndreRenaud/u-boot-r36s">
+              github.com/AndreRenaud/u-boot-r36s
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/AndreRenaud/buildroot-r36s">
+              github.com/AndreRenaud/buildroot-r36s
+            </a>
+          </li>
+        </ul>
+        <p>
+          These images (in particular the buildroot image, which is responsible for packaging the
+          other repositories up) are capable of producing an SD card image which is entirely built
+          from source.
+        </p>
+      </details>
 
-                <tr>
-                    <td>GPIO2</td>
-                    <td>RK_PA0</td>
-                    <td>Button Volume Up</td>
-                </tr>
-                <tr>
-                    <td>GPIO2</td>
-                    <td>RK_PA1</td>
-                    <td>Button Volume Down</td>
-                </tr>
-                <tr>
-                    <td>GPIO2</td>
-                    <td>RK_PA2</td>
-                    <td>Button F3</td>
-                </tr>
-                <tr>
-                    <td>GPIO2</td>
-                    <td>RK_PA3</td>
-                    <td>Button F4</td>
-                </tr>
-                <tr>
-                    <td>GPIO2</td>
-                    <td>RK_PA4</td>
-                    <td>Button F5</td>
-                </tr>
-                <tr>
-                    <td>GPIO2</td>
-                    <td>RK_PA6</td>
-                    <td>Button Top Left</td>
-                </tr>
-                <tr>
-                    <td>GPIO2</td>
-                    <td>RK_PA7</td>
-                    <td>Button Top Right</td>
-                </tr>
-                <tr>
-                    <td>GPIO2</td>
-                    <td>RK_PB5</td>
-                    <td>PMIC Battery Low Detect or LED?</td>
-                </tr>
-                <tr>
-                    <td>GPIO2</td>
-                    <td>RK_PC6</td>
-                    <td>Headphone Detect</td>
-                </tr>
-
-                <tr>
-                    <td>GPIO3</td>
-                    <td>RK_PB0</td>
-                    <td>Joypad AMux-B</td>
-                </tr>
-                <tr>
-                    <td>GPIO3</td>
-                    <td>RK_PB1</td>
-                    <td>Button F1</td>
-                </tr>
-                <tr>
-                    <td>GPIO3</td>
-                    <td>RK_PB2</td>
-                    <td>Button Top Left 2</td>
-                </tr>
-                <tr>
-                    <td>GPIO3</td>
-                    <td>RK_PB3</td>
-                    <td>Joypad AMux-A</td>
-                </tr>
-                <tr>
-                    <td>GPIO3</td>
-                    <td>RK_PB4</td>
-                    <td>Button F2</td>
-                </tr>
-                <tr>
-                    <td>GPIO3</td>
-                    <td>RK_PB5</td>
-                    <td>Joypad AMux Enable</td>
-                </tr>
-                <tr>
-                    <td>GPIO3</td>
-                    <td>RK_PB6</td>
-                    <td>DWMMC (2)? Card Detect</td>
-                </tr>
-                <tr>
-                    <td>GPIO3</td>
-                    <td>RK_PB7</td>
-                    <td>Button Top Right 2</td>
-                </tr>
-                <tr>
-                    <td>GPIO3</td>
-                    <td>RK_PC0</td>
-                    <td>LCD Reset</td>
-                </tr>
-            </table>
-        </details>
-
-        <details>
-            <summary>Original Software Info</summary>
-            The unit that I purchased came with the following software version info:
-            <ul>
-                <li>Linux version 4.4.189 (dev@rk3326-dev) (gcc version 6.3.1 20170404 (Linaro GCC 6.3-2017.05) ) #3 SMP
-                    Wed Oct 13 23:24:26 EDT 2021</li>
-                <li>U-Boot 2017.09-00048-ge8824042a0-dirty (Oct 07 2021 - 18:03:21 -0400)</li>
-            </ul>
-        </details>
-
-        <details>
-            <summary>Mainline support</summary>
-            <p>
-                The R36S is not supported directly by mainline Linux or U-Boot. However the core chip (RK3326) is, so it
-                mostly just needs a custom device tree and kernel configuration to work.
-            </p>
-            <p> The customised sources are available from:</p>
-            <ul>
-                <li><a href="https://github.com/AndreRenaud/linux-r36s">github.com/AndreRenaud/linux-r36s</a></li>
-                <li><a href="https://github.com/AndreRenaud/u-boot-r36s">github.com/AndreRenaud/u-boot-r36s</a></li>
-                <li><a href="https://github.com/AndreRenaud/buildroot-r36s">github.com/AndreRenaud/buildroot-r36s</a>
-                </li>
-            </ul>
-            <p>
-                These images (in particular the buildroot image, which is responsible for packaging the other
-                repositories up) are capable of producing
-                an SD card image which is entirely built from source.
-            </p>
-        </details>
-
-        <details>
-            <summary>Build Instructions</summary>
-            All these instructions assume that you are running a relatively recent Debian-based Linux machine on x86_64.
-            They should work without too many changes on other distributions - your milage may vary.
-            The full image is managed by a customised version of <a href="https://buildroot.org">Buildroot</a>. This has
-            been customised with
-            a configuration that points to the U-Boot and Linux sources mentioned above. It should download and build
-            everything necessary
-            <pre>
+      <details>
+        <summary>Build Instructions</summary>
+        All these instructions assume that you are running a relatively recent Debian-based Linux
+        machine on x86_64. They should work without too many changes on other distributions - your
+        milage may vary. The full image is managed by a customised version of
+        <a href="https://buildroot.org">Buildroot</a>. This has been customised with a configuration
+        that points to the U-Boot and Linux sources mentioned above. It should download and build
+        everything necessary
+        <pre>
 # Install the necessary tools on your Linux machine
 sudo apt update && sudo apt install device-tree-compiler build-essential gcc git bc curl
 
@@ -354,88 +391,91 @@ cd buildroot-r36s
 make r36s_defconfig
 make
         </pre>
-            The final command takes quite a while - this will download and build everything that is required.
-            On my machine (AMD Ryzen 9 7950X 16-Core Processor), this takes around 45 minutes.
-            When finished, it will create <code>output/images/sdcard.img</code>. This is suitable for booting the R36S
-            to a Linux prompt.
-            It includes a demonstration application to confirm things are functioning.
+        The final command takes quite a while - this will download and build everything that is
+        required. On my machine (AMD Ryzen 9 7950X 16-Core Processor), this takes around 45 minutes.
+        When finished, it will create <code>output/images/sdcard.img</code>. This is suitable for
+        booting the R36S to a Linux prompt. It includes a demonstration application to confirm
+        things are functioning.
 
-            <h2>Network booting the new images</h2>
-            <ol>
-                <li>
-                    Plug in a supported USB-C Ethernet adapter, attach a serial port to the debug console.
-                    Power the unit on & stop it at the boot prompt
-                    <pre>
+        <h2>Network booting the new images</h2>
+        <ol>
+          <li>
+            Plug in a supported USB-C Ethernet adapter, attach a serial port to the debug console.
+            Power the unit on & stop it at the boot prompt
+            <pre>
 Hit ctrl+c key to enter uboot console
 ctrl+c key pressed - drop to console
             </pre>
-                </li>
-                <li>
-                    Download the new images
-                    <pre>
-usb start && setenv autoload n && bootp && setenv serverip 192.168.2.141 && tftp 0x02000000 rockchip/Image && tftp 0x01f00000 rockchip/rk3326-r36s.dtb && tftp 0x10000000 rockchip/rootfs.cpio.uboot
-                </pre>
-                </li>
-                <li>
-                    Or using fat
-                    <pre>
-load mmc 0:1 0x02000000 Image && load mmc 0:1 0x01f00000 rk3326-r36s.dtb && load mmc 0:1 0x10000000 rootfs.cpio.uboot
-                </pre>
-                </li>
-                <li>
-                    Set up the boot args & boot the new images
-                    <pre>
-setenv bootargs console=ttyS2,1500000n8 earlycon root=/dev/ram ip=any vt.global_cursor_default=0 && booti 0x02000000 0x10000000 0x01f00000
-                </pre>
-                </li>
-            </ol>
-        </details>
-
-        <details>
-            <summary>Building an SDL application</summary>
-            <p>
-                Using the <a href="https://github.com/veandco/go-sdl2">Go-SDL2</a> library, it is fairly simple to
-                produce a standalone image that boots into your application. If this image is packaed into a unified
-                package (ie: kernel + filesystem), then it is easy to build & load onto a new unit.
-            </p>
-            <p>
-                A simple example of this is provided at <a
-                    href="https://github.com/AndreRenaud/r36s-demo-app">r36s-demo-app</a>.
-                This is included and automatically run on startup in the buildroot image from above.
-            </p>
-        </details>
-
-        <details>
-            <summary>Benchmarks & Hardware Testing</summary>
-            <h4>Preamble</h4>
-            These benchmarks are run with the performance scheduler enabled, to ensure the CPU is always run as fast as
-            possible.
-            Note: Some of these benchmark programs are not built in the default buildroot image,
-            and will need to be manually enabled.
+          </li>
+          <li>
+            Download the new images
             <pre>
+usb start && setenv autoload n && bootp && setenv serverip 192.168.2.141 && tftp 0x02000000 rockchip/Image && tftp 0x01f00000 rockchip/rk3326-r36s.dtb && tftp 0x10000000 rockchip/rootfs.cpio.uboot
+                </pre
+            >
+          </li>
+          <li>
+            Or using fat
+            <pre>
+load mmc 0:1 0x02000000 Image && load mmc 0:1 0x01f00000 rk3326-r36s.dtb && load mmc 0:1 0x10000000 rootfs.cpio.uboot
+                </pre
+            >
+          </li>
+          <li>
+            Set up the boot args & boot the new images
+            <pre>
+setenv bootargs console=ttyS2,1500000n8 earlycon root=/dev/ram ip=any vt.global_cursor_default=0 && booti 0x02000000 0x10000000 0x01f00000
+                </pre
+            >
+          </li>
+        </ol>
+      </details>
+
+      <details>
+        <summary>Building an SDL application</summary>
+        <p>
+          Using the <a href="https://github.com/veandco/go-sdl2">Go-SDL2</a> library, it is fairly
+          simple to produce a standalone image that boots into your application. If this image is
+          packaed into a unified package (ie: kernel + filesystem), then it is easy to build & load
+          onto a new unit.
+        </p>
+        <p>
+          A simple example of this is provided at
+          <a href="https://github.com/AndreRenaud/r36s-demo-app">r36s-demo-app</a>. This is included
+          and automatically run on startup in the buildroot image from above.
+        </p>
+      </details>
+
+      <details>
+        <summary>Benchmarks & Hardware Testing</summary>
+        <h4>Preamble</h4>
+        These benchmarks are run with the performance scheduler enabled, to ensure the CPU is always
+        run as fast as possible. Note: Some of these benchmark programs are not built in the default
+        buildroot image, and will need to be manually enabled.
+        <pre>
 # echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 performance
         </pre>
-            <h4>MHz</h4>
-            <a href="https://github.com/wtarreau/mhz">github.com/wtarreau/mhz</a>
-            <pre>
+        <h4>MHz</h4>
+        <a href="https://github.com/wtarreau/mhz">github.com/wtarreau/mhz</a>
+        <pre>
 # mhz
 count=497425 us50=19997 us250=96924 diff=76927 cpu_MHz=1293.239
         </pre>
 
-            <h4>Whetstone 1.2</h4>
-            <a href="https://www.netlib.org/benchmark/">www.netlib.org/benchmark/</a>
-            <pre>
+        <h4>Whetstone 1.2</h4>
+        <a href="https://www.netlib.org/benchmark/">www.netlib.org/benchmark/</a>
+        <pre>
 # whetstone 500000
 
 Loops: 500000, Iterations: 1, Duration: 10 sec.
 C Converted Double Precision Whetstones: 5000.0 MIPS
         </pre>
 
-            <h4>Dhrystone 2</h4>
-            <a href="https://www.netlib.org/benchmark/">www.netlib.org/benchmark/</a>
-            <pre>
+        <h4>Dhrystone 2</h4>
+        <a href="https://www.netlib.org/benchmark/">www.netlib.org/benchmark/</a>
+        <pre>
 # dhrystone 50000000
 
 Dhrystone Benchmark, Version 2.1 (Language: C)
@@ -498,9 +538,9 @@ Microseconds for one run through Dhrystone:    0.2
 Dhrystones per Second:                      5313496.5
         </pre>
 
-            <h4>RamSMP</h4>
-            <a href="https://github.com/cruvolo/ramspeed-smp">github.com/cruvolo/ramspeed-smp</a>
-            <pre style="font-size: x-smaller">
+        <h4>RamSMP</h4>
+        <a href="https://github.com/cruvolo/ramspeed-smp">github.com/cruvolo/ramspeed-smp</a>
+        <pre style="font-size: x-smaller">
 # ramsmp -b 1
 RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
             
@@ -609,11 +649,11 @@ FL-POINT  Triad:     1246.41 MB/s
 FL-POINT  AVERAGE:   1720.06 MB/s
         </pre>
 
-            <h4>Memtester</h4>
-            <a href="https://pyropus.ca./software/memtester/">pyropus.ca./software/memtester</a>
-            This is less of a benchmark and more of a sanity check that the hardware appears to be functioning properly.
-            This takes ~18 minutes to finish.
-            <pre>
+        <h4>Memtester</h4>
+        <a href="https://pyropus.ca./software/memtester/">pyropus.ca./software/memtester</a>
+        This is less of a benchmark and more of a sanity check that the hardware appears to be
+        functioning properly. This takes ~18 minutes to finish.
+        <pre>
 # memtester 500M 1
 memtester version 4.5.1 (64-bit)
 Copyright (C) 2001-2020 Charles Cazabon.
@@ -643,13 +683,14 @@ Loop 1/1:
   8-bit Writes        : ok
   16-bit Writes       : ok
             
-Done.</pre>
+Done.</pre
+        >
 
-            <h4>bonnie++ - v1.03e (SD card)</h4>
-            Performance here is quite dependant on the SD card that is installed. This benchmark shows ~34MB/s write,
-            53MB/s read performance.
-            <a href="https://www.coker.com.au/bonnie++">www.coker.com.au/bonnie++</a>
-            <pre>
+        <h4>bonnie++ - v1.03e (SD card)</h4>
+        Performance here is quite dependant on the SD card that is installed. This benchmark shows
+        ~34MB/s write, 53MB/s read performance.
+        <a href="https://www.coker.com.au/bonnie++">www.coker.com.au/bonnie++</a>
+        <pre>
 # mount /dev/mmcblk0p2 /mnt/
 [ 2014.668991] EXT4-fs (mmcblk0p2): mounted filesystem e139ce78-9841-40fe-8823-96a304a09859 r/w without journal. Quota mode: none.            
 # df -h
@@ -685,10 +726,10 @@ buildroot        2G 24834  98 33960  13 18684  14 24672  97 52645  24  2682  32
 buildroot,2G,24834,98,33960,13,18684,14,24672,97,52645,24,2681.8,32,16,13161,98,+++++,+++,20575,95,709,98,+++++,+++,18645,95
         </pre>
 
-            <h4>glmark2-es2-drm</h4>
-            Note: This test was run when still mid-way through kernel porting. Results may not be accurate now.
-            This test takes ~5m to run.
-            <pre>
+        <h4>glmark2-es2-drm</h4>
+        Note: This test was run when still mid-way through kernel porting. Results may not be
+        accurate now. This test takes ~5m to run.
+        <pre>
 # glmark2-es2-drm
 Warning: DRM_CAP_ASYNC_PAGE_FLIP not supported, falling back to 'mailbox' mode for SwapInterval(0).
 =======================================================
@@ -737,14 +778,19 @@ Warning: DRM_CAP_ASYNC_PAGE_FLIP not supported, falling back to 'mailbox' mode f
 =======================================================
                                   glmark2 Score: 336
 =======================================================
-    </pre>
+    </pre
+        >
 
-            <h4>FFMPEG video display</h4>
-            <pre>ffmpeg -i /tmp/video.mp4 -pix_fmt bgra -vf "transpose=2,scale=640:480" -f fbdev /dev/fb0</pre>
+        <h4>FFMPEG video display</h4>
+        <pre>
+ffmpeg -i /tmp/video.mp4 -pix_fmt bgra -vf "transpose=2,scale=640:480" -f fbdev /dev/fb0</pre
+        >
 
-            <h4>Audio playback</h4>
-            <pre>amixer sset Master 255 && curl -L -o /tmp/sample.wav https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand3.wav && aplay /tmp/sample.wav</pre>
-
-        </details>
+        <h4>Audio playback</h4>
+        <pre>
+amixer sset Master 255 && curl -L -o /tmp/sample.wav https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand3.wav && aplay /tmp/sample.wav</pre
+        >
+      </details>
     </article>
-</main>
+  </main>
+</html>
