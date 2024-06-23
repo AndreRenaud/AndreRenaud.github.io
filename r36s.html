@@ -2,7 +2,7 @@
 <html lang="en">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="ignavus.css">
-<title>R36S Hacking - Ignavus.net</title>
+<title>R36S Custom Systems - Ignavus.net</title>
 
 <nav>
     <a href="./"> <img src="images/main-icon.png" alt="Main home page">Home</a>
@@ -12,735 +12,432 @@
 </nav>
 
 <main>
-<article>
-    <h1>R36S Hacking</h1>
+    <article>
+        <h1>R36S-based Custom Systems</h1>
 
-    <p>
-        <img src="images/r36s.jpg" style="float: right; max-width: 20%" alt="Pristine R36S unit">
-        The R36S is a hand-held gaming console available online.
-        <br>
-        It is designed for use with retro gaming, and there are plenty of resources out there for that.
-        <br>
-        This page is about re-purposing it as a generic Linux device for custom software - ie: writing & running your
-        own applications on it.
-        <br>
-
-        It has the following basic hardware:
-    <ul>
-        <li>RK3326 processor</li>
-        <ul>
-            <li>Quad-core ARM Cortex-A35 CPU (64-bit)</li>
-            <li>Up to 1.5GHz</li>
-            <li><a href="https://rockchip.fr/RK3326%20datasheet%20V1.2.pdf" target="_blank">Datasheet</a></li>
-        </ul>
-        <li>1GB DDR3L</li>
-        <li>640*480 3.5-inch LCD</li>
-        <li>3200 mAh Battery (Replaceable) (JST 2mm/1.25mm? connector)</li>
-        <li>2x TF/microSD Slot</li>
-        <li>2x USB-C connectors (1x data, 1x charge)</li>
-    </ul>
-
-    <details>
-        <summary>Labeled internal photo</summary>
         <p>
-            <img src="images/r36s-internal-diagram.png">
-        </p>
-    </details>
+            <img src="images/r36s.jpg" style="float: right; max-width: 20%" alt="Pristine R36S unit">
+            The R36S is a hand-held gaming console available online.
+            <br>
+            This page is about re-purposing it as a generic Linux device for custom software - ie: writing & running
+            your
+            own applications on it. If you want to use the R36S for its normal purpose (gaming etc..), then I would
+            recommend you look at <a href="https://github.com/christianhaitian/arkos/wiki">ArkOS</a>, or one of
+            <a href="https://retrohandheldguides.com/r36s-custom-firmware/">the other custom firmware</a> systems that
+            support it.
+            <br>
+            <b>This page is for doing fully custom developments, using the R36S as a hardware platform.</b>
+            <br>
 
-    <details>
-        <summary>Hardware details</summary>
-        <p>
-            The R36S appears to be very similar to the
-            <a href="https://wiki.odroid.com/odroid_go_super/start">ODroid Go Super</a>.
-            Or the <a href="https://anbernic.com/products/anbernic-new-rg351v">ANBERNIC RG351V</a>
-
-        </p>
+            It has the following basic hardware:
         <ul>
-            <li>LCD: Elida KD35T133. DSI attached 640x480 panel. No datasheet available?</li>
-            <li>SPI flash: ??</li>
+            <li>RK3326 processor</li>
+            <ul>
+                <li>Quad-core ARM Cortex-A35 CPU (64-bit)</li>
+                <li>Up to 1.5GHz (although it appears to only be capable of 1.3GHz with current timing settings)</li>
+                <li><a href="https://rockchip.fr/RK3326%20datasheet%20V1.2.pdf" target="_blank">Datasheet</a></li>
+            </ul>
+            <li>1GB DDR3L</li>
+            <li>640*480 3.5-inch LCD</li>
+            <li>3200 mAh Battery (Replaceable) (JST connector)</li>
+            <li>Built in mono speaker</li>
+            <li>2x TF/microSD Slot</li>
+            <li>2x USB-C connectors (1x data, 1x charge)</li>
+            <li>Dual analog joysticks, direction pad and 10 additional buttons</li>
         </ul>
 
-        <h4>GPIO Assignments</h4>
-        Note: Pins that are using an alternative function may not be listed here yet.
-        <table>
-            <tr>
-                <th>Bank</th>
-                <th>Pin</th>
-                <th>Function</th>
-            </tr>
+        <details>
+            <summary>Labeled internal photo</summary>
+            <p>
+                <svg viewBox="0 0 360 480">
+                    <style>
+                        text {
+                            text-anchor: middle;
+                            dominant-baseline: middle;
+                            fill: white;
+                            font-size: 30px;
+                            font-family: sans-serif;
 
-            <tr>
-                <td>GPIO0</td>
-                <td>RK_PA3</td>
-                <td>DWMMC Card Detect</td>
-            </tr>
-            <tr>
-                <td>GPIO0</td>
-                <td>RK_PB3</td>
-                <td>PMIC DC Detect</td>
-            </tr>
-            <tr>
-                <td>GPIO0</td>
-                <td>RK_PB15</td>
-                <td>PWM0 - Attached to Joypad ?</td>
-            </tr>
-            <tr>
-                <td>GPIO0</td>
-                <td>RK_PC0</td>
-                <td>PWM1 - LCD Backlight</td>
-            </tr>
-            <tr>
-                <td>GPIO0</td>
-                <td>RK_PC1</td>
-                <td>Blue Heartbeat LED</td>
-            </tr>
+                            paint-order: stroke;
+                            stroke: darkred;
+                            stroke-width: 4px;
+                            stroke-linecap: butt;
+                            stroke-linejoin: miter;
+                        }
 
-            <tr>
-                <td>GPIO1</td>
-                <td>RK_PA2</td>
-                <td>Button A</td>
-            </tr>
-            <tr>
-                <td>GPIO1</td>
-                <td>RK_PA5</td>
-                <td>Button B</td>
-            </tr>
-            <tr>
-                <td>GPIO1</td>
-                <td>RK_PA6</td>
-                <td>Button Y</td>
-            </tr>
-            <tr>
-                <td>GPIO1</td>
-                <td>RK_PA7</td>
-                <td>Button X</td>
-            </tr>
-            <tr>
-                <td>GPIO1</td>
-                <td>RK_PB4</td>
-                <td>DPad Up</td>
-            </tr>
-            <tr>
-                <td>GPIO1</td>
-                <td>RK_PB5</td>
-                <td>DPad Down</td>
-            </tr>
-            <tr>
-                <td>GPIO1</td>
-                <td>RK_PB6</td>
-                <td>DPad Left</td>
-            </tr>
-            <tr>
-                <td>GPIO1</td>
-                <td>RK_PB7</td>
-                <td>DPad Right</td>
-            </tr>
+                        rect {
+                            rx: 15;
+                            ry: 15;
+                            fill: purple;
+                            opacity: 20%;
+                            stroke-width: 5;
+                            stroke: orange;
+                        }
+                    </style>
+                    <g transform="scale(0.3)">
+                        <image x="0" y="0" href="images/r36s-internal-large.png"></image>
+                        <g transform="translate(229,212)">
+                            <rect width="160" height="238" />
+                            <text x="80" y="80">DDR</text>
+                        </g>
+                        <g transform="translate(447, 207)">
+                            <rect width="174" height="174" />
+                            <text x="87" y="87">RK3326 Quad Core</text>
+                        </g>
+                        <g transform="translate(840, 244)">
+                            <rect width="78" height="78" />
+                            <text x="39" y="39">RK817 PMIC</text>
+                        </g>
+                        <g transform="translate(155, 589)">
+                            <rect width="118" height="113" />
+                            <text x="59" y="56">3v3 UART</text>
+                        </g>
+                        <g transform="translate(442, 810)">
+                            <rect width="306" height="190" />
+                            <text x="153" y="95">Speaker</text>
+                        </g>
+                        <g transform="translate(169, 873)">
+                            <rect width="108" height="67" />
+                            <text x="54" y="33">Battery</text>
+                        </g>
+                        <g transform="translate(543, 472)">
+                            <rect width="248" height="72" />
+                            <text x="124" y="36">LCD</text>
+                        </g>
+                        <g transform="translate(784, 420)">
+                            <rect width="160" height="150"></rect>
+                            <text x="80" y="65">
+                                <tspan x="80">Vibrator</tspan>
+                                <tspan x="80" dy="1em">(not loaded)</tspan>
+                            </text>
+                        </g>
+                        <g transform="translate(563, 1350)">
+                            <rect width="86" height="175" />
+                            <text y="77">
+                                <tspan x="43">3.5mm</tspan>
+                                <tspan x="43" dy="1em">audio jack</tspan>
+                            </text>
+                        </g>
+                    </g>
+                    Sorry, your browser does not support inline SVG.
+                </svg>
+            </p>
+        </details>
 
-            <tr>
-                <td>GPIO2</td>
-                <td>RK_PA0</td>
-                <td>Button Volume Up</td>
-            </tr>
-            <tr>
-                <td>GPIO2</td>
-                <td>RK_PA1</td>
-                <td>Button Volume Down</td>
-            </tr>
-            <tr>
-                <td>GPIO2</td>
-                <td>RK_PA2</td>
-                <td>Button F3</td>
-            </tr>
-            <tr>
-                <td>GPIO2</td>
-                <td>RK_PA3</td>
-                <td>Button F4</td>
-            </tr>
-            <tr>
-                <td>GPIO2</td>
-                <td>RK_PA4</td>
-                <td>Button F5</td>
-            </tr>
-            <tr>
-                <td>GPIO2</td>
-                <td>RK_PA6</td>
-                <td>Button Top Left</td>
-            </tr>
-            <tr>
-                <td>GPIO2</td>
-                <td>RK_PA7</td>
-                <td>Button Top Right</td>
-            </tr>
-            <tr>
-                <td>GPIO2</td>
-                <td>RK_PB5</td>
-                <td>PMIC Battery Low Detect or LED?</td>
-            </tr>
-            <tr>
-                <td>GPIO2</td>
-                <td>RK_PC6</td>
-                <td>Headphone Detect</td>
-            </tr>
+        <details>
+            <summary>Hardware details</summary>
+            <p>
+                The R36S is very similar to the
+                <a href="https://wiki.odroid.com/odroid_go_super/start">ODroid Go Super</a>.
+                Or the <a href="https://anbernic.com/products/anbernic-new-rg351v">ANBERNIC RG351V</a>
+            </p>
+            <ul>
+                <li>LCD: DSI attached 640x480 panel. No datasheet available, put looks like it uses an NV3051D
+                    controller</li>
+            </ul>
 
-            <tr>
-                <td>GPIO3</td>
-                <td>RK_PB0</td>
-                <td>Joypad AMux-B</td>
-            </tr>
-            <tr>
-                <td>GPIO3</td>
-                <td>RK_PB1</td>
-                <td>Button F1</td>
-            </tr>
-            <tr>
-                <td>GPIO3</td>
-                <td>RK_PB2</td>
-                <td>Button Top Left 2</td>
-            </tr>
-            <tr>
-                <td>GPIO3</td>
-                <td>RK_PB3</td>
-                <td>Joypad AMux-A</td>
-            </tr>
-            <tr>
-                <td>GPIO3</td>
-                <td>RK_PB4</td>
-                <td>Button F2</td>
-            </tr>
-            <tr>
-                <td>GPIO3</td>
-                <td>RK_PB5</td>
-                <td>Joypad AMux Enable</td>
-            </tr>
-            <tr>
-                <td>GPIO3</td>
-                <td>RK_PB6</td>
-                <td>DWMMC (2)? Card Detect</td>
-            </tr>
-            <tr>
-                <td>GPIO3</td>
-                <td>RK_PB7</td>
-                <td>Button Top Right 2</td>
-            </tr>
-            <tr>
-                <td>GPIO3</td>
-                <td>RK_PC0</td>
-                <td>LCD Reset</td>
-            </tr>
-        </table>
-        </h4>
-    </details>
+            <h4>GPIO Assignments</h4>
+            Note: Pins that are using an alternative function may not be listed here yet.
+            <table>
+                <tr>
+                    <th>Bank</th>
+                    <th>Pin</th>
+                    <th>Function</th>
+                </tr>
 
-    <details>
-        <summary>Initial Console Output</summary>
-        Using the off-the-shelf firmware, the following output is observed on the console. Note: The initial boot, up to
-        the end of BL31 is at 1.5MBaud, which flips to 115200 once U-Boot starts
-        <pre>
-DDR Version 1.10 20181114
-DDR3
-333MHz
-BW=32 Col=10 Bk=8 CS0 Row=15 CS=1 Die BW=16 Size=1024MB
-OUT
-Boot1 Release Time: Jul 18 2018 15:47:49, version: 1.12
-chip_id:524b3326_0,0
-ChipType = 0x12, 410
-mmc2:cmd1,32
-emmc reinit
-mmc2:cmd1,32
-emmc reinit
-mmc2:cmd1,32
-SdmmcInit=2 1
-mmc0:cmd5,32
-SdmmcInit=0 0
-BootCapSize=0
-UserCapSize=59818MB
-FwPartOffset=2000 , 0
-StorageInit ok = 41235
-SecureMode = 0
-Secure read PBA: 0x4
-Secure read PBA: 0x404
-Secure read PBA: 0x804
-Secure read PBA: 0xc04
-Secure read PBA: 0x1004
-SecureInit ret = 0, SecureMode = 0
-GPT  signature is wrong
-LoadTrust Addr:0x4000
-No find bl30.bin
-Load uboot, ReadLba = 2000
-Load OK, addr=0x200000, size=0xfc838
-RunBL31 0x10000
-\x01NOTICE:  BL31: v1.3(debug):1b8f3f9
-NOTICE:  BL31: Built : 15:17:34, Jul  6 2018
-NOTICE:  BL31:Rockchip release version: v1.0
-INFO:    ARM GICv2 driver initialized
-INFO:    Using opteed sec cpu_context!
-INFO:    boot cpu mask: 1
-INFO:    plat_rockchip_pmu_init: pd status f00e
-INFO:    BL31: Initializing runtime services
-INFO:    BL31: Initializing BL32
-I/TC: console use default uart! console_data.base.pa=0xff160000
-I/TC: 
-I/TC: Start rockchip platform init
-I/TC: Rockchip release version: 1.1
-I/TC: OP-TEE version: 3.3.0-146-g369430b2 #12 Wed Dec  5 07:40:03 UTC 2018 aarch64
-I/TC: Initialized
-INFO:    BL31: Preparing for EL3 exit to normal world
-INFO:    Entry point address = 0x200000
-INFO:    SPSR = 0x3c9
-        </pre>
-        At this point it flips to 115200
-        <pre>
-U-Boot 2017.09-00048-ge8824042a0-dirty (Oct 07 2021 - 18:03:21 -0400)
+                <tr>
+                    <td>GPIO0</td>
+                    <td>RK_PA3</td>
+                    <td>DWMMC Card Detect</td>
+                </tr>
+                <tr>
+                    <td>GPIO0</td>
+                    <td>RK_PB3</td>
+                    <td>PMIC DC Detect</td>
+                </tr>
+                <tr>
+                    <td>GPIO0</td>
+                    <td>RK_PB15</td>
+                    <td>PWM0 - Attached to Joypad ?</td>
+                </tr>
+                <tr>
+                    <td>GPIO0</td>
+                    <td>RK_PC0</td>
+                    <td>PWM1 - LCD Backlight</td>
+                </tr>
+                <tr>
+                    <td>GPIO0</td>
+                    <td>RK_PC1</td>
+                    <td>Blue Heartbeat LED</td>
+                </tr>
 
-Model: Rockchip RK3326 RG351 Series
-DRAM:  992 MiB
-Sysmem: init
-Relocation Offset is: 3dabc000
-Using default environment
+                <tr>
+                    <td>GPIO1</td>
+                    <td>RK_PA2</td>
+                    <td>Button A</td>
+                </tr>
+                <tr>
+                    <td>GPIO1</td>
+                    <td>RK_PA5</td>
+                    <td>Button B</td>
+                </tr>
+                <tr>
+                    <td>GPIO1</td>
+                    <td>RK_PA6</td>
+                    <td>Button Y</td>
+                </tr>
+                <tr>
+                    <td>GPIO1</td>
+                    <td>RK_PA7</td>
+                    <td>Button X</td>
+                </tr>
+                <tr>
+                    <td>GPIO1</td>
+                    <td>RK_PB4</td>
+                    <td>DPad Up</td>
+                </tr>
+                <tr>
+                    <td>GPIO1</td>
+                    <td>RK_PB5</td>
+                    <td>DPad Down</td>
+                </tr>
+                <tr>
+                    <td>GPIO1</td>
+                    <td>RK_PB6</td>
+                    <td>DPad Left</td>
+                </tr>
+                <tr>
+                    <td>GPIO1</td>
+                    <td>RK_PB7</td>
+                    <td>DPad Right</td>
+                </tr>
 
-adc0 (hw rev) 166
-Model = rg351mp
-RKPARM: Invalid parameter part table
-reading rg351mp-kernel.dtb
-59129 bytes read in 8 ms (7 MiB/s)
-I2c speed: 400000Hz
-PMIC:  RK8170 (on=0x80, off=0x80)
-vdd_logic 1100000 uV
-vdd_arm 1100000 uV
-*** Warning - bad CRC, using default environment
+                <tr>
+                    <td>GPIO2</td>
+                    <td>RK_PA0</td>
+                    <td>Button Volume Up</td>
+                </tr>
+                <tr>
+                    <td>GPIO2</td>
+                    <td>RK_PA1</td>
+                    <td>Button Volume Down</td>
+                </tr>
+                <tr>
+                    <td>GPIO2</td>
+                    <td>RK_PA2</td>
+                    <td>Button F3</td>
+                </tr>
+                <tr>
+                    <td>GPIO2</td>
+                    <td>RK_PA3</td>
+                    <td>Button F4</td>
+                </tr>
+                <tr>
+                    <td>GPIO2</td>
+                    <td>RK_PA4</td>
+                    <td>Button F5</td>
+                </tr>
+                <tr>
+                    <td>GPIO2</td>
+                    <td>RK_PA6</td>
+                    <td>Button Top Left</td>
+                </tr>
+                <tr>
+                    <td>GPIO2</td>
+                    <td>RK_PA7</td>
+                    <td>Button Top Right</td>
+                </tr>
+                <tr>
+                    <td>GPIO2</td>
+                    <td>RK_PB5</td>
+                    <td>PMIC Battery Low Detect or LED?</td>
+                </tr>
+                <tr>
+                    <td>GPIO2</td>
+                    <td>RK_PC6</td>
+                    <td>Headphone Detect</td>
+                </tr>
 
-In:    serial
-Out:   serial
-Err:   serial
-Model: R36S for linux based on Rockchip rk3326
-dwmmc@ff370000: 1 (SD)
-## Error: "rkimg_bootdev" not defined
-Bootdev: mmc 0
-rockchip_get_bootdev: Can't find dev_desc!
-[Vendor ERROR]:Invalid boot device type(0)
-rockchip_get_bootdev: Can't find dev_desc!
-[Vendor ERROR]:Invalid boot device type(0)
-rockchip_get_bootdev: Can't find dev_desc!
-rockchip_get_boot_mode: dev_desc is NULL!
-CLK: (sync kernel. arm: enter 600000 KHz, init 600000 KHz, kernel 600000 KHz)
-apll 600000 KHz
-dpll 664000 KHz
-cpll 24000 KHz
-npll 1188000 KHz
-gpll 1200000 KHz
-aclk_bus 200000 KHz
-hclk_bus 150000 KHz
-pclk_bus 100000 KHz
-aclk_peri 200000 KHz
-hclk_peri 150000 KHz
-pclk_pmu 100000 KHz
-Rockchip UBOOT DRM driver version: v1.0.1
-Using display timing dts
-Detailed mode clock 29000 kHz, flags[8000000a]
-H: 0640 0686 0688 0732
-V: 0480 0496 0498 0512
-bus_format: 100e
-final DSI-Link bandwidth: 192 Mbps x 4
-reading logo.bmp
-921654 bytes read in 43 ms (20.4 MiB/s)
-switch to partitions #0, OK
-mmc1 is current device
-Net:   Net Initialization Skipped
-No ethernet found.
-Hit key to stop autoboot('CTRL+C'):  1 \x08\x08\x08 0 
-switch to partitions #0, OK
-mmc1 is current device
-reading boot.ini
-953 bytes read in 3 ms (309.6 KiB/s)
-## Executing script at 00800800
-reading Image
-10764296 bytes read in 474 ms (21.7 MiB/s)
-reading uInitrd
-13194771 bytes read in 577 ms (21.8 MiB/s)
-reading rk3326-r35s-linux.dtb
-90315 bytes read in 9 ms (9.6 MiB/s)
-## Loading init Ramdisk from Legacy Image at 01100000 ...
-Image Name:   uInitrd
-Image Type:   ARM Linux RAMDisk Image (gzip compressed)
-Data Size:    13194707 Bytes = 12.6 MiB
-Load Address: 00000000
-Entry Point:  00000000
-Verifying Checksum ... OK
-## Flattened Device Tree blob at 01f00000
-Booting using the fdt blob at 0x1f00000
-'reserved-memory' region@110000: addr=110000 size=f0000
-Loading Ramdisk to 3101a000, end 31caf5d3 ... OK
-Loading Device Tree to 0000000031000000, end 00000000310190ca ... OK
-reserve drm-loader-logo offset = 59776
-reserve drm-logo mem = 000000003de00000, size = 3325952
-Adding bank: 0x00200000 - 0x08400000 (size: 0x08200000)
-Adding bank: 0x0a200000 - 0x40000000 (size: 0x35e00000)
-Total: 3549.135 ms
+                <tr>
+                    <td>GPIO3</td>
+                    <td>RK_PB0</td>
+                    <td>Joypad AMux-B</td>
+                </tr>
+                <tr>
+                    <td>GPIO3</td>
+                    <td>RK_PB1</td>
+                    <td>Button F1</td>
+                </tr>
+                <tr>
+                    <td>GPIO3</td>
+                    <td>RK_PB2</td>
+                    <td>Button Top Left 2</td>
+                </tr>
+                <tr>
+                    <td>GPIO3</td>
+                    <td>RK_PB3</td>
+                    <td>Joypad AMux-A</td>
+                </tr>
+                <tr>
+                    <td>GPIO3</td>
+                    <td>RK_PB4</td>
+                    <td>Button F2</td>
+                </tr>
+                <tr>
+                    <td>GPIO3</td>
+                    <td>RK_PB5</td>
+                    <td>Joypad AMux Enable</td>
+                </tr>
+                <tr>
+                    <td>GPIO3</td>
+                    <td>RK_PB6</td>
+                    <td>DWMMC (2)? Card Detect</td>
+                </tr>
+                <tr>
+                    <td>GPIO3</td>
+                    <td>RK_PB7</td>
+                    <td>Button Top Right 2</td>
+                </tr>
+                <tr>
+                    <td>GPIO3</td>
+                    <td>RK_PC0</td>
+                    <td>LCD Reset</td>
+                </tr>
+            </table>
+            </h4>
+        </details>
 
-Starting kernel ...
+        <details>
+            <summary>Original Software Info</summary>
+            The unit that I purchased came with the following software version info:
+            <ul>
+                <li>Linux version 4.4.189 (dev@rk3326-dev) (gcc version 6.3.1 20170404 (Linaro GCC 6.3-2017.05) ) #3 SMP
+                    Wed Oct 13 23:24:26 EDT 2021</li>
+                <li>U-Boot 2017.09-00048-ge8824042a0-dirty (Oct 07 2021 - 18:03:21 -0400)</li>
+            </ul>
+        </details>
 
-[    0.107070] genirq: Setting trigger mode 8 for irq 170 failed (0xffffff80083703d0)
-[    0.553719] rk-vcodec vpu_combo: failed on clk_get clk_cabac
-[    0.562631] rk-vcodec vpu_combo: could not find power_model node
-[    0.585614] rockchip-drm display-subsystem: failed to bind ff450000.dsi (ops 0xffffff8008874e78): -517
-[    0.598683] panel-simple-dsi ff450000.dsi.0: failed to get power regulator: -517
-[    0.606666] mali ff400000.gpu: Failed to get regulator
-[    0.611844] mali ff400000.gpu: Power control initialization failed
-[    0.673815] rk817-battery rk817-battery: fb_temperature missing!
-[    0.679884] rk817-battery rk817-battery: energy_mode missing!
-[    0.685666] rk817-battery rk817-battery: zero_reserve_dsoc missing!
-[    0.716980] rk817-charger rk817-charger: power_dc2otg missing!
-[    0.722882] rk817-charger rk817-charger: otg5v_suspend_enable missing!
-[    0.753156] rk_tsadcv2_temp_to_code: Invalid conversion table: code=4095, temperature=2147483647
-[    0.783270] cpu cpu0: failed to find power_model node
-[    0.866076] rockchip-dmc dmc: unable to get devfreq-event device : dfi
-[    0.875528] rksfc_base v1.1 2016-01-08
-[    0.889872] rockchip-drm display-subsystem: failed to bind ff450000.dsi (ops 0xffffff8008874e78): -517
-[    0.900207] panel-simple-dsi ff450000.dsi.0: actual backlight_supply exists
-[    0.908258] mali ff400000.gpu: Failed to get leakage
-[    0.918856] rockchip-dmc dmc: Failed to get leakage
-[    0.924511] rockchip-dmc dmc: failed to get vop bandwidth to dmc rate
-[    0.930994] rockchip-dmc dmc: failed to get vop pn to msch rl
-[    0.949838] devfreq dmc: Couldn't update frequency transition information.
-[    0.960190] asoc-simple-card rk817-sound: ASoC: no sink widget found for MIC_IN
-[    0.967530] asoc-simple-card rk817-sound: ASoC: Failed to add route Mic Jack -> direct -> MIC_IN
-[    0.976337] asoc-simple-card rk817-sound: ASoC: no source widget found for HPOL
-[    0.983658] asoc-simple-card rk817-sound: ASoC: Failed to add route HPOL -> direct -> Headphone Jack
-[    0.992799] asoc-simple-card rk817-sound: ASoC: no source widget found for HPOR
-[    1.000116] asoc-simple-card rk817-sound: ASoC: Failed to add route HPOR -> direct -> Headphone Jack
-[    1.011931] get_framebuffer_by_node: failed to get logo,offset
-[    1.017838] rockchip-drm display-subsystem: failed to show loader logo
-        </pre>
-    </details>
+        <details>
+            <summary>Mainline support</summary>
+            <p>
+                The R36S is not supported directly by mainline Linux or U-Boot. However the core chip (RK3326) is, so it
+                mostly just needs a custom device tree and kernel configuration to work.
+            </p>
+            <p>
+                The customised sources are available from:
+            <ul>
+                <li><a href="https://github.com/AndreRenaud/linux-r36s">github.com/AndreRenaud/linux-r36s</a></li>
+                <li><a href="https://github.com/AndreRenaud/u-boot-r36s">github.com/AndreRenaud/u-boot-r36s</a></li>
+                <li><a href="https://github.com/AndreRenaud/buildroot-r36s">github.com/AndreRenaud/buildroot-r36s</a>
+                </li>
+            </ul>
+            </p>
+            <p>
+                These images (in particular the buildroot image, which is responsible for packaging the other
+                repositories up) are capable of producing
+                an SD card image which is entirely built from source.
+            </p>
+        </details>
 
-    <details>
-        <summary>Original Software Info</summary>
-        <h4>Linux Version</h4>
-        <pre>Linux version 4.4.189 (dev@rk3326-dev) (gcc version 6.3.1 20170404 (Linaro GCC 6.3-2017.05) ) #3 SMP Wed Oct 13 23:24:26 EDT 2021</pre>
-
-        <h4>U-Boot Version</h4>
-        <pre>
-U-Boot 2017.09-00048-ge8824042a0-dirty (Oct 07 2021 - 18:03:21 -0400)
-            
-aarch64-linux-gnu-gcc (Linaro GCC 6.3-2017.05) 6.3.1 20170404
-GNU ld (Linaro_Binutils-2017.05) 2.27.0.20161019</pre>
-
-        <h4>dmesg output (100 lines)</h4>
-        <pre>
-            [    0.000000] Booting Linux on physical CPU 0x0
-[    0.000000] Initializing cgroup subsys cpuset
-[    0.000000] Initializing cgroup subsys cpu
-[    0.000000] Initializing cgroup subsys cpuacct
-[    0.000000] Linux version 4.4.189 (dev@rk3326-dev) (gcc version 6.3.1 20170404 (Linaro GCC 6.3-2017.05) ) #3 SMP Wed Oct 13 23:24:26 EDT 2021
-[    0.000000] Boot CPU: AArch64 Processor [410fd042]
-[    0.000000] Machine model: Game Console R35S/R36S fix by lxc
-[    0.000000] On node 0 totalpages: 253952
-[    0.000000]   DMA zone: 4088 pages used for memmap
-[    0.000000]   DMA zone: 0 pages reserved
-[    0.000000]   DMA zone: 253952 pages, LIFO batch:31
-[    0.000000] psci: probing for conduit method from DT.
-[    0.000000] psci: PSCIv1.0 detected in firmware.
-[    0.000000] psci: Using standard PSCI v0.2 function IDs
-[    0.000000] psci: Trusted OS migration not required
-[    0.000000] PERCPU: Embedded 19 pages/cpu @ffffffc03ff35000 s40936 r8192 d28696 u77824
-[    0.000000] pcpu-alloc: s40936 r8192 d28696 u77824 alloc=19*4096
-[    0.000000] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3
-[    0.000000] Detected VIPT I-cache on CPU0
-[    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 249864
-[    0.000000] Kernel command line: root=UUID=e139ce78-9841-40fe-8823-96a304a09859 rootwait rw fsck.repair=yes net.ifnames=0 fbcon=rotate:0 console=/dev/ttyFIQ0 quiet splash plymouth.ignore-serial-consoles consoleblank=0
-[    0.000000] PID hash table entries: 4096 (order: 3, 32768 bytes)
-[    0.000000] Dentry cache hash table entries: 131072 (order: 8, 1048576 bytes)
-[    0.000000] Inode-cache hash table entries: 65536 (order: 7, 524288 bytes)
-[    0.000000] software IO TLB: mapped [mem 0x39e00000-0x3de00000] (64MB)
-[    0.000000] Memory: 902588K/1015808K available (7550K kernel code, 464K rwdata, 1948K rodata, 512K init, 1735K bss, 113220K reserved, 0K cma-reserved)
-[    0.000000] Virtual kernel memory layout:
-                   modules : 0xffffff8000000000 - 0xffffff8008000000   (   128 MB)
-                   vmalloc : 0xffffff8008000000 - 0xffffffbdbfff0000   (   246 GB)
-                     .init : 0xffffff80089d0000 - 0xffffff8008a50000   (   512 KB)
-                     .text : 0xffffff8008080000 - 0xffffff80087e0000   (  7552 KB)
-                   .rodata : 0xffffff80087e0000 - 0xffffff80089d0000   (  1984 KB)
-                     .data : 0xffffff8008a50000 - 0xffffff8008ac4008   (   465 KB)
-                   vmemmap : 0xffffffbdc0000000 - 0xffffffbfc0000000   (     8 GB maximum)
-                             0xffffffbdc0008000 - 0xffffffbdc1000000   (    15 MB actual)
-                   fixed   : 0xffffffbffe7fb000 - 0xffffffbffec00000   (  4116 KB)
-                   PCI I/O : 0xffffffbffee00000 - 0xffffffbfffe00000   (    16 MB)
-                   memory  : 0xffffffc000200000 - 0xffffffc040000000   (  1022 MB)
-[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
-[    0.000000] Hierarchical RCU implementation.
-[    0.000000] 	Build-time adjustment of leaf fanout to 64.
-[    0.000000] NR_IRQS:64 nr_irqs:64 0
-[    0.000000] GIC: Using split EOI/Deactivate mode
-[    0.000000] rockchip_mmc_get_phase: invalid clk rate
-[    0.000000] rockchip_mmc_get_phase: invalid clk rate
-[    0.000000] rockchip_mmc_get_phase: invalid clk rate
-[    0.000000] rockchip_mmc_get_phase: invalid clk rate
-[    0.000000] rockchip_mmc_get_phase: invalid clk rate
-[    0.000000] rockchip_mmc_get_phase: invalid clk rate
-[    0.000000] Architected cp15 timer(s) running at 24.00MHz (phys).
-[    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x588fe9dc0, max_idle_ns: 440795202592 ns
-[    0.000009] sched_clock: 56 bits at 24MHz, resolution 41ns, wraps every 4398046511097ns
-[    0.001584] Console: colour dummy device 80x25
-[    0.001624] Calibrating delay loop (skipped), value calculated using timer frequency.. 48.00 BogoMIPS (lpj=96000)
-[    0.001646] pid_max: default: 32768 minimum: 301
-[    0.001837] Mount-cache hash table entries: 2048 (order: 2, 16384 bytes)
-[    0.001856] Mountpoint-cache hash table entries: 2048 (order: 2, 16384 bytes)
-[    0.002778] Initializing cgroup subsys devices
-[    0.002806] Initializing cgroup subsys freezer
-[    0.002832] Initializing cgroup subsys net_cls
-[    0.003253] sched-energy: CPU device node has no sched-energy-costs
-[    0.003270] Invalid sched_group_energy for CPU0
-[    0.003282] CPU0: update cpu_capacity 1024
-[    0.003302] ASID allocator initialised with 32768 entries
-[    0.005523] Detected VIPT I-cache on CPU1
-[    0.005603] Invalid sched_group_energy for CPU1
-[    0.005610] CPU1: update cpu_capacity 1024
-[    0.005615] CPU1: Booted secondary processor [410fd042]
-[    0.006401] Detected VIPT I-cache on CPU2
-[    0.006457] Invalid sched_group_energy for CPU2
-[    0.006463] CPU2: update cpu_capacity 1024
-[    0.006468] CPU2: Booted secondary processor [410fd042]
-[    0.007210] Detected VIPT I-cache on CPU3
-[    0.007260] Invalid sched_group_energy for CPU3
-[    0.007266] CPU3: update cpu_capacity 1024
-[    0.007271] CPU3: Booted secondary processor [410fd042]
-[    0.007373] Brought up 4 CPUs
-[    0.007506] SMP: Total of 4 processors activated.
-[    0.007523] CPU features: detected feature: 32-bit EL0 Support
-[    0.007540] CPU: All CPU(s) started at EL2
-[    0.007786] Invalid sched_group_energy for CPU3
-[    0.007803] Invalid sched_group_energy for Cluster3
-[    0.007814] Invalid sched_group_energy for CPU2
-[    0.007827] Invalid sched_group_energy for Cluster2
-[    0.007837] Invalid sched_group_energy for CPU1
-[    0.007849] Invalid sched_group_energy for Cluster1
-[    0.007859] Invalid sched_group_energy for CPU0
-[    0.007871] Invalid sched_group_energy for Cluster0
-[    0.008643] devtmpfs: initialized
-[    0.041316] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
-[    0.041353] futex hash table entries: 1024 (order: 4, 65536 bytes)
-[    0.041805] pinctrl core: initialized pinctrl subsystem
-[    0.042249] regulator-dummy: no parameters
-[    0.043344] NET: Registered protocol family 16
-[    0.055798] cpuidle: using governor ladder
-[    0.067809] cpuidle: using governor menu
-[    0.067848] Registered FIQ tty driver
-[    0.068238] vdso: 2 pages (1 code @ ffffff80087e6000, 1 data @ ffffff8008a55000)
-[    0.068268] hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.
-[    0.068489] DMA: preallocated 256 KiB pool for atomic allocations
-        </pre>
-
-        <h4>/proc/cpuinfo</h4>
-        <pre>
-$ sudo cat /proc/cpuinfo
-processor	: 0
-BogoMIPS	: 48.00
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
-CPU implementer	: 0x41
-CPU architecture: 8
-CPU variant	: 0x0
-CPU part	: 0xd04
-CPU revision	: 2
-            
-processor	: 1
-BogoMIPS	: 48.00
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
-CPU implementer	: 0x41
-CPU architecture: 8
-CPU variant	: 0x0
-CPU part	: 0xd04
-CPU revision	: 2
-            
-processor	: 2
-BogoMIPS	: 48.00
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
-CPU implementer	: 0x41
-CPU architecture: 8
-CPU variant	: 0x0
-CPU part	: 0xd04
-CPU revision	: 2
-            
-processor	: 3
-BogoMIPS	: 48.00
-Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
-CPU implementer	: 0x41
-CPU architecture: 8
-CPU variant	: 0x0
-CPU part	: 0xd04
-CPU revision	: 2
-
-Hardware	: Game Console R35S/R36S fix by lxc
-Revision	: 0000
-Serial		: 4d7b3c7e39843fcd
-        </pre>
-
-        <h4>/proc/meminfo</h4>
-        <pre>
-$ cat /proc/meminfo
-MemTotal:         919232 kB
-MemFree:          553268 kB
-MemAvailable:     707612 kB
-Buffers:           20796 kB
-Cached:           140524 kB
-SwapCached:            0 kB
-Active:           196192 kB
-Inactive:         107440 kB
-Active(anon):     142548 kB
-Inactive(anon):     5136 kB
-Active(file):      53644 kB
-Inactive(file):   102304 kB
-Unevictable:          36 kB
-Mlocked:              36 kB
-SwapTotal:             0 kB
-SwapFree:              0 kB
-Dirty:                 0 kB
-Writeback:             0 kB
-AnonPages:        142344 kB
-Mapped:            71964 kB
-Shmem:              5376 kB
-Slab:              26036 kB
-SReclaimable:      13592 kB
-SUnreclaim:        12444 kB
-KernelStack:        2112 kB
-PageTables:         1372 kB
-NFS_Unstable:          0 kB
-Bounce:                0 kB
-WritebackTmp:          0 kB
-CommitLimit:      459616 kB
-Committed_AS:     242016 kB
-VmallocTotal:   258867136 kB
-VmallocUsed:           0 kB
-VmallocChunk:          0 kB
-        </pre>
-    </details>
-
-    <details>
-        <summary>Upstream support</summary>
-        <p>
-        <H3>TBD - this is still entirely untested</H3>
-        Possible sources:
-        <ul>
-            <li>
-                <a href="https://github.com/hardkernel/linux/commits/odroidgoA-4.4.y/">
-                    Odroid Go A 4.4.y linux kernel</a>
-                <br>
-                <a href="https://wiki.odroid.com/odroid_go_advance/build_kernel">Linux build instructions</a>
-                <br>
-                It's not obvious what commit the factory image was built with, but the version (4.4.189) lines up with
-                the <a href="https://github.com/hardkernel/linux/tree/faeb665a41b53ebb386e69fe737ccf0707aaf07b">current
-                    tip</a> of that branch.
-            </li>
-            <li>
-                <a href="https://github.com/hardkernel/u-boot/tree/odroidgoA-v2017.09">Odroid Go A v2017.09 U-Boot</a>
-                <br>
-                <a href="https://wiki.odroid.com/odroid_go_advance/build_uboot">U-Boot Build Instructions</a></a>
-                <br>
-                It looks possible that the image shipped with the unit was built from this tree, as the git hash printed
-                is present:
-                <a href="https://github.com/hardkernel/u-boot/commit/e8824042a0">
-                    U-Boot 2017.09-00048-ge8824042a0
-                </a>, and the dates line up (that commit is from October 6th 2021, the
-                build is from October 7th). But it is a dirty build, so we do not know what other changes might have
-                been made.
-            </li>
-            <li><a
-                    href="https://github.com/torvalds/linux/blob/master/arch/arm64/boot/dts/rockchip/rk3326-odroid-go3.dts">
-                    ODroid Go Super Device Tree support in mainline</a>
-            </li>
-            <li><a
-                    href="https://github.com/AmberELEC/kernel_rg351/blob/main/arch/arm64/boot/dts/rockchip/rk3326-rg351mp-linux.dts">RG351MP
-                    Device Tree from AmberELEC</a></li>
-            <li><a href="https://dn.odroid.com/ODROID_GO_ADVANCE/ODROID_GO_ADVANCE_rev1.1.pdf" target="_blank">ODroid Go Advance
-                    Schematics</a></li>
-            <li>Garlic OS might support it - <a href="https://github.com/GarlicOS/buildroot/releases">Releases</a></li>
-        </ul>
-        </p>
-    </details>
-
-    <details>
-        <summary>Build Instructions</summary>
-        All these instructions assume that you are running a relatively recent Debian-based Linux machine on x86_64.
-        They should work without too many changes on other distributions - your milage may vary.
-        <h2>U-Boot</h2>
-        <pre>
-git clone git@github.com:hardkernel/u-boot.git u-boot-r36s
-cd u-boot-r36s
-... TBD ...
-        </pre>
-        <h2>Linux</h2>
-        <pre>
-# Install the necessary tools on your Linux machine
-sudo apt update && sudo apt install device-tree-compiler build-essential gcc git
-
-# We need an older toolchain, so download & enable this one from Linaro
-wget "https://releases.linaro.org/components/toolchain/binaries/6.3-2017.05/aarch64-linux-gnu/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz"
-tar xf gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz
-export PATH=$PWD/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/bin:$PATH
-
-# Grab the Linux kernel & buildt he images
-git clone git@github.com:hardkernel/linux.git -b odroidgoA-4.4.y linux-r36s # This will take a while
-cd linux-r36s
-sed -i '/^YYLTYPE yylloc;$/d' ./scripts/dtc/dtc-lexer.l # This is to fix a bug in the older kernel when using newer tools
-sed -i 's/YYLTYPE yylloc;/extern YYLTYPE yylloc;/' scripts/dtc/dtc-lexer.lex.c_shipped
-ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- make odroidgoa_defconfig
-ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- make Image dtbs -j$(nproc)</pre>
-        At this point, the <code>Image</code> and <code>arch/arm64/boot/dts/xxx</code> files should be present
-
-        <h2>Buildroot</h2>
-        TBD
-
-        <h2>Booting the new images</h2>
-        <ol>
-            <li>
-                Plug in a supported USB-C Ethernet adapter, attach a serial port to the debug console.
-                Power the unit on & stop it at the boot prompt
+        <details>
+            <summary>Build Instructions</summary>
+            All these instructions assume that you are running a relatively recent Debian-based Linux machine on x86_64.
+            They should work without too many changes on other distributions - your milage may vary.
+            The full image is managed by a customised version of <a href="https://buildroot.org">Buildroot</a>. This has
+            been customised with
+            a configuration that points to the U-Boot and Linux sources mentioned above. It should download and build
+            everything necessary
             <pre>
+# Install the necessary tools on your Linux machine
+sudo apt update && sudo apt install device-tree-compiler build-essential gcc git bc curl
+
+git clone https://github.com/AndreRenaud/buildroot-r36s.git
+cd buildroot-r36s
+make r36s_defconfig
+make
+        </pre>
+            The final command takes quite a while - this will download and build everything that is required.
+            On my machine (AMD Ryzen 9 7950X 16-Core Processor), this takes around 45 minutes.
+            When finished, it will create <code>output/images/sdcard.img</code>. This is suitable for booting the R36S to a Linux
+            prompt.
+            It includes a demonstration application to confirm things are functioning.
+
+            <h2>Network booting the new images</h2>
+            <ol>
+                <li>
+                    Plug in a supported USB-C Ethernet adapter, attach a serial port to the debug console.
+                    Power the unit on & stop it at the boot prompt
+                    <pre>
 Hit ctrl+c key to enter uboot console
 ctrl+c key pressed - drop to console
             </pre>
-            </li>
-            <li>
-                Download the new images
-                <pre>
+                </li>
+                <li>
+                    Download the new images
+                    <pre>
 usb start && setenv autoload n && bootp && setenv serverip 192.168.2.141 && tftp 0x02000000 rockchip/Image && tftp 0x01f00000 rockchip/rk3326-r36s.dtb && tftp 0x10000000 rockchip/rootfs.cpio.uboot
                 </pre>
-            </li>
-            <li>
-                Set up the boot args & boot the new images
-                <pre>
-setenv bootargs console=ttyS2,115200n8 earlycon root=/dev/ram ip=any && booti 0x02000000 0x10000000 0x01f00000
+                </li>
+                <li>
+                    Or using fat
+                    <pre>
+load mmc 0:1 0x02000000 Image && load mmc 0:1 0x01f00000 rk3326-r36s.dtb && load mmc 0:1 0x10000000 rootfs.cpio.uboot
                 </pre>
-            </li>
-        </ol>
-    </details>
+                </li>
+                <li>
+                    Set up the boot args & boot the new images
+                    <pre>
+setenv bootargs console=ttyS2,1500000n8 earlycon root=/dev/ram ip=any vt.global_cursor_default=0 && booti 0x02000000 0x10000000 0x01f00000
+                </pre>
+                </li>
+            </ol>
+       </details>
 
-    <details>
-        <summary>Benchmarks</summary>
-        <h4>Preamble</h4>
-        These benchmarks are run with the performance scheduler enabled, to ensure the CPU is always run as fast as possible.
-        <pre>
+        <details>
+            <summary>Building an SDL application</summary>
+            <p>
+                Using the <a href="https://github.com/veandco/go-sdl2">Go-SDL2</a> library, it is fairly simple to
+                produce a standalone image that boots into your application. If this image is packaed into a unified
+                package (ie: kernel + filesystem), then it is easy to build & load onto a new unit.
+            </p>
+            <p>
+                A simple example of this is provided at <a
+                    href="https://github.com/AndreRenaud/r36s-demo-app">r36s-demo-app</a>.
+                This is included and automatically run on startup in the buildroot image from above.
+            </p>
+        </details>
+
+        <details>
+            <summary>Benchmarks & Hardware Testing</summary>
+            <h4>Preamble</h4>
+            These benchmarks are run with the performance scheduler enabled, to ensure the CPU is always run as fast as
+            possible.
+            Note: Some of these benchmark programs are not built in the default buildroot image,
+            and will need to be manually enabled.
+            <pre>
 # echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 performance
         </pre>
-        <h4>MHz</h4>
-        <a href="https://github.com/wtarreau/mhz">github.com/wtarreau/mhz</a>
-        <pre>
+            <h4>MHz</h4>
+            <a href="https://github.com/wtarreau/mhz">github.com/wtarreau/mhz</a>
+            <pre>
 # mhz
 count=497425 us50=19997 us250=96924 diff=76927 cpu_MHz=1293.239
         </pre>
 
-        <h4>Whetstone 1.2</h4>
-        <a href="https://www.netlib.org/benchmark/">www.netlib.org/benchmark/</a>
-        <pre>
+            <h4>Whetstone 1.2</h4>
+            <a href="https://www.netlib.org/benchmark/">www.netlib.org/benchmark/</a>
+            <pre>
 # whetstone 500000
 
 Loops: 500000, Iterations: 1, Duration: 10 sec.
 C Converted Double Precision Whetstones: 5000.0 MIPS
         </pre>
 
-        <h4>Dhrystone 2</h4>
-        <a href="https://www.netlib.org/benchmark/">www.netlib.org/benchmark/</a>
-        <pre>
+            <h4>Dhrystone 2</h4>
+            <a href="https://www.netlib.org/benchmark/">www.netlib.org/benchmark/</a>
+            <pre>
 # dhrystone 50000000
 
 Dhrystone Benchmark, Version 2.1 (Language: C)
@@ -803,9 +500,9 @@ Microseconds for one run through Dhrystone:    0.2
 Dhrystones per Second:                      5313496.5
         </pre>
 
-        <h4>RamSMP</h4>
-        <a href="https://github.com/cruvolo/ramspeed-smp">github.com/cruvolo/ramspeed-smp</a>
-        <pre style="font-size: x-smaller">
+            <h4>RamSMP</h4>
+            <a href="https://github.com/cruvolo/ramspeed-smp">github.com/cruvolo/ramspeed-smp</a>
+            <pre style="font-size: x-smaller">
 # ramsmp -b 1
 RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
             
@@ -914,10 +611,11 @@ FL-POINT  Triad:     1246.41 MB/s
 FL-POINT  AVERAGE:   1720.06 MB/s
         </pre>
 
-        <h4>Memtester</h4>
-        <a href="https://pyropus.ca./software/memtester/">pyropus.ca./software/memtester</a>
-        This is less of a benchmark and more of a sanity check that the hardware appears to be functioning properly. This takes ~18 minutes to finish.
-        <pre>
+            <h4>Memtester</h4>
+            <a href="https://pyropus.ca./software/memtester/">pyropus.ca./software/memtester</a>
+            This is less of a benchmark and more of a sanity check that the hardware appears to be functioning properly.
+            This takes ~18 minutes to finish.
+            <pre>
 # memtester 500M 1
 memtester version 4.5.1 (64-bit)
 Copyright (C) 2001-2020 Charles Cazabon.
@@ -949,10 +647,11 @@ Loop 1/1:
             
 Done.</pre>
 
-        <h4>bonnie++ - v1.03e (SD card)</h4>
-        Performance here is quite dependant on the SD card that is installed. This benchmark shows ~34MB/s write, 53MB/s read performance.
-        <a href="https://www.coker.com.au/bonnie++">www.coker.com.au/bonnie++</a>
-        <pre>
+            <h4>bonnie++ - v1.03e (SD card)</h4>
+            Performance here is quite dependant on the SD card that is installed. This benchmark shows ~34MB/s write,
+            53MB/s read performance.
+            <a href="https://www.coker.com.au/bonnie++">www.coker.com.au/bonnie++</a>
+            <pre>
 # mount /dev/mmcblk0p2 /mnt/
 [ 2014.668991] EXT4-fs (mmcblk0p2): mounted filesystem e139ce78-9841-40fe-8823-96a304a09859 r/w without journal. Quota mode: none.            
 # df -h
@@ -988,10 +687,10 @@ buildroot        2G 24834  98 33960  13 18684  14 24672  97 52645  24  2682  32
 buildroot,2G,24834,98,33960,13,18684,14,24672,97,52645,24,2681.8,32,16,13161,98,+++++,+++,20575,95,709,98,+++++,+++,18645,95
         </pre>
 
-        <h4>glmark2-es2-drm</h4>
-        Note: This test was run when still mid-way through kernel porting. Results may not be accurate now.
-        This test takes ~5m to run.
-        <pre>
+            <h4>glmark2-es2-drm</h4>
+            Note: This test was run when still mid-way through kernel porting. Results may not be accurate now.
+            This test takes ~5m to run.
+            <pre>
 # glmark2-es2-drm
 Warning: DRM_CAP_ASYNC_PAGE_FLIP not supported, falling back to 'mailbox' mode for SwapInterval(0).
 =======================================================
@@ -1025,10 +724,10 @@ Warning: DRM_CAP_ASYNC_PAGE_FLIP not supported, falling back to 'mailbox' mode f
 [buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=subdata: FPS: 43 FrameTime: 23.572 ms
 [buffer] columns=200:interleave=true:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 52 FrameTime: 19.542 ms
 [ideas] speed=duration: FPS: 190 FrameTime: 5.290 ms
-[jellyfish] <default>: FPS: 196 FrameTime: 5.127 ms
-[terrain] <default>: FPS: 14 FrameTime: 74.175 ms
-[shadow] <default>: FPS: 106 FrameTime: 9.457 ms
-[refract] <default>: FPS: 12 FrameTime: 84.059 ms
+[jellyfish] default>: FPS: 196 FrameTime: 5.127 ms
+[terrain] default: FPS: 14 FrameTime: 74.175 ms
+[shadow] default: FPS: 106 FrameTime: 9.457 ms
+[refract] default: FPS: 12 FrameTime: 84.059 ms
 [conditionals] fragment-steps=0:vertex-steps=0: FPS: 544 FrameTime: 1.839 ms
 [conditionals] fragment-steps=5:vertex-steps=0: FPS: 437 FrameTime: 2.292 ms
 [conditionals] fragment-steps=0:vertex-steps=5: FPS: 543 FrameTime: 1.843 ms
@@ -1040,8 +739,16 @@ Warning: DRM_CAP_ASYNC_PAGE_FLIP not supported, falling back to 'mailbox' mode f
 =======================================================
                                   glmark2 Score: 336
 =======================================================
-    </details>
+    </pre>
 
-    </p>
-</article>
+            <h4>FFMPEG video display</h4>
+            <pre>ffmpeg -i /tmp/video.mp4 -pix_fmt bgra -vf "transpose=2,scale=640:480" -f fbdev /dev/fb0</pre>
+
+            <h4>Audio playback</h4>
+            <pre>amixer sset Master 255 && curl -L -o /tmp/sample.wav https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand3.wav && aplay /tmp/sample.wav</pre>
+
+        </details>
+
+        </p>
+    </article>
 </main>

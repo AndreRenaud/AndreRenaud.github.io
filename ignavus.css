@@ -8,6 +8,13 @@
     }
 }
 
+@keyframes gelatine {
+    from, to { transform: scale(1, 1); }
+    25% { transform: scale(0.95, 1.05); }
+    50% { transform: scale(1.05, 0.95); }
+    75% { transform: scale(0.975, 1.025); }
+  }
+
 body {
     animation: 0.2s ease-in 0s 1 fadeIn;
 
@@ -28,18 +35,27 @@ nav a {
     padding-left: 1ex;
 }
 
+nav a:hover {
+    animation: 1s ease-in 0s 1 gelatine;
+    animation-iteration-count: infinite;
+}
+
 nav img {
     display: block;
     max-width: 4em;
-}
-
-img {
-    display: inherit;
     margin: 0 auto;
 }
 
 article img {
     max-width: 90%;
+    display: inherit;
+    margin: 0 auto;
+}
+
+article svg {
+    max-height: 50em;
+    display: inherit;
+    margin: 0 auto;
 }
 
 pre {
@@ -57,20 +73,26 @@ pre {
 }
 
 table {
-    border-collapse: collapse;
+    border-radius: 0.5em;
     border: 1px solid;
     margin: 25px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     width: 80%;
-
 }
-table tr:nth-child(even) {background-color: #f2f2f2;}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table th {
+    background-color: lightsteelblue;
+}
 
 article {
     border: black solid 2px;
     border-radius: 0.5em;
     background-color: white;
-    margin-top: 1em;
+    margin-top: 1.5em;
     margin-left: 0.5em;
     margin-right: 0.5em;
     padding-left: 0.5em;
@@ -94,7 +116,7 @@ article h1 {
     font-family: "Lucida Sans", sans-serif;
 }
 
-details[open] summary ~ * {
+details[open] summary~* {
     animation: fadeIn .5s ease-in-out;
 }
 
