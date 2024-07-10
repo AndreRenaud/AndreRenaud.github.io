@@ -435,11 +435,51 @@ setenv bootargs console=ttyS2,1500000n8 earlycon root=/dev/ram ip=any vt.global_
       </details>
 
       <details>
+        <summary>SD Card Layout</summary>
+        <p>
+          The RK3326 boots directly from the SD card - ie: there is no on-board flash chip or
+          anything containing the bootloader. The bootlaoder itself lives on the SD card, and the
+          on-CPU bootrom is smart enough to start this up and execute this code. Once the bootloader
+          (U-Boot) is running, then it can grab the full Linux kernel/filesystem and start things
+          running.
+        </p>
+        <p>This layout is as follows:</p>
+        <table>
+          <tr>
+            <th>Offset</th>
+            <th>Length</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td>512B</td>
+            <td>Master boot record</td>
+          </tr>
+          <tr>
+            <td>32kB</td>
+            <td>~9MiB</td>
+            <td>U-Boot</td>
+          </tr>
+          <tr>
+            <td>10MB</td>
+            <td>500MB</td>
+            <td>FAT Filesystem</td>
+          </tr>
+        </table>
+        <p>
+          Because the Linux system built here runs entirely in-RAM, there is no writeable filesystem
+          on the SD card (it is included read-only inside the Linux boot image). However it would be
+          possible to add another partition after the FAT filesystem, format it as EXT4, and use
+          this as a boot filesystem if required.
+        </p>
+      </details>
+
+      <details>
         <summary>Building an SDL application</summary>
         <p>
           Using the <a href="https://github.com/veandco/go-sdl2">Go-SDL2</a> library, it is fairly
           simple to produce a standalone image that boots into your application. If this image is
-          packaed into a unified package (ie: kernel + filesystem), then it is easy to build & load
+          packaged into a unified package (ie: kernel + filesystem), then it is easy to build & load
           onto a new unit.
         </p>
         <p>
