@@ -82,6 +82,16 @@ pre {
   overflow: auto;
 }
 
+aside {
+  width: 30%;
+  padding-left: 0.5rem;
+  float: right;
+  box-shadow: inset 8px 0px 8px -5px;
+  font-style: italic;
+  font-size: smaller;
+  margin: 0.5rem;
+}
+
 table {
   border-radius: 0.5em;
   border: 1px solid;

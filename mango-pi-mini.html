@@ -81,9 +81,13 @@
           reasons, the default for this is set to 115200 baud. This is horribly slow. Modern systems
           have no problems with much higher baudrates on UARTs, some up to 12 Megabaud. For our
           purpopses, 1.5 Megabaud is a good balance between speed, compatibility and
-          standardisation. The reason for 115200 is that the 16550 (still the most common UART
-          peripheral around) has a default clock of 1.8432 MHz. The smallest divider of this is 16,
-          which results in (1.8432/16) = 0.1152. This is 0.1152 MHz/edge == 115200 baud.
+          standardisation.
+          <aside>
+            The reason for 115200 is that the 16550 (still the most common UART peripheral around)
+            has a default clock of 1.8432 MHz. The smallest divider of this is 16 (for
+            oversampling), which results in (1.8432/16) = 0.1152. This is 0.1152 MHz/edge == 115200
+            baud.
+          </aside>
 
           <p>
             An alternative mitigation here would be to reduce the amount of logging information
