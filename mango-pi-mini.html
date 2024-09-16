@@ -80,8 +80,7 @@
           development. This is normally not exposed on the final product. For various historic
           reasons, the default for this is set to 115200 baud. This is horribly slow. Modern systems
           have no problems with much higher baudrates on UARTs, some up to 12 Megabaud. For our
-          purpopses, 1.5 Megabaud is a good balance between speed, compatibility and
-          standardisation.
+          purposes, 1.5 Megabaud is a good balance between speed, compatibility and standardisation.
           <aside>
             The reason for 115200 is that the 16550 (still the most common UART peripheral around)
             has a default clock of 1.8432 MHz. The smallest divider of this is 16 (for
@@ -124,7 +123,7 @@
           to storage to find a U-Boot environment file.
           <p>
             We have combined the kernel, device tree and filesystem into a single image which is
-            loaded into DDR in a continuous read.
+            loaded into memory in a continuous read.
           </p>
           <p>
             We have reduced the functionality in the filesystem & kernel to the bare minimum, thus
