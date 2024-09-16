@@ -84,7 +84,7 @@ pre {
 
 aside {
   width: 30%;
-  padding-left: 0.5rem;
+  padding: 0.5rem;
   float: right;
   box-shadow: inset 8px 0px 8px -5px;
   font-style: italic;
