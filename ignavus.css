@@ -109,7 +109,7 @@ article {
   padding-right: 0.5em;
   padding-bottom: 0.5em;
   padding-top: 0.75em;
-  overflow: hidden;
+  overflow: visible;
 }
 
 article h1 {
@@ -120,8 +120,9 @@ article h1 {
   padding-left: 0.5em;
   margin-left: 1em;
   width: fit-content;
+  max-width: 60%;
   padding-right: 0.5em;
-  position: absolute;
+  overflow: visible;
 
   font-family: "Lucida Sans", sans-serif;
 }
