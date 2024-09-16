@@ -60,7 +60,7 @@
         In the instructions below we're building a completely open source system from a combination
         of U-Boot, Linux kernel & Buildroot. This is all based on mainline upstream sources, which
         gives a huge amount of assurance about on-going support and the quality of development. The
-        configuration of these pieces has been adjusted to minimised size (and functionality to some
+        configuration of these pieces has been adjusted to minimise size (and functionality to some
         degree as a consequence) to demonstrate a plausible minimal Linux system as a starting point
         for building something. The focus is on boot speed.
       </p>
@@ -84,13 +84,36 @@
           standardisation. The reason for 115200 is that the 16550 (still the most common UART
           peripheral around) has a default clock of 1.8432 MHz. The smallest divider of this is 16,
           which results in (1.8432/16) = 0.1152. This is 0.1152 MHz/edge == 115200 baud.
+
+          <p>
+            An alternative mitigation here would be to reduce the amount of logging information
+            printed during boot. This is possibly by adding the <code>quiet</code> parameter to the
+            Linux bootargs (See
+            <a href="https://wiki.archlinux.org/title/Silent_boot">ArchLinux wiki</a> for more
+            details). However retaining the boot conosle in general is such a helpful feature during
+            development that I prefer to leave it in place at the higher baudrate.
+          </p>
+        </dd>
+
+        <dt>Configuration</dt>
+        <dd>
+          U-Boot by default uses a 3 second boot delay to give you the opportunity to stop it at the
+          prompt to run adhoc boot commands. While retaining the ability to do this is helpful,
+          there is no need to have a delay at all. U-Boot will look for characters sent in the time
+          between power on and the completion of the board initialisation. Any character sent then
+          will interrupt the default boot if the boot delay value is set to 0. On the Mango Pi MQ
+          this still gives us a few hundred milliseconds, which is sufficient.
+          <p>
+            This has been adjusted by setting <code>CONFIG_BOOTDELAY=0</code> in the U-Boot
+            configuration.
+          </p>
         </dd>
 
         <dt>Storage access</dt>
         <dd>
           This covers two things - don't hit the storage more frequently than you need, and don't
           store more than you need. To avoid hitting the storage too frequently we have dropped the
-          U-Boot programmable environment. So you cannot make non-volatile changes to U-Boot with
+          U-Boot programmable environment. So you cannot make non-volatile changes to U-Boot without
           rebuilding U-Boot itself. This can actually be a benefit to reliability on embedded
           systems as any issues in the U-Boot environment can render the unit unbootable. So
           removing the ability to change it reduces some risk. It also means we don't have to look
