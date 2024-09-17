@@ -82,6 +82,26 @@
         for building something. The focus is on boot speed.
       </p>
 
+      <h3>Timing breakdown</h3>
+      <p>The unit boots in the following rough phases/durations:</p>
+
+      <ol>
+        <li>250ms: Loading U-Boot from the SD card, initialising DDR, running U-Boot</li>
+        <li>
+          600ms: Loading Linux and root filesystem from the SD card and starting the Linux kernel
+        </li>
+        <li>
+          400ms: Linux kernel initialising all drivers and mounting the initramfs root filesystem
+        </li>
+        <li>200ms: Userspace execution</li>
+      </ol>
+      <p>
+        The biggest aspects of this are really reading content from the SD card. Unfortunately the
+        U-Boot driver for the SunXI MMC device inside the AllWinner T113-S3 does not give us great
+        performance. We are currently seeing ~6MiB per second, on a card that should be capable of
+        many times that. If further improvements were needed, this would be the area to optimise.
+      </p>
+
       <h2>Boot speed tips & tricks</h2>
       <p>
         There isn't anything particularly special about the image that is constructed here - the
@@ -166,13 +186,11 @@
       </dl>
 
       <h3>Other options</h3>
-      <ul>
-        <li>
-          If the non-volatile root filesystem makes development awkward, moving over the using the
-          EXT4 partition directly would be an option. This could also have some benefits to boot
-          speed as only the needed files would be accessed during boot.
-        </li>
-      </ul>
+      <p>
+        If the non-volatile root filesystem makes development awkward, moving over the using the
+        EXT4 partition directly would be an option. This could also have some benefits to boot speed
+        as only the needed files would be accessed during boot.
+      </p>
 
       <details>
         <summary>Hardware Details</summary>
