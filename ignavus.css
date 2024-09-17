@@ -83,6 +83,8 @@ nav ul {
 }
 
 nav img {
+  vertical-align: middle;
+  padding-right: 0.5em;
   display: inline;
   max-width: 2em;
   margin: 0 auto;
