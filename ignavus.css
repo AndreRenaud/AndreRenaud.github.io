@@ -37,22 +37,54 @@ body {
 nav {
   width: fit-content;
   margin: 0 auto;
+  position: absolute;
+  left: 0px;
+  top: 44px; /* Put it below the hamburger */
+
+  background: white;
+  border-radius: 0.5em;
+  border: black solid 2px;
+
+  /* Hide the navigation bar off screen by default */
+  transform-origin: 0% 0%;
+  transform: translate(-100%, 0);
+
+  transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
 }
 
-nav a {
-  display: inline-block;
-  text-align: center;
-  padding-left: 1ex;
+body > input[type="checkbox"] {
+  display: block;
+  width: 40px;
+  height: 40px;
+  top: 0px;
+  left: 0px;
+  position: absolute;
+  z-index: 1;
+  appearance: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23000' stroke-linecap='round' stroke-width='2' d='M4 18h16M4 12h16M4 6h16'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
 }
 
-nav a:hover {
-  animation: 1s ease-in 0s 1 gelatine;
-  animation-iteration-count: infinite;
+body > input[type="checkbox"]:checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='none' viewBox='0 0 24 24'%3E%3Cpath fill='%230F0F0F' d='M20.746 3.329a1 1 0 0 0-1.415 0l-7.294 7.294-7.294-7.294a1 1 0 1 0-1.414 1.414l7.294 7.294-7.294 7.294a1 1 0 0 0 1.414 1.415l7.294-7.295 7.294 7.295a1 1 0 0 0 1.415-1.415l-7.295-7.294 7.295-7.294a1 1 0 0 0 0-1.414'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+}
+
+/* Show the navigation bar */
+body > input:checked + nav {
+  transform: translate(0.5em, 0);
+}
+
+nav ul {
+  list-style-type: none;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 nav img {
-  display: block;
-  max-width: 4em;
+  display: inline;
+  max-width: 2em;
   margin: 0 auto;
 }
 
@@ -120,6 +152,13 @@ article {
   padding-bottom: 0.5em;
   padding-top: 0.75em;
   overflow: visible;
+}
+
+/* If we're getting close to occluding hamburger icon, move down */
+@media (max-width: 1040px) {
+  article {
+    margin-top: 50px;
+  }
 }
 
 article h1 {
