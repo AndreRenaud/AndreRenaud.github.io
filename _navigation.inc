@@ -1,4 +1,4 @@
-<input type="checkbox" />
+<input type="checkbox" name="hamburger" />
 <nav>
   <ul>
     <li>
