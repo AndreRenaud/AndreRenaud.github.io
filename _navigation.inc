@@ -1,3 +1,5 @@
+<link rel="manifest" href="/manifest.json" />
+
 <input type="checkbox" name="hamburger" />
 <nav>
   <ul>

@@ -1,0 +1,15 @@
+{
+  "short_name": "Ignavus",
+  "name": "Ignavus",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "110x110",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#d8dcf3",
+  "background_color": "#d8dcf3"
+}
