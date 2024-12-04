@@ -347,6 +347,226 @@ buildroot login:</pre>
 [1.521923 0.000169] buildroot login:
         </pre>
       </details>
+
+      <details>
+        <summary>Benchmarks & Hardware Testing</summary>
+        <h4>Mhz</h4>
+        <pre>
+# mhz
+count=394821 us50=19992 us250=98404 diff=78412 cpu_MHz=1007.042</pre
+        >
+
+        <h4>Dhrystone</h4>
+        <pre>
+# dhrystone 50000000
+Dhrystone Benchmark, Version 2.1 (Language: C)
+
+Program compiled without 'register' attribute
+
+Execution starts, 50000000 runs through Dhrystone
+Execution ends
+
+Final values of the variables used in the benchmark:
+
+Int_Glob:            5
+        should be:   5
+Bool_Glob:           1
+        should be:   1
+Ch_1_Glob:           A
+        should be:   A
+Ch_2_Glob:           B
+        should be:   B
+Arr_1_Glob[8]:       7
+        should be:   7
+Arr_2_Glob[8][7]:    50000010
+        should be:   Number_Of_Runs + 10
+Ptr_Glob->
+  Ptr_Comp:          -1224957888
+        should be:   (implementation-dependent)
+  Discr:             0
+        should be:   0
+  Enum_Comp:         2
+        should be:   2
+  Int_Comp:          17
+        should be:   17
+  Str_Comp:          DHRYSTONE PROGRAM, SOME STRING
+        should be:   DHRYSTONE PROGRAM, SOME STRING
+Next_Ptr_Glob->
+  Ptr_Comp:          -1224957888
+        should be:   (implementation-dependent), same as above
+  Discr:             0
+        should be:   0
+  Enum_Comp:         1
+        should be:   1
+  Int_Comp:          18
+        should be:   18
+  Str_Comp:          DHRYSTONE PROGRAM, SOME STRING
+        should be:   DHRYSTONE PROGRAM, SOME STRING
+Int_1_Loc:           5
+        should be:   5
+Int_2_Loc:           13
+        should be:   13
+Int_3_Loc:           7
+        should be:   7
+Enum_Loc:            1
+        should be:   1
+Str_1_Loc:           DHRYSTONE PROGRAM, 1'ST STRING
+        should be:   DHRYSTONE PROGRAM, 1'ST STRING
+Str_2_Loc:           DHRYSTONE PROGRAM, 2'ND STRING
+        should be:   DHRYSTONE PROGRAM, 2'ND STRING
+          
+Microseconds for one run through Dhrystone:    0.3
+Dhrystones per Second:                      3302510.0 </pre
+        >
+        <h4>Whetstone</h4>
+        <pre>
+# whetstone 500000
+
+Loops: 500000, Iterations: 1, Duration: 24 sec.
+C Converted Double Precision Whetstones: 2083.3 MIPS</pre
+        >
+        <h4>RamSMP</h4>
+        Note: These tests take quite a while to run. Also, due to the limited RAM available on this
+        cpu, the kernel out-of-memory (OOM) killer will kill off these tests if run at full memory
+        usage. So we have shrunk the usage a bit in some tests.
+        <pre>
+# ramsmp -b 1
+  RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
+  
+  8Gb per pass mode, 2 processes
+  
+  INTEGER & WRITING         1 Kb block: 10015.62 MB/s
+  INTEGER & WRITING         2 Kb block: 9667.79 MB/s
+  INTEGER & WRITING         4 Kb block: 6742.15 MB/s
+  INTEGER & WRITING         8 Kb block: 7311.32 MB/s
+  INTEGER & WRITING        16 Kb block: 7025.77 MB/s
+  INTEGER & WRITING        32 Kb block: 7796.73 MB/s
+  INTEGER & WRITING        64 Kb block: 3464.04 MB/s
+  INTEGER & WRITING       128 Kb block: 3688.21 MB/s
+  INTEGER & WRITING       256 Kb block: 3245.94 MB/s
+  INTEGER & WRITING       512 Kb block: 3031.65 MB/s
+  INTEGER & WRITING      1024 Kb block: 2927.86 MB/s
+  INTEGER & WRITING      2048 Kb block: 2905.54 MB/s
+  INTEGER & WRITING      4096 Kb block: 2892.17 MB/s
+  INTEGER & WRITING      8192 Kb block: 2885.02 MB/s
+  INTEGER & WRITING     16384 Kb block: 2874.86 MB/s
+  INTEGER & WRITING     32768 Kb block: 2858.14 MB/s
+
+  # ramsmp -b 2
+  RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
+  
+  8Gb per pass mode, 2 processes
+  
+  INTEGER & READING         1 Kb block: 7583.74 MB/s
+  INTEGER & READING         2 Kb block: 7639.73 MB/s
+  INTEGER & READING         4 Kb block: 7668.49 MB/s
+  INTEGER & READING         8 Kb block: 7681.87 MB/s
+  INTEGER & READING        16 Kb block: 7665.73 MB/s
+  INTEGER & READING        32 Kb block: 6562.60 MB/s
+  INTEGER & READING        64 Kb block: 5887.65 MB/s
+  INTEGER & READING       128 Kb block: 4137.91 MB/s
+  INTEGER & READING       256 Kb block: 2374.20 MB/s
+  INTEGER & READING       512 Kb block: 2507.72 MB/s
+  INTEGER & READING      1024 Kb block: 2589.00 MB/s
+  INTEGER & READING      2048 Kb block: 2544.78 MB/s
+  INTEGER & READING      4096 Kb block: 2529.61 MB/s
+  INTEGER & READING      8192 Kb block: 2528.81 MB/s
+  INTEGER & READING     16384 Kb block: 2525.78 MB/s
+  INTEGER & READING     32768 Kb block: 2523.67 MB/s
+
+  # ramsmp -b 3 -m 16 -g 1
+  RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
+  
+  1Gb per pass mode, 2 processes
+  
+  INTEGER   Copy:      1308.69 MB/s
+  INTEGER   Scale:     1632.49 MB/s
+  INTEGER   Add:       956.67 MB/s
+  INTEGER   Triad:     914.97 MB/s
+  ---
+  INTEGER   AVERAGE:   1203.21 MB/s
+  
+  # ramsmp -b 4 -m 16 -g 1
+  RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
+  
+  1Gb per pass mode, 2 processes
+  
+  FL-POINT & WRITING        1 Kb block: 10963.46 MB/s
+  FL-POINT & WRITING        2 Kb block: 10784.90 MB/s
+  FL-POINT & WRITING        4 Kb block: 7000.56 MB/s
+  FL-POINT & WRITING        8 Kb block: 8262.41 MB/s
+  FL-POINT & WRITING       16 Kb block: 7400.96 MB/s
+  FL-POINT & WRITING       32 Kb block: 7745.64 MB/s
+  FL-POINT & WRITING       64 Kb block: 3309.73 MB/s
+  FL-POINT & WRITING      128 Kb block: 3616.63 MB/s
+  FL-POINT & WRITING      256 Kb block: 3220.54 MB/s
+  FL-POINT & WRITING      512 Kb block: 3073.26 MB/s
+  FL-POINT & WRITING     1024 Kb block: 2971.77 MB/s
+  FL-POINT & WRITING     2048 Kb block: 2961.22 MB/s
+  FL-POINT & WRITING     4096 Kb block: 2934.71 MB/s
+  FL-POINT & WRITING     8192 Kb block: 2914.26 MB/s
+  FL-POINT & WRITING    16384 Kb block: 2868.20 MB/s
+
+  # ramsmp -b 5 -m 16 -g 1
+  RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
+  
+  1Gb per pass mode, 2 processes
+  
+  FL-POINT & READING        1 Kb block: 6505.88 MB/s
+  FL-POINT & READING        2 Kb block: 6536.87 MB/s
+  FL-POINT & READING        4 Kb block: 6552.30 MB/s
+  FL-POINT & READING        8 Kb block: 6552.54 MB/s
+  FL-POINT & READING       16 Kb block: 6537.00 MB/s
+  FL-POINT & READING       32 Kb block: 5605.81 MB/s
+  FL-POINT & READING       64 Kb block: 3599.00 MB/s
+  FL-POINT & READING      128 Kb block: 2706.26 MB/s
+  FL-POINT & READING      256 Kb block: 2836.77 MB/s
+  FL-POINT & READING      512 Kb block: 2459.71 MB/s
+  FL-POINT & READING     1024 Kb block: 2506.30 MB/s
+  FL-POINT & READING     2048 Kb block: 2490.05 MB/s
+  FL-POINT & READING     4096 Kb block: 2498.23 MB/s
+  FL-POINT & READING     8192 Kb block: 2514.75 MB/s
+  FL-POINT & READING    16384 Kb block: 2535.22 MB/s
+
+  # ramsmp -b 6 -m 16 -g 1
+  RAMspeed/SMP (GENERIC) v3.5.0 by Rhett M. Hollander and Paul V. Bolotoff, 2002-09
+  
+  1Gb per pass mode, 2 processes
+  
+  FL-POINT  Copy:      1022.98 MB/s
+  FL-POINT  Scale:     858.64 MB/s
+  FL-POINT  Add:       1579.09 MB/s
+  FL-POINT  Triad:     929.05 MB/s
+  ---
+  FL-POINT  AVERAGE:   1097.44 MB/s
+  </pre
+        >
+        <h4>Wifi</h4>
+        This assumes that the <code>iperf3</code> server is running elsewhere on the network, and
+        that the MangoPi wifi has been configured appropriately.
+        <pre>
+# iperf3 -c 192.168.2.140
+Connecting to host 192.168.2.140, port 5201
+[  5] local 192.168.2.38 port 43774 connected to 192.168.2.140 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  2.12 MBytes  17.8 Mbits/sec    0    137 KBytes
+[  5]   1.00-2.00   sec  4.12 MBytes  34.6 Mbits/sec    0    303 KBytes
+[  5]   2.00-3.00   sec  4.38 MBytes  36.7 Mbits/sec    0    342 KBytes
+[  5]   3.00-4.00   sec  4.50 MBytes  37.7 Mbits/sec    0    342 KBytes
+[  5]   4.00-5.00   sec  4.00 MBytes  33.6 Mbits/sec    0    342 KBytes
+[  5]   5.00-6.00   sec  4.38 MBytes  36.7 Mbits/sec    0    361 KBytes
+[  5]   6.00-7.00   sec  4.50 MBytes  37.7 Mbits/sec    0    361 KBytes
+[  5]   7.00-8.00   sec  4.38 MBytes  36.7 Mbits/sec    0    380 KBytes
+[  5]   8.00-9.00   sec  4.00 MBytes  33.6 Mbits/sec    0    380 KBytes
+[  5]   9.00-10.00  sec  4.12 MBytes  34.6 Mbits/sec    0    380 KBytes
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-10.00  sec  40.5 MBytes  34.0 Mbits/sec    0             sender
+[  5]   0.00-10.09  sec  40.0 MBytes  33.2 Mbits/sec                  receiver
+          
+iperf Done.</pre
+        >
+      </details>
     </article>
   </main>
 </html>
