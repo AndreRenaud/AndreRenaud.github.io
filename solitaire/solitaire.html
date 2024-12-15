@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>Solitaire</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style>
+            body,
+            html {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+            canvas {
+                position: fixed;
+                top: 0;
+                left: 0;
+            }
+        </style>
+    </head>
+
+    <canvas id="myCanvas"></canvas>
+
+    <script type="module">
+        import { PlayingCard, Suits } from './card.js';
+        import CardTable from './cardTable.js';
+        import { SolitaireGame } from './solitaire.js';
+
+        function resizeCanvas() {
+            const canvas = document.getElementById('myCanvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const table = new CardTable('myCanvas');
+        table.setBackground('images/Cosmetic-Kaiser-1.JPG');
+        const game = new SolitaireGame(table);
+        game.start(3, Math.random());
+    </script>
+
+    <!-- make it available offline -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').then(function () {
+                console.log('Service Worker Registered');
+            });
+        }
+    </script>
+</html>
