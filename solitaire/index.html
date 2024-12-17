@@ -11,47 +11,18 @@
         <link rel="manifest" href="manifest.json" />
         <link rel="icon" type="image/png" href="icons/icon-192.png" />
         <link rel="apple-touch-icon" href="icons/icon-192.png" />
+        <link rel="stylesheet" href="styles.css" />
         <title>Web Cards</title>
-        <style>
-            body,
-            html {
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
-            }
-            canvas {
-                position: fixed;
-                top: 0;
-                left: 0;
-            }
-        </style>
     </head>
     <body>
-        <canvas id="myCanvas"></canvas>
-
-        <script type="module">
-            import { PlayingCard, Suits } from './card.js';
-            import CardTable from './cardTable.js';
-
-            function resizeCanvas() {
-                const canvas = document.getElementById('myCanvas');
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
-
-            const table = new CardTable('myCanvas');
-
-            var aceOfDiamonds = new PlayingCard(Suits.DIAMONDS, 1);
-            aceOfDiamonds.move(50, 20);
-            table.addCard(aceOfDiamonds);
-
-            var kingOfClubs = new PlayingCard(Suits.CLUBS, 'K');
-            kingOfClubs.move(50, 250);
-            kingOfClubs.width = 200;
-            table.addCard(kingOfClubs);
-        </script>
+        <div class="container">
+            <h1>Welcome to Web Cards</h1>
+            <p>Select a game to play:</p>
+            <div class="game-selection">
+                <a href="solitaire.html" class="game-button">Solitaire</a>
+                <a href="freecell.html" class="game-button">Freecell</a>
+                <!-- Add more games here -->
+            </div>
+        </div>
     </body>
 </html>

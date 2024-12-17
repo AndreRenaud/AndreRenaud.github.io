@@ -18,6 +18,15 @@ export class SolitaireGame {
         this.restartButton = table.addButton('Restart', 140, 500, 100, 40, '#abc123', () =>
             this.restartGame()
         );
+        this.exitButton = table.addButton(
+            'Exit',
+            260,
+            500,
+            100,
+            40,
+            '#abc123',
+            () => (window.location.href = '.')
+        );
         this.game_seed = 0;
 
         this.stockX = 80;
