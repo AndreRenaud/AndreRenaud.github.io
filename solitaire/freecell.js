@@ -127,10 +127,11 @@ export class FreecellGame {
             // Try each foundation pile
             for (let i = 0; i < 4; i++) {
                 if (this.tryMoveToFoundation(card, i)) {
-                    break;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     isNearPile(x, y, pileX, pileY, threshold = 50) {

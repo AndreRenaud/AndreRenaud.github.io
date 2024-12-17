@@ -12,16 +12,16 @@ export class SolitaireGame {
         this.foundationOutlines = [];
         this.stockOutline = null; // Add property for stock outline
         this.turn_count = 1;
-        this.newGameButton = table.addButton('New Game', 20, 500, 100, 40, '#abc123', () =>
+        this.newGameButton = table.addButton('New Game', 20, 490, 100, 40, '#abc123', () =>
             this.startNewGame()
         );
-        this.restartButton = table.addButton('Restart', 140, 500, 100, 40, '#abc123', () =>
+        this.restartButton = table.addButton('Restart', 140, 490, 100, 40, '#abc123', () =>
             this.restartGame()
         );
         this.exitButton = table.addButton(
             'Exit',
             260,
-            500,
+            490,
             100,
             40,
             '#abc123',
@@ -29,8 +29,8 @@ export class SolitaireGame {
         );
         this.game_seed = 0;
 
-        this.stockX = 80;
-        this.stockY = 60;
+        this.stockX = 90;
+        this.stockY = 25;
     }
 
     restartGame() {
@@ -60,7 +60,7 @@ export class SolitaireGame {
     }
 
     tableauCoords(x, y) {
-        return { x: this.stockX + x * 120, y: 220 + y * 20 };
+        return { x: this.stockX + x * 120, y: 190 + y * 20 };
     }
 
     flipLastCard(pileIndex) {
@@ -131,7 +131,7 @@ export class SolitaireGame {
             }
             this.fixupPiles();
             this.table.draw();
-            return;
+            return true;
         }
 
         // If card is face-up and draggable, try moving it to a foundation
@@ -147,10 +147,11 @@ export class SolitaireGame {
             }
             for (let i = 0; i < 4; i++) {
                 if (this.tryMoveToFoundation(card, i, tableauIndex)) {
-                    break;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     isNearPile(x, y, pileX, pileY, threshold = 50) {
