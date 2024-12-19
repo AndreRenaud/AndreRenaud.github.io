@@ -165,11 +165,11 @@ class CardTable {
 
             // Check if mouse hasn't moved much (it's a click)
             var moveBack = false;
-            if (distance < 5) { // 5px threshold for click
+            if (distance < 5) {
+                // 5px threshold for click
                 moveBack = true;
                 if (this.onCardClick) {
-                    if (this.onCardClick(this.draggedCard, coords.x, coords.y))
-                        moveBack = false;
+                    if (this.onCardClick(this.draggedCard, coords.x, coords.y)) moveBack = false;
                 }
             } else if (this.onValidMove) {
                 // If the move is invalid, move the card back
@@ -178,7 +178,7 @@ class CardTable {
                 }
             }
             if (moveBack) {
-                    this.draggedCard.move(this.dragStart.x, this.dragStart.y);
+                this.draggedCard.move(this.dragStart.x, this.dragStart.y);
             }
         } else {
             // If we weren't moving a card, check if we clicked an outline

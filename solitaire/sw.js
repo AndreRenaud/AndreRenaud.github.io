@@ -1,12 +1,12 @@
 var cacheName = 'solitaire-pwa';
 var filesToCache = [
-    '/',
-    '/index.html',
-    '/solitaire.html',
-    '/solitaire.js',
-    '/card.js',
-    '/cardTable.js',
-    '/sw.js',
+    '.',
+    'index.html',
+    'solitaire.html',
+    'solitaire.js',
+    'card.js',
+    'cardTable.js',
+    'sw.js',
 ];
 self.addEventListener('install', function (e) {
     e.waitUntil(

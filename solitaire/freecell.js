@@ -23,8 +23,14 @@ export class FreecellGame {
         this.restartButton = table.addButton('Restart', 140, 500, 100, 40, '#abc123', () =>
             this.restartGame()
         );
-        this.exitButton = table.addButton('Exit', 260, 500, 100, 40, '#abc123', () =>
-            window.location.href = '.'
+        this.exitButton = table.addButton(
+            'Exit',
+            260,
+            500,
+            100,
+            40,
+            '#abc123',
+            () => (window.location.href = '.')
         );
     }
 
@@ -186,7 +192,7 @@ export class FreecellGame {
         }
 
         if (
-            (!topCard) || // Empty tableau accepts any card
+            !topCard || // Empty tableau accepts any card
             (topCard &&
                 SuitColours[topCard.suit] !== SuitColours[card.suit] &&
                 topCard.rank === card.rank + 1)
