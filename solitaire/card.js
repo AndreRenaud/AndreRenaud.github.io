@@ -250,11 +250,18 @@ class PlayingCard {
             return;
         }
 
-        // Set semi transparent if dragging
-        ctx.globalAlpha = dragging ? 0.5 : 1;
-
-        // Add drop shadow
-        if (!dragging) {
+        // Set semi transparent & pop up if dragging
+        if (dragging) {
+            const scale = 1.2;
+            ctx.scale(scale, scale);
+            // Adjust the xOffset so that the cards don't get moved by the scaling
+            const xOffset = -this.x + this.x / scale - (this.width * (scale - 1)) / 2;
+            const yOffset = -this.y + this.y / scale - (this.height() * (scale - 1)) / 2;
+            ctx.translate(xOffset, yOffset);
+            ctx.globalAlpha = 0.8;
+        } else {
+            ctx.globalAlpha = 1;
+            // Add drop shadow
             ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
             ctx.beginPath();
             ctx.roundRect(this.x + 5, this.y + 5, this.width, this.height(), this.width / 15);
