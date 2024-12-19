@@ -163,6 +163,15 @@ export class SolitaireGame {
         const foundation = this.foundations[foundationIndex];
         const topCard = foundation[foundation.length - 1];
 
+        // Can only move from tableau if it's the last card on the tableau
+        // Doesn't apply to cards from stock
+        if (tableauIndex !== -1 && this.tableau[tableauIndex].length > 1) {
+            const lastCard = this.tableau[tableauIndex][this.tableau[tableauIndex].length - 1];
+            if (lastCard !== card) {
+                return false;
+            }
+        }
+
         if (
             (!topCard && card.rank === 1) || // Empty foundation accepts only Ace
             (topCard && topCard.suit === card.suit && topCard.rank === card.rank - 1)
