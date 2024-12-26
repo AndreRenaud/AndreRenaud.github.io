@@ -21,6 +21,7 @@ class CardTable {
         this.onValidMove = null; // Callback for valid moves
         this.outlines = []; // Store card outlines
         this.onCardClick = null; // New callback for clicks
+        this.postDraw = null; // Callback for after drawing completed
         this.mouseDownPos = null;
         this.backgroundImage = null;
         this.buttons = []; // Store button definitions
@@ -378,6 +379,10 @@ class CardTable {
             this.ctx.restore();
         }
         this.ctx.restore();
+
+        if (this.postDraw) {
+            this.postDraw();
+        }
     }
 }
 

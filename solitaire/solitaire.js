@@ -1,4 +1,5 @@
 import { PlayingCard, Suits, SuitColours } from './card.js';
+import { Fireworks } from './firework.js';
 
 export class SolitaireGame {
     constructor(table) {
@@ -9,9 +10,11 @@ export class SolitaireGame {
         this.tableau = [[], [], [], [], [], [], []];
         this.table.onValidMove = this.checkValidMove.bind(this);
         this.table.onCardClick = this.handleClick.bind(this);
+        this.table.postDraw = this.draw.bind(this);
         this.foundationOutlines = [];
         this.stockOutline = null; // Add property for stock outline
         this.turn_count = 1;
+        this.fireworks = null;
         this.newGameButton = table.addButton('New Game', 20, 490, 100, 40, '#abc123', () =>
             this.startNewGame()
         );
@@ -314,6 +317,7 @@ export class SolitaireGame {
 
     // @param {seed} number from 0-1 to set the random state of the game
     start(turn_count, seed) {
+        this.fireworks = new Fireworks(this.table.canvas);
         this.game_seed = seed;
         const prng = this.splitmix32(seed * 0xffffffff);
         // Create deck
@@ -391,16 +395,22 @@ export class SolitaireGame {
         const won = this.foundations.every(
             (foundation) => foundation.length === 13 && foundation[12].rank === 13 // Top card is King
         );
+
         if (!won) {
             return false;
         }
         // Make all the cards not-flipped, not draggable, and throw them off the screen to a random place
+
+        for (let i = 0; i < 10; i++) {
+            this.fireworks.addFirework();
+        }
+
         for (const pile of this.foundations) {
             pile.forEach((c) => {
                 c.flipped = false;
                 c.draggable = false;
-                let x = this.table.width() + Math.random() * this.table.width();
-                let y = this.table.height() + Math.random() * this.table.height();
+                let x = this.table.width() * (1 + Math.random());
+                let y = this.table.height() * (1 + Math.random());
                 if (Math.random() < 0.5) {
                     x = -x;
                 }
@@ -410,6 +420,16 @@ export class SolitaireGame {
                 c.move(x, y, c.zIndex, 5000);
             });
         }
+
+        window.requestAnimationFrame(() => this.table.draw());
         return true;
+    }
+
+    draw() {
+        if (this.fireworks.count() > 0) {
+            this.fireworks.update();
+            this.fireworks.draw();
+            requestAnimationFrame(() => this.table.draw());
+        }
     }
 }
