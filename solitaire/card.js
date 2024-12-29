@@ -62,7 +62,7 @@ const SymbolPositions = {
         [0.2, -0.3],
         [0.2, 0],
         [0.2, 0.3],
-        [0, -0.2],
+        [0, -0.15],
     ],
     8: [
         [-0.2, -0.3],
@@ -71,8 +71,8 @@ const SymbolPositions = {
         [0.2, -0.3],
         [0.2, 0],
         [0.2, 0.3],
-        [0, -0.2],
-        [0, 0.2],
+        [0, -0.15],
+        [0, 0.15],
     ],
     9: [
         [-0.2, -0.3],
@@ -134,7 +134,7 @@ class PlayingCard {
         return this.faceImages.get(src);
     }
 
-    constructor(suit, rank, background = 'images/card-background-1.png') {
+    constructor(suit, rank, width = 100, background = 'images/card-background-1.png') {
         if (background) {
             // Start loading the background image
             PlayingCard.loadImage(background)
@@ -183,7 +183,7 @@ class PlayingCard {
         this.targetDuration = 0;
         this.moveStart = Date.now();
 
-        this.width = 100;
+        this.width = width;
 
         this.visible = true;
 
@@ -345,9 +345,16 @@ class PlayingCard {
             var positions = SymbolPositions[this.rank];
             if (positions) {
                 for (const pos of positions) {
-                    const xoffset = this.x + pos[0] * this.width + this.width / 2;
-                    const yoffset = this.y + pos[1] * this.height() + this.height() / 2;
-                    ctx.fillText(this.suit, xoffset, yoffset);
+                    ctx.save();
+                    const xoffset = pos[0] * this.width + this.width / 2;
+                    const yoffset = pos[1] * this.height() + this.height() / 2;
+                    ctx.translate(this.x + xoffset, this.y + yoffset);
+                    // Symbols below the middle should be upside down
+                    if (pos[1] > 0) {
+                        ctx.rotate(Math.PI);
+                    }
+                    ctx.fillText(this.suit, 0, 0);
+                    ctx.restore();
                 }
             }
         }

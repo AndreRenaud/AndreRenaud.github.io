@@ -32,7 +32,7 @@ export class SolitaireGame {
         );
         this.game_seed = 0;
 
-        this.stockX = 90;
+        this.stockX = 40;
         this.stockY = 25;
     }
 
@@ -63,7 +63,7 @@ export class SolitaireGame {
     }
 
     tableauCoords(x, y) {
-        return { x: this.stockX + x * 120, y: 190 + y * 20 };
+        return { x: this.stockX + x * 135, y: 190 + y * 20 };
     }
 
     flipLastCard(pileIndex) {
@@ -325,7 +325,7 @@ export class SolitaireGame {
         const deck = [];
         for (const suit of Object.values(Suits)) {
             for (let rank = 1; rank <= 13; rank++) {
-                deck.push(new PlayingCard(suit, rank));
+                deck.push(new PlayingCard(suit, rank, 110));
             }
         }
 
@@ -340,7 +340,7 @@ export class SolitaireGame {
             // Each tableau gets an outline
             const coords = this.tableauCoords(i, 0);
 
-            this.table.addOutline(coords.x, coords.y, 100, 'black');
+            this.table.addOutline(coords.x, coords.y, 110, 'black');
             for (let j = i; j < 7; j++) {
                 const card = deck.pop();
                 const coords = this.tableauCoords(j, i);
@@ -356,7 +356,7 @@ export class SolitaireGame {
         this.stockOutline = this.table.addOutline(
             this.stockX,
             this.stockY,
-            100,
+            110,
             'black',
             (outline, x, y) => {
                 if (this.stock.length === 0 && this.waste.length > 0) {
@@ -375,11 +375,11 @@ export class SolitaireGame {
 
         // Setup foundation areas with outlines
         for (let i = 0; i < 4; i++) {
-            const foundationX = 400 + i * 120;
+            const foundationX = 400 + i * 135;
             const foundationY = this.stockY;
 
             // Add visible outline
-            const outline = this.table.addOutline(foundationX, foundationY, 100, 'black');
+            const outline = this.table.addOutline(foundationX, foundationY, 110, 'black');
             this.foundationOutlines.push(outline);
 
             // Add invisible placeholder card (optional, you may remove this)
