@@ -401,7 +401,7 @@ export class SolitaireGame {
         }
         // Make all the cards not-flipped, not draggable, and throw them off the screen to a random place
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
             this.fireworks.addFirework();
         }
 
@@ -429,7 +429,10 @@ export class SolitaireGame {
         if (this.fireworks.count() > 0) {
             this.fireworks.update();
             this.fireworks.draw();
-            requestAnimationFrame(() => this.table.draw());
+            // Limit animation to 30 FPS
+            setTimeout(() => {
+                requestAnimationFrame(() => this.table.draw());
+            }, 1000 / 30.0);
         }
     }
 }

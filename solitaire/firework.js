@@ -76,8 +76,8 @@ class Firework {
             this.coordinates.push([this.x, this.y]);
         }
         this.angle = Math.atan2(ty - sy, tx - sx);
-        this.speed = 2;
-        this.acceleration = 1.05;
+        this.speed = 1;
+        this.acceleration = 1.01;
         this.brightness = random(50, 70);
         // circle target indicator radius
         this.targetRadius = 1;
@@ -109,9 +109,6 @@ class Firework {
         // if the distance traveled, including velocities, is greater than the initial distance to the target, then the target has been reached
         if (this.distanceTraveled >= this.distanceToTarget) {
             return true;
-            //createParticles( this.tx, this.ty );
-            // remove the firework, use the index passed into the update function to determine which to remove
-            //fireworks.splice( index, 1 );
         } else {
             // target not reached, keep traveling
             this.x += vx;
@@ -151,11 +148,11 @@ class Particle {
         }
         // set a random angle in all possible directions, in radians
         this.angle = random(0, Math.PI * 2);
-        this.speed = random(1, 10);
+        this.speed = random(1, 4);
         // friction will slow the particle down
-        this.friction = 0.95;
+        this.friction = 1.2;
         // gravity will be applied and pull the particle down
-        this.gravity = 1;
+        this.gravity = 2;
         // set the hue to a random number +-20 of the overall hue variable
         this.hue = random(hue - 20, hue + 20);
         this.brightness = random(50, 80);
@@ -244,83 +241,3 @@ export class Fireworks {
         this.particles.forEach((particle) => particle.draw(this.ctx));
     }
 }
-
-/*
-// main demo loop
-function loop() {
-	// this function will run endlessly with requestAnimationFrame
-	requestAnimFrame( loop );
-	
-	// increase the hue to get different colored fireworks over time
-	hue += 0.5;
-	
-	// normally, clearRect() would be used to clear the canvas
-	// we want to create a trailing effect though
-	// setting the composite operation to destination-out will allow us to clear the canvas at a specific opacity, rather than wiping it entirely
-	ctx.globalCompositeOperation = 'destination-out';
-	// decrease the alpha property to create more prominent trails
-	ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-	ctx.fillRect( 0, 0, cw, ch );
-	// change the composite operation back to our main mode
-	// lighter creates bright highlight points as the fireworks and particles overlap each other
-	ctx.globalCompositeOperation = 'lighter';
-	
-	// loop over each firework, draw it, update it
-	var i = fireworks.length;
-	while( i-- ) {
-		fireworks[ i ].draw();
-		fireworks[ i ].update( i );
-	}
-	
-	// loop over each particle, draw it, update it
-	var i = particles.length;
-	while( i-- ) {
-		particles[ i ].draw();
-		particles[ i ].update( i );
-	}
-	
-	// launch fireworks automatically to random coordinates, when the mouse isn't down
-	if( timerTick >= timerTotal ) {
-		if( !mousedown ) {
-			// start the firework at the bottom middle of the screen, then set the random target coordinates, the random y coordinates will be set within the range of the top half of the screen
-			fireworks.push( new Firework( cw / 2, ch, random( 0, cw ), random( 0, ch / 2 ) ) );
-			timerTick = 0;
-		}
-	} else {
-		timerTick++;
-	}
-	
-	// limit the rate at which fireworks get launched when mouse is down
-	if( limiterTick >= limiterTotal ) {
-		if( mousedown ) {
-			// start the firework at the bottom middle of the screen, then set the current mouse coordinates as the target
-			fireworks.push( new Firework( cw / 2, ch, mx, my ) );
-			limiterTick = 0;
-		}
-	} else {
-		limiterTick++;
-	}
-}
-
-// mouse event bindings
-// update the mouse coordinates on mousemove
-canvas.addEventListener( 'mousemove', function( e ) {
-	mx = e.pageX - canvas.offsetLeft;
-	my = e.pageY - canvas.offsetTop;
-});
-
-// toggle mousedown state and prevent canvas from being selected
-canvas.addEventListener( 'mousedown', function( e ) {
-	e.preventDefault();
-	mousedown = true;
-});
-
-canvas.addEventListener( 'mouseup', function( e ) {
-	e.preventDefault();
-	mousedown = false;
-});
-
-// once the window loads, we are ready for some fireworks!
-window.onload = loop;
-
-*/
