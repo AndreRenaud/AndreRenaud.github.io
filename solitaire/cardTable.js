@@ -42,7 +42,7 @@ class CardTable {
         if (e.touches) {
             if (e.touches.length == 1) {
                 e.preventDefault(); // Prevent scrolling on touch, but not zooming
-            } else {
+            } else if (e.touches.length > 1) {
                 return null; // Ignore multi-touch
             }
             const rect = this.canvas.getBoundingClientRect();
