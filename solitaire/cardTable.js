@@ -1,5 +1,6 @@
 class CardTable {
-    constructor(canvasId) {
+    constructor(canvasId, width = 1024) {
+        this.width = width;
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
         this.cards = [];
@@ -38,7 +39,7 @@ class CardTable {
 
     // Get normalized coordinates for both mouse and touch events
     getEventCoords(e) {
-        var ratio = this.canvas.width / 1024;
+        var ratio = this.canvas.width / this.width;
         if (e.touches) {
             if (e.touches.length == 1) {
                 e.preventDefault(); // Prevent scrolling on touch, but not zooming
@@ -70,6 +71,13 @@ class CardTable {
         card.zIndex = Math.max(...this.cards.map((c) => c.zIndex)) + 1;
     }
 
+    buttonRect(button) {
+        var ratio = this.canvas.width / this.width;
+            const x = button.x < 0 ? this.canvas.width / ratio + button.x : button.x;
+            const y = button.y < 0 ? this.canvas.height / ratio + button.y : button.y;
+        return { x:x, y:y, width: button.width, height: button.height };
+    }
+
     handleStart(e) {
         const coords = this.getEventCoords(e);
         if (coords === null) {
@@ -86,11 +94,12 @@ class CardTable {
 
         // Check for button clicks first
         for (const button of this.buttons) {
+            const rect = this.buttonRect(button);
             if (
-                coords.x >= button.x &&
-                coords.x <= button.x + button.width &&
-                coords.y >= button.y &&
-                coords.y <= button.y + button.height
+                coords.x >= rect.x && 
+                coords.x <= rect.x + rect.width &&
+                coords.y >= rect.y &&
+                coords.y <= rect.y + rect.height
             ) {
                 if (coords.type === 'touch') {
                     button.isHovered = true;
@@ -219,6 +228,13 @@ class CardTable {
         this.draw();
     }
 
+    // Add a clickable outline to the table - used to indicate where cards can be dropped
+    // @param {number} x - The x-coordinate of the outline
+    // @param {number} y - The y-coordinate of the outline
+    // @param {number} width - The width of the outline (height is calculated automatically)
+    // @param {string} color - The color of the outline
+    // @param {function} onClick - The callback when the outline is clicked
+    // @return {object} The outline object
     addOutline(x, y, width = 100, color = 'black', onClick = null) {
         const outline = {
             x,
@@ -281,6 +297,15 @@ class CardTable {
         });
     }
 
+    // Add a clickable button to the table.
+    // @param {string} text - The text to display on the button
+    // @param {number} x - The x-coordinate of the button (if negative, it's from the right)
+    // @param {number} y - The y-coordinate of the button (if negative, it's from the bottom)
+    // @param {number} width - The width of the button
+    // @param {number} height - The height of the button
+    // @param {string} bgColor - The background color of the button
+    // @param {function} onClick - The callback when the button is clicked
+    // @return {object} The button object
     addButton(text, x, y, width = 100, height = 40, bgColor = '#4CAF50', onClick = null) {
         const button = {
             text,
@@ -324,8 +349,8 @@ class CardTable {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
 
-        // Coordinates are normalized to 1024x768, but maintain aspect ratio
-        var ratio = this.canvas.width / 1024;
+        // Coordinates are normalized to the desired but maintain aspect ratio, so height can vary
+        var ratio = this.canvas.width / this.width;
         this.ctx.save();
         this.ctx.scale(ratio, ratio);
         // TODO: This messes with coordinates though, so we need to fix them
@@ -373,7 +398,8 @@ class CardTable {
             }
             this.ctx.fillStyle = color;
             this.ctx.beginPath();
-            this.ctx.roundRect(button.x, button.y, button.width, button.height, 5);
+            const rect = this.buttonRect(button);
+            this.ctx.roundRect(rect.x, rect.y, rect.width, rect.height, 5);
             this.ctx.fill();
 
             // Draw button text
@@ -381,11 +407,7 @@ class CardTable {
             this.ctx.font = '16px Arial';
             this.ctx.textAlign = 'center';
             this.ctx.textBaseline = 'middle';
-            this.ctx.fillText(
-                button.text,
-                button.x + button.width / 2,
-                button.y + button.height / 2
-            );
+            this.ctx.fillText(button.text, rect.x + rect.width / 2, rect.y + rect.height / 2);
 
             this.ctx.restore();
         }

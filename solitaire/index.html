@@ -25,4 +25,13 @@
             </div>
         </div>
     </body>
+
+    <!-- make it available offline -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').then(function () {
+                console.log('Service Worker Registered');
+            });
+        }
+    </script>
 </html>

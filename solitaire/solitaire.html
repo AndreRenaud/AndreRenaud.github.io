@@ -33,18 +33,9 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        const table = new CardTable('solitaireCanvas');
+        const table = new CardTable('solitaireCanvas', 1280);
         table.setBackground('images/Cosmetic-Kaiser-1.JPG');
         const game = new SolitaireGame(table);
         game.start(3, Math.random());
-    </script>
-
-    <!-- make it available offline -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').then(function () {
-                console.log('Service Worker Registered');
-            });
-        }
     </script>
 </html>

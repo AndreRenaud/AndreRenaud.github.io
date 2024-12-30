@@ -15,16 +15,16 @@ export class SolitaireGame {
         this.stockOutline = null; // Add property for stock outline
         this.turn_count = 1;
         this.fireworks = null;
-        this.newGameButton = table.addButton('New Game', 20, 490, 100, 40, '#abc123', () =>
+        this.newGameButton = table.addButton('New Game', 20, -60, 100, 40, '#abc123', () =>
             this.startNewGame()
         );
-        this.restartButton = table.addButton('Restart', 140, 490, 100, 40, '#abc123', () =>
+        this.restartButton = table.addButton('Restart', 140, -60, 100, 40, '#abc123', () =>
             this.restartGame()
         );
         this.exitButton = table.addButton(
             'Exit',
             260,
-            490,
+            -60,
             100,
             40,
             '#abc123',
@@ -34,6 +34,8 @@ export class SolitaireGame {
 
         this.stockX = 40;
         this.stockY = 25;
+        this.cardWidth = 150;
+        this.cardHeight = 150 * 1.4;
     }
 
     restartGame() {
@@ -63,7 +65,7 @@ export class SolitaireGame {
     }
 
     tableauCoords(x, y) {
-        return { x: this.stockX + x * 135, y: 190 + y * 20 };
+        return { x: this.stockX + x * 175, y: 260 + y * 25 };
     }
 
     flipLastCard(pileIndex) {
@@ -95,7 +97,7 @@ export class SolitaireGame {
 
         // Check foundation piles
         for (let i = 0; i < 4; i++) {
-            const foundationX = 400 + i * 135;
+            const foundationX = 440 + i * 175;
             const foundationY = this.stockY;
             if (this.isNearPile(x, y, foundationX, foundationY)) {
                 if (this.tryMoveToFoundation(card, i, originalTableauIndex)) {
@@ -159,7 +161,7 @@ export class SolitaireGame {
 
     isNearPile(x, y, pileX, pileY, threshold = 50) {
         // TODO: Support dynamic card sizes
-        return x >= pileX && x <= pileX + 100 && y >= pileY && y <= pileY + 150;
+        return x >= pileX && x <= pileX + this.cardWidth && y >= pileY && y <= pileY + this.cardHeight;
     }
 
     tryMoveToFoundation(card, foundationIndex, tableauIndex = -1) {
@@ -181,7 +183,7 @@ export class SolitaireGame {
         ) {
             this.removeCardFromCurrentPile(card);
             foundation.push(card);
-            card.move(400 + foundationIndex * 135, this.stockY);
+            card.move(440 + foundationIndex * 175, this.stockY);
             card.draggable = true;
             this.table.moveCardToTop(card);
 
@@ -325,7 +327,7 @@ export class SolitaireGame {
         const deck = [];
         for (const suit of Object.values(Suits)) {
             for (let rank = 1; rank <= 13; rank++) {
-                deck.push(new PlayingCard(suit, rank, 110));
+                deck.push(new PlayingCard(suit, rank, this.cardWidth));
             }
         }
 
@@ -340,7 +342,7 @@ export class SolitaireGame {
             // Each tableau gets an outline
             const coords = this.tableauCoords(i, 0);
 
-            this.table.addOutline(coords.x, coords.y, 110, 'black');
+            this.table.addOutline(coords.x, coords.y, this.cardWidth, 'black');
             for (let j = i; j < 7; j++) {
                 const card = deck.pop();
                 const coords = this.tableauCoords(j, i);
@@ -356,7 +358,7 @@ export class SolitaireGame {
         this.stockOutline = this.table.addOutline(
             this.stockX,
             this.stockY,
-            110,
+            this.cardWidth,
             'black',
             (outline, x, y) => {
                 if (this.stock.length === 0 && this.waste.length > 0) {
@@ -375,11 +377,11 @@ export class SolitaireGame {
 
         // Setup foundation areas with outlines
         for (let i = 0; i < 4; i++) {
-            const foundationX = 400 + i * 135;
+            const foundationX = 440 + i * 170;
             const foundationY = this.stockY;
 
             // Add visible outline
-            const outline = this.table.addOutline(foundationX, foundationY, 110, 'black');
+            const outline = this.table.addOutline(foundationX, foundationY, this.cardWidth, 'black');
             this.foundationOutlines.push(outline);
 
             // Add invisible placeholder card (optional, you may remove this)

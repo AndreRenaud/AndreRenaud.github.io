@@ -32,11 +32,8 @@ async function cacheFirstWithRefresh(request) {
     return (await caches.match(request)) || (await fetchResponsePromise);
 }
 self.addEventListener('fetch', (event) => {
-    // Determine the filename of the request
-    // We assume all filenames are unique
-    const otherPath = event.request.url.split('#')[0].split('?')[0].split('/').pop();
+    // Just cache everything on the site.
+    // We don't do dynamic content, so this isn't a problem.
 
-    if (filesToCache.includes(otherPath)) {
-        event.respondWith(cacheFirstWithRefresh(event.request));
-    }
+    event.respondWith(cacheFirstWithRefresh(event.request));
 });
