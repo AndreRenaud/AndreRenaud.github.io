@@ -95,7 +95,7 @@ export class SolitaireGame {
 
         // Check foundation piles
         for (let i = 0; i < 4; i++) {
-            const foundationX = 400 + i * 120;
+            const foundationX = 400 + i * 135;
             const foundationY = this.stockY;
             if (this.isNearPile(x, y, foundationX, foundationY)) {
                 if (this.tryMoveToFoundation(card, i, originalTableauIndex)) {
@@ -181,7 +181,7 @@ export class SolitaireGame {
         ) {
             this.removeCardFromCurrentPile(card);
             foundation.push(card);
-            card.move(400 + foundationIndex * 120, this.stockY);
+            card.move(400 + foundationIndex * 135, this.stockY);
             card.draggable = true;
             this.table.moveCardToTop(card);
 

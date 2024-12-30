@@ -261,9 +261,9 @@ class PlayingCard {
             // Draw card border
             offscreenCtx.strokeStyle = 'black';
             offscreenCtx.fillStyle = 'white';
-            offscreenCtx.strokeWidth = 2;
+            offscreenCtx.lineWidth = 3;
             offscreenCtx.beginPath();
-            offscreenCtx.roundRect(0, 0, this.width, this.height(), this.width / 15);
+            offscreenCtx.roundRect(1, 1, this.width - 2, this.height() - 2, this.width / 15);
             offscreenCtx.stroke();
             offscreenCtx.fill();
             var symbol = RankSymbols[this.rank] || this.rank;
