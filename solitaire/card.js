@@ -102,6 +102,7 @@ const SymbolPositions = {
 class PlayingCard {
     static backgroundImages = new Map();
     static faceImages = new Map();
+    static renderedImages = new Map(); // Cache for rendered images
 
     static loadImage(src) {
         if (!this.backgroundImages.has(src)) {
@@ -250,6 +251,82 @@ class PlayingCard {
             return;
         }
 
+        const cacheKey = `${this.suit}-${this.rank}-${this.width}`;
+        if (!PlayingCard.renderedImages.has(cacheKey)) {
+            const offscreenCanvas = document.createElement('canvas');
+            offscreenCanvas.width = this.width;
+            offscreenCanvas.height = this.height();
+            const offscreenCtx = offscreenCanvas.getContext('2d');
+
+            // Draw card border
+            offscreenCtx.strokeStyle = 'black';
+            offscreenCtx.fillStyle = 'white';
+            offscreenCtx.strokeWidth = 2;
+            offscreenCtx.beginPath();
+            offscreenCtx.roundRect(0, 0, this.width, this.height(), this.width / 15);
+            offscreenCtx.stroke();
+            offscreenCtx.fill();
+            var symbol = RankSymbols[this.rank] || this.rank;
+            const xoffset = this.width * 0.1;
+            const yoffset = xoffset * 1.5;
+            var symbolWidth = this.width * 0.2;
+            offscreenCtx.textAlign = 'center';
+            offscreenCtx.textBaseline = 'middle';
+
+            // Draw card rank and suit
+            offscreenCtx.fillStyle = SuitColours[this.suit];
+            offscreenCtx.font = `${symbolWidth}px Arial`;
+            offscreenCtx.fillText(symbol, xoffset, yoffset);
+            offscreenCtx.font = `${symbolWidth}px Arial`;
+            offscreenCtx.fillText(this.suit, xoffset, yoffset * 2);
+
+            // Draw card rank and suit upside down
+            offscreenCtx.save();
+            offscreenCtx.translate(this.width, this.height());
+            offscreenCtx.rotate(Math.PI);
+            offscreenCtx.fillText(symbol, xoffset, yoffset);
+            offscreenCtx.fillText(this.suit, xoffset, yoffset * 2);
+            offscreenCtx.restore();
+
+            // Draw face card image or symbols
+            if (this.rank >= 11 && this.rank <= 13 && this.faceImage) {
+                // Draw face card image in center
+                const padding = this.width * 0.1;
+                const imageWidth = this.width - padding * 2;
+                const imageHeight = this.height() - padding * 2;
+                offscreenCtx.drawImage(this.faceImage, padding, padding, imageWidth, imageHeight);
+            } else {
+                // Draw regular symbols for number cards
+                if (this.rank == 1) {
+                    // Ace has a bigger symbol
+                    symbolWidth = this.width * 0.6;
+                    offscreenCtx.font = `${symbolWidth}px Arial`;
+                } else {
+                    symbolWidth = this.width * 0.35;
+                    offscreenCtx.font = `${symbolWidth}px Arial`;
+                }
+                var positions = SymbolPositions[this.rank];
+                if (positions) {
+                    for (const pos of positions) {
+                        offscreenCtx.save();
+                        const xoffset = pos[0] * this.width + this.width / 2;
+                        const yoffset = pos[1] * this.height() + this.height() / 2;
+                        offscreenCtx.translate(xoffset, yoffset);
+                        // Symbols below the middle should be upside down
+                        if (pos[1] > 0) {
+                            offscreenCtx.rotate(Math.PI);
+                        }
+                        offscreenCtx.fillText(this.suit, 0, 0);
+                        offscreenCtx.restore();
+                    }
+                }
+            }
+
+            PlayingCard.renderedImages.set(cacheKey, offscreenCanvas);
+        }
+
+        const cachedImage = PlayingCard.renderedImages.get(cacheKey);
+
         // Set semi transparent & pop up if dragging
         if (dragging) {
             const scale = 1.2;
@@ -268,21 +345,6 @@ class PlayingCard {
             ctx.fill();
         }
 
-        // Draw card border
-        ctx.strokeStyle = 'black';
-        ctx.fillStyle = 'white';
-        ctx.strokeWidth = 2;
-        ctx.beginPath();
-        ctx.roundRect(this.x, this.y, this.width, this.height(), this.width / 15);
-        ctx.stroke();
-        ctx.fill();
-
-        // Reset shadow
-        ctx.shadowColor = 'transparent';
-        ctx.shadowBlur = 0;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
-
         if (this.flipped) {
             // Draw card back with image or fallback color
             if (this.backgroundImage) {
@@ -294,69 +356,8 @@ class PlayingCard {
                 ctx.roundRect(this.x, this.y, this.width, this.height(), this.width / 15);
                 ctx.fill();
             }
-            return;
-        }
-
-        var symbol = RankSymbols[this.rank] || this.rank;
-        const xoffset = this.width * 0.1;
-        const yoffset = xoffset * 1.5;
-        var symbolWidth = this.width * 0.2;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-
-        // Draw card rank and suit
-        ctx.fillStyle = SuitColours[this.suit];
-        ctx.font = `${symbolWidth}px Arial`;
-        ctx.fillText(symbol, this.x + xoffset, this.y + yoffset);
-        ctx.font = `${symbolWidth}px Arial`;
-        ctx.fillText(this.suit, this.x + xoffset, this.y + yoffset * 2);
-
-        // Draw card rank and suit upside down
-        ctx.save();
-        ctx.translate(this.x + this.width, this.y + this.height());
-        ctx.rotate(Math.PI);
-        ctx.fillText(symbol, xoffset, yoffset);
-        ctx.fillText(this.suit, xoffset, yoffset * 2);
-        ctx.restore();
-
-        // Draw face card image or symbols
-        if (this.rank >= 11 && this.rank <= 13 && this.faceImage) {
-            // Draw face card image in center
-            const padding = this.width * 0.1;
-            const imageWidth = this.width - padding * 2;
-            const imageHeight = this.height() - padding * 2;
-            ctx.drawImage(
-                this.faceImage,
-                this.x + padding,
-                this.y + padding,
-                imageWidth,
-                imageHeight
-            );
         } else {
-            // Draw regular symbols for number cards
-            if (this.rank == 1) {
-                // Ace has a bigger symbol
-                symbolWidth = this.width * 0.6;
-                ctx.font = `${symbolWidth}px Arial`;
-            } else {
-                symbolWidth = this.width * 0.35;
-                ctx.font = `${symbolWidth}px Arial`;
-            }
-            var positions = SymbolPositions[this.rank];
-            if (positions) {
-                for (const pos of positions) {
-                    ctx.save();
-                    const xoffset = pos[0] * this.width + this.width / 2;
-                    const yoffset = pos[1] * this.height() + this.height() / 2;
-                    ctx.translate(this.x + xoffset, this.y + yoffset);
-                    // Symbols below the middle should be upside down
-                    if (pos[1] > 0) {
-                        ctx.rotate(Math.PI);
-                    }
-                    ctx.fillText(this.suit, 0, 0);
-                    ctx.restore();
-                }
-            }
+            ctx.drawImage(cachedImage, this.x, this.y, this.width, this.height());
         }
     }
 }
