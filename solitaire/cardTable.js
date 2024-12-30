@@ -42,6 +42,8 @@ class CardTable {
         if (e.touches) {
             if (e.touches.length == 1) {
                 e.preventDefault(); // Prevent scrolling on touch, but not zooming
+            } else {
+                return null; // Ignore multi-touch
             }
             const rect = this.canvas.getBoundingClientRect();
             if (e.touches.length == 0) {
@@ -70,11 +72,15 @@ class CardTable {
 
     handleStart(e) {
         const coords = this.getEventCoords(e);
+        if (coords === null) {
+            return;
+        }
         this.mouseDownPos = { ...coords }; // Store initial position
         this.lastMoveCoords = { ...coords };
 
         if (this.draggedCard) {
             this.draggedCard.move(this.dragStart.x, this.dragStart.y);
+            this.draggedCard.zIndex = this.draggedCard.preDragZIndex;
             this.draggedCard = null;
         }
 
@@ -121,6 +127,9 @@ class CardTable {
 
     handleMove(e) {
         const coords = this.getEventCoords(e);
+        if (coords === null) {
+            return;
+        }
         // Update button hover states
         let needsRedraw = false;
         for (const button of this.buttons) {
@@ -135,7 +144,6 @@ class CardTable {
             }
         }
         if (this.draggedCard) {
-            const coords = this.getEventCoords(e);
             this.draggedCard.move(
                 coords.x - this.dragOffset.x,
                 coords.y - this.dragOffset.y,
@@ -144,7 +152,7 @@ class CardTable {
             );
             needsRedraw = true;
         }
-        this.lastMoveCoords = this.getEventCoords(e);
+        this.lastMoveCoords = coords;
         if (needsRedraw) {
             this.draw();
         }
@@ -152,6 +160,9 @@ class CardTable {
 
     handleEnd(e) {
         const coords = this.getEventCoords(e);
+        if (coords === null) {
+            return;
+        }
         const dx = coords.x - this.mouseDownPos.x;
         const dy = coords.y - this.mouseDownPos.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
