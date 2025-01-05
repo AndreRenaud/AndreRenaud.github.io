@@ -418,7 +418,7 @@ export class SolitaireGame {
             pile.forEach((c) => {
                 c.flipped = false;
                 c.draggable = false;
-                let x = this.table.width() * (1 + Math.random());
+                let x = this.table.width * (1 + Math.random());
                 let y = this.table.height() * (1 + Math.random());
                 if (Math.random() < 0.5) {
                     x = -x;
