@@ -161,7 +161,9 @@ export class SolitaireGame {
 
     isNearPile(x, y, pileX, pileY, threshold = 50) {
         // TODO: Support dynamic card sizes
-        return x >= pileX && x <= pileX + this.cardWidth && y >= pileY && y <= pileY + this.cardHeight;
+        return (
+            x >= pileX && x <= pileX + this.cardWidth && y >= pileY && y <= pileY + this.cardHeight
+        );
     }
 
     tryMoveToFoundation(card, foundationIndex, tableauIndex = -1) {
@@ -377,11 +379,16 @@ export class SolitaireGame {
 
         // Setup foundation areas with outlines
         for (let i = 0; i < 4; i++) {
-            const foundationX = 440 + i * 170;
+            const foundationX = 440 + i * 175;
             const foundationY = this.stockY;
 
             // Add visible outline
-            const outline = this.table.addOutline(foundationX, foundationY, this.cardWidth, 'black');
+            const outline = this.table.addOutline(
+                foundationX,
+                foundationY,
+                this.cardWidth,
+                'black'
+            );
             this.foundationOutlines.push(outline);
 
             // Add invisible placeholder card (optional, you may remove this)

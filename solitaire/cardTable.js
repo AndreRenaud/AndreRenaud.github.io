@@ -73,9 +73,9 @@ class CardTable {
 
     buttonRect(button) {
         var ratio = this.canvas.width / this.width;
-            const x = button.x < 0 ? this.canvas.width / ratio + button.x : button.x;
-            const y = button.y < 0 ? this.canvas.height / ratio + button.y : button.y;
-        return { x:x, y:y, width: button.width, height: button.height };
+        const x = button.x < 0 ? this.canvas.width / ratio + button.x : button.x;
+        const y = button.y < 0 ? this.canvas.height / ratio + button.y : button.y;
+        return { x: x, y: y, width: button.width, height: button.height };
     }
 
     handleStart(e) {
@@ -96,7 +96,7 @@ class CardTable {
         for (const button of this.buttons) {
             const rect = this.buttonRect(button);
             if (
-                coords.x >= rect.x && 
+                coords.x >= rect.x &&
                 coords.x <= rect.x + rect.width &&
                 coords.y >= rect.y &&
                 coords.y <= rect.y + rect.height
@@ -139,6 +139,7 @@ class CardTable {
         if (coords === null) {
             return;
         }
+        e.preventDefault(); // Prevent scrolling on touch
         // Update button hover states
         let needsRedraw = false;
         for (const button of this.buttons) {

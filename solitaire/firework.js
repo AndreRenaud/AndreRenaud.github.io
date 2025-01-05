@@ -150,7 +150,7 @@ export class Fireworks {
     update() {
         // Update all the fireworks & particles. Remove the ones that are done
         for (let i = this.fireworks.length - 1; i >= 0; i--) {
-            if (this.fireworks[i].update(i)) {
+            if (this.fireworks[i].update()) {
                 this.createParticles(
                     this.fireworks[i].hue,
                     random(20, 30),
