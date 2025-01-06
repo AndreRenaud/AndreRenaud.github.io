@@ -122,6 +122,9 @@ class CardTable {
         }
 
         if (foundCard) {
+            if (foundCard.isAnimating()) {
+                return;
+            }
             this.draggedCard = foundCard;
             this.dragOffset = {
                 x: coords.x - foundCard.x,
