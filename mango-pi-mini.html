@@ -350,11 +350,41 @@ buildroot login:</pre>
 
       <details>
         <summary>Benchmarks & Hardware Testing</summary>
+        <h4>CPUInfo</h4>
+        <pre>
+# cat /proc/cpuinfo
+processor	: 0
+model name	: ARMv7 Processor rev 5 (v7l)
+BogoMIPS	: 48.00
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm
+CPU implementer	: 0x41
+CPU architecture: 7
+CPU variant	: 0x0
+CPU part	: 0xc07
+CPU revision	: 5
+
+processor	: 1
+model name	: ARMv7 Processor rev 5 (v7l)
+BogoMIPS	: 48.00
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae evtstrm
+CPU implementer	: 0x41
+CPU architecture: 7
+CPU variant	: 0x0
+CPU part	: 0xc07
+CPU revision	: 5
+
+Hardware	: Generic DT based system
+Revision	: 0000</pre>
+        <h4>Memory</h4>
+        <pre>
+# free
+              total        used        free      shared  buff/cache   available
+Mem:         122512       11520      104868          44        6124      105924
+Swap:             0           0           0 </pre>
         <h4>Mhz</h4>
         <pre>
 # mhz
-count=394821 us50=19992 us250=98404 diff=78412 cpu_MHz=1007.042</pre
-        >
+count=394821 us50=19992 us250=98404 diff=78412 cpu_MHz=1007.042</pre>
 
         <h4>Dhrystone</h4>
         <pre>
