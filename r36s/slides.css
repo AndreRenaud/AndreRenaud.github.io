@@ -1,0 +1,356 @@
+/*
+ * The whole deck is laid out on a fixed 16:9 "stage" measured in rem
+ * (80rem x 45rem). The root font-size tracks the smaller of the viewport's
+ * width/height, so a single scale factor drives every dimension and each
+ * slide renders identically — just larger or smaller — at any screen size.
+ *
+ *   80rem wide  -> 100vw / 80  = 1.25vw   per rem
+ *   45rem tall  -> 100vh / 45  = 2.2222vh per rem
+ *
+ * Taking the min keeps the 16:9 aspect ratio and letterboxes the remainder.
+ */
+:root {
+  font-size: min(1.25vw, 2.2222vh);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #0b0e14;
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+}
+
+/* Flex row of full-viewport panels. Using flex (rather than inline-block)
+   means the whitespace between <label> tags in the markup is ignored, so the
+   slides don't drift rightward by one space-width per step. */
+form {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+input {
+  position: absolute;
+  opacity: 0;
+}
+
+/* Each label is a full-viewport panel; they sit in a horizontal row and slide.
+   The fixed-size stage is centred inside. flex: 0 0 100vw stops the panels
+   from being shrunk to fit the form. */
+label {
+  flex: 0 0 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+  z-index: 1;
+  transition: transform 400ms ease-out;
+}
+
+/* The fixed 16:9 stage. All inner sizing is in rem, so it scales as one unit. */
+.slide {
+  position: relative;
+  width: 80rem;
+  height: 45rem;
+  padding: 2.4rem 3.2rem;
+  overflow: hidden;
+  background: #1b2330;
+  color: #eef2f7;
+  border-radius: 1rem;
+  box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* --- Typography --- */
+h1 {
+  font-size: 3.4rem;
+  margin: 0 0 0.4rem;
+  color: #7fd1ff;
+  line-height: 1.15;
+}
+
+.slide p,
+.slide li {
+  font-size: 1.8rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.slide ul,
+.slide ol {
+  margin: 0;
+  padding-left: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+em {
+  color: #ffd27f;
+  font-style: normal;
+}
+
+a {
+  color: #7fd1ff;
+}
+
+code {
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  background: rgba(127, 209, 255, 0.14);
+  padding: 0.05em 0.35em;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+
+pre {
+  background: #0e131c;
+  border: 1px solid #2c3a4f;
+  border-left: 0.3rem solid #7fd1ff;
+  border-radius: 0.4rem;
+  padding: 0.8rem 1rem;
+  margin: 0;
+  overflow-x: auto;
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 1.35rem;
+  line-height: 1.45;
+  color: #d6e2f0;
+}
+
+/* --- Tables --- */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 1.55rem;
+}
+
+th,
+td {
+  border: 1px solid #2c3a4f;
+  padding: 0.45rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #26374d;
+  color: #7fd1ff;
+}
+
+/* --- Callouts --- */
+.key-message {
+  background: rgba(127, 209, 255, 0.1);
+  border-left: 0.3rem solid #7fd1ff;
+  padding: 0.7rem 1rem;
+  border-radius: 0 0.4rem 0.4rem 0;
+}
+
+.demo {
+  background: #ff6b6b;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8em;
+  padding: 0.15em 0.6em;
+  border-radius: 0.25rem;
+  letter-spacing: 0.05em;
+}
+
+.slide-num {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.6rem;
+  font-size: 1.1rem;
+  color: #6b7d94;
+  z-index: 2;
+}
+
+/* --- Boot-chain flow diagram (slide 4) --- */
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.7rem;
+}
+
+.flow > span:not(.arrow) {
+  background: #26374d;
+  border: 1px solid #7fd1ff;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+  text-align: center;
+}
+
+.flow small {
+  color: #9fb2c9;
+}
+
+.flow .arrow {
+  color: #7fd1ff;
+  font-size: 1.5em;
+}
+
+/* --- Two-column layout (slides 6, 11) --- */
+.cols {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.cols > div {
+  flex: 1 1 45%;
+  min-width: 16rem;
+}
+
+/* --- Title slide (slide 1) --- */
+.title {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.title h1 {
+  font-size: 4.8rem;
+  color: #7fd1ff;
+}
+
+.title .subtitle {
+  font-size: 2.4rem;
+  color: #ffd27f;
+}
+
+.title .hook {
+  max-width: 34ch;
+  color: #d6e2f0;
+  font-size: 2rem;
+}
+
+.hero {
+  max-height: 16rem;
+  border-radius: 0.6rem;
+  box-shadow: 0 0.4rem 1.5rem rgba(0, 0, 0, 0.5);
+}
+
+/* --- Floated image (slide 2) --- */
+.side-img {
+  float: right;
+  max-width: 20rem;
+  max-height: 28rem;
+  margin: 0 0 1rem 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.recap {
+  color: #ffd27f;
+  font-weight: 600;
+}
+
+/* --- Slide switching: raise the checked panel, slide the row --- */
+input:nth-of-type(1):checked ~ label:nth-of-type(1),
+input:nth-of-type(2):checked ~ label:nth-of-type(2),
+input:nth-of-type(3):checked ~ label:nth-of-type(3),
+input:nth-of-type(4):checked ~ label:nth-of-type(4),
+input:nth-of-type(5):checked ~ label:nth-of-type(5),
+input:nth-of-type(6):checked ~ label:nth-of-type(6),
+input:nth-of-type(7):checked ~ label:nth-of-type(7),
+input:nth-of-type(8):checked ~ label:nth-of-type(8),
+input:nth-of-type(9):checked ~ label:nth-of-type(9),
+input:nth-of-type(10):checked ~ label:nth-of-type(10),
+input:nth-of-type(11):checked ~ label:nth-of-type(11),
+input:nth-of-type(12):checked ~ label:nth-of-type(12) {
+  z-index: 0;
+}
+
+input:nth-of-type(1):checked ~ label {
+  transform: translate3d(0, 0, 0);
+}
+input:nth-of-type(2):checked ~ label {
+  transform: translate3d(-100%, 0, 0);
+}
+input:nth-of-type(3):checked ~ label {
+  transform: translate3d(-200%, 0, 0);
+}
+input:nth-of-type(4):checked ~ label {
+  transform: translate3d(-300%, 0, 0);
+}
+input:nth-of-type(5):checked ~ label {
+  transform: translate3d(-400%, 0, 0);
+}
+input:nth-of-type(6):checked ~ label {
+  transform: translate3d(-500%, 0, 0);
+}
+input:nth-of-type(7):checked ~ label {
+  transform: translate3d(-600%, 0, 0);
+}
+input:nth-of-type(8):checked ~ label {
+  transform: translate3d(-700%, 0, 0);
+}
+input:nth-of-type(9):checked ~ label {
+  transform: translate3d(-800%, 0, 0);
+}
+input:nth-of-type(10):checked ~ label {
+  transform: translate3d(-900%, 0, 0);
+}
+input:nth-of-type(11):checked ~ label {
+  transform: translate3d(-1000%, 0, 0);
+}
+input:nth-of-type(12):checked ~ label {
+  transform: translate3d(-1100%, 0, 0);
+}
+
+/*
+ * Prev / next click arrows.
+ * The checked slide drops to z-index 0 (below), so its neighbours (z-index 1)
+ * sit on top of it. Each neighbour's arrow pseudo-element is positioned just
+ * outside its own edge, so it peeks into the current viewport and stays
+ * clickable — clicking it activates that neighbour's radio input.
+ */
+label:before,
+label:after {
+  color: #7fd1ff;
+  background: rgba(127, 209, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 4rem;
+  height: 8rem;
+  font-size: 2.5rem;
+  top: 50%;
+  transform: translate3d(0, -50%, 0);
+  cursor: pointer;
+  z-index: 4;
+}
+
+/* Right-pointing arrow off the left edge -> becomes the "next" arrow that the
+   following slide shows on the right of the screen. */
+label:before {
+  content: "\276F";
+  right: 100%;
+  border-top-left-radius: 0.6rem;
+  border-bottom-left-radius: 0.6rem;
+}
+
+/* Left-pointing arrow off the right edge -> becomes the "prev" arrow that the
+   preceding slide shows on the left of the screen. */
+label:after {
+  content: "\276E";
+  left: 100%;
+  border-top-right-radius: 0.6rem;
+  border-bottom-right-radius: 0.6rem;
+}
+
+/*
+ * Endpoints need no special-casing: slide 1's back arrow would belong to a
+ * non-existent slide 0, and slide 12's forward arrow to a non-existent slide
+ * 13, so they simply never appear.
+ */

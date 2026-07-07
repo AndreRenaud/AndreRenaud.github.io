@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Embedded Linux with the R36S - slideshow" />
+    <title>Embedded Linux with the R36S</title>
+    <link rel="stylesheet" href="slides.css" />
+  </head>
+  <body>
+    <form>
+      <input type="radio" name="slides" autofocus checked value="s1" id="s1" />
+      <input type="radio" name="slides" value="s2" id="s2" />
+      <input type="radio" name="slides" value="s3" id="s3" />
+      <input type="radio" name="slides" value="s4" id="s4" />
+      <input type="radio" name="slides" value="s5" id="s5" />
+      <input type="radio" name="slides" value="s6" id="s6" />
+      <input type="radio" name="slides" value="s7" id="s7" />
+      <input type="radio" name="slides" value="s8" id="s8" />
+      <input type="radio" name="slides" value="s9" id="s9" />
+      <input type="radio" name="slides" value="s10" id="s10" />
+      <input type="radio" name="slides" value="s11" id="s11" />
+      <input type="radio" name="slides" value="s12" id="s12" />
+
+      <!-- Slide 1: Title -->
+      <label for="s1">
+        <article class="slide title">
+          <img src="../images/r36s.jpg" alt="Pristine R36S unit" class="hero" />
+          <h1>A $30 Linux Computer in Your Pocket</h1>
+          <p class="subtitle">Embedded Linux with the R36S</p>
+          <p class="hook">Same kernel as a server. Today: how to build every byte on its SD card.</p>
+        </article>
+      </label>
+
+      <!-- Slide 2: Meet the Hardware -->
+      <label for="s2">
+        <article class="slide">
+          <span class="slide-num">2 / 12</span>
+          <h1>The Hardware</h1>
+          <img
+            src="../images/r36s-internal-large.png"
+            alt="Labeled R36S internals"
+            class="side-img"
+          />
+          <ul>
+            <li>Quad-core ARM @ ~1.3&nbsp;GHz</li>
+            <li>1&nbsp;GB RAM</li>
+            <li>640&times;480 screen</li>
+            <li>Battery, speaker, buttons</li>
+            <li>microSD + USB-C</li>
+          </ul>
+          <p class="key-message">A PC with the layers stripped away &mdash; all on one board.</p>
+          <p><span class="demo">DEMO</span> Pass it around.</p>
+        </article>
+      </label>
+
+      <!-- Slide 3: What's Different -->
+      <label for="s3">
+        <article class="slide">
+          <span class="slide-num">3 / 12</span>
+          <h1>What's Different</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>Your day job</th>
+                <th>Embedded</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hardware describes itself</td>
+                <td>A <em>device tree</em> lists it</td>
+              </tr>
+              <tr>
+                <td>Build where you run</td>
+                <td>Cross-compile to ARM</td>
+              </tr>
+              <tr>
+                <td>Monitor + keyboard</td>
+                <td>A serial cable</td>
+              </tr>
+              <tr>
+                <td>Install a distro</td>
+                <td>Build the OS yourself</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+      </label>
+
+      <!-- Slide 4: The Boot Chain -->
+      <label for="s4">
+        <article class="slide">
+          <span class="slide-num">4 / 12</span>
+          <h1>How It Boots</h1>
+          <div class="flow">
+            <span>Boot ROM</span>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+            <span>U-Boot</span>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+            <span>Kernel + device tree</span>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+            <span>Your app</span>
+          </div>
+          <p class="key-message">
+            No flash chip &mdash; it boots straight from the SD card. Pull the card and it can't be
+            bricked.
+          </p>
+        </article>
+      </label>
+
+      <!-- Slide 5: The Serial Console -->
+      <label for="s5">
+        <article class="slide">
+          <span class="slide-num">5 / 12</span>
+          <h1>The Serial Console</h1>
+          <p>Works before the screen or network do. Log + shell on three wires.</p>
+          <pre>
+U-Boot 2024.04 (r36s)
+[    0.000000] Booting Linux...
+buildroot login:</pre>
+          <ul>
+            <li>3.3&nbsp;V &mdash; <em>never</em> RS-232</li>
+            <li>1.5&nbsp;Mbaud</li>
+          </ul>
+          <p><span class="demo">DEMO</span> Boot it live.</p>
+        </article>
+      </label>
+
+      <!-- Slide 6: Device Trees -->
+      <label for="s6">
+        <article class="slide">
+          <span class="slide-num">6 / 12</span>
+          <h1>Device Trees</h1>
+          <p>A text file telling the kernel what hardware exists, and where.</p>
+          <pre>
+button-a {
+    gpios = &lt;&amp;gpio1 RK_PA2 GPIO_ACTIVE_LOW&gt;;
+    linux,code = &lt;BTN_EAST&gt;;
+};</pre>
+          <p class="key-message">The chip is already supported. The board is mostly this file.</p>
+        </article>
+      </label>
+
+      <!-- Slide 7: Buildroot -->
+      <label for="s7">
+        <article class="slide">
+          <span class="slide-num">7 / 12</span>
+          <h1>Build the Whole OS</h1>
+          <p>One tool builds the toolchain, U-Boot, kernel and filesystem:</p>
+          <pre>
+git clone .../buildroot-r36s
+cd buildroot-r36s
+make r36s_defconfig
+make      # ~45 min -> sdcard.img</pre>
+          <p class="key-message">Runs from RAM, so pulling the power is always safe.</p>
+        </article>
+      </label>
+
+      <!-- Slide 8: The Repos -->
+      <label for="s8">
+        <article class="slide">
+          <span class="slide-num">8 / 12</span>
+          <h1>It's All on GitHub</h1>
+          <ul>
+            <li><a href="https://github.com/AndreRenaud/linux-r36s">linux-r36s</a> &mdash; the kernel</li>
+            <li><a href="https://github.com/AndreRenaud/u-boot-r36s">u-boot-r36s</a> &mdash; the bootloader</li>
+            <li><a href="https://github.com/AndreRenaud/buildroot-r36s">buildroot-r36s</a> &mdash; ties it together</li>
+          </ul>
+          <p class="key-message">Porting = a device tree + kernel config. Not writing an OS.</p>
+        </article>
+      </label>
+
+      <!-- Slide 9: The Dev Loop -->
+      <label for="s9">
+        <article class="slide">
+          <span class="slide-num">9 / 12</span>
+          <h1>The Dev Loop</h1>
+          <ul>
+            <li><strong>Slow:</strong> rebuild &rarr; flash SD &rarr; reboot</li>
+            <li><strong>Fast:</strong> network-boot over USB Ethernet</li>
+          </ul>
+          <pre>
+=> tftp 0x2000000 Image
+=> tftp 0x1f00000 rk3326-r36s.dtb
+=> booti 0x2000000 - 0x1f00000</pre>
+          <p><span class="demo">DEMO</span> Stop U-Boot, boot a fresh image.</p>
+        </article>
+      </label>
+
+      <!-- Slide 10: Hardware Is Files -->
+      <label for="s10">
+        <article class="slide">
+          <span class="slide-num">10 / 12</span>
+          <h1>Hardware Is Just Files</h1>
+          <pre>
+# video straight to the screen
+ffmpeg -i clip.mp4 -f fbdev /dev/fb0
+
+# make some noise
+aplay sample.wav</pre>
+          <p class="key-message">No drivers to write &mdash; just open a file.</p>
+          <p><span class="demo">DEMO</span> Play a video and a sound.</p>
+        </article>
+      </label>
+
+      <!-- Slide 11: Your App -->
+      <label for="s11">
+        <article class="slide">
+          <span class="slide-num">11 / 12</span>
+          <h1>Ship Your Own App</h1>
+          <p>An SDL2 app the device boots straight into. The controls arrive as a plain joystick.</p>
+          <p class="key-message">
+            Fast enough for 2D games, dashboards and kiosks (glmark2 ~336).
+          </p>
+          <p><span class="demo">DEMO</span> The demo app, live.</p>
+        </article>
+      </label>
+
+      <!-- Slide 12: Wrap-Up -->
+      <label for="s12">
+        <article class="slide">
+          <span class="slide-num">12 / 12</span>
+          <h1>Go Build Something</h1>
+          <ul>
+            <li>A game, a synth, a dashboard, an instrument UI</li>
+            <li>It's $30 &mdash; you can't brick it</li>
+          </ul>
+          <p>
+            More:
+            <a href="https://andrerenaud.github.io/r36s">the R36S hacking page</a>
+          </p>
+        </article>
+      </label>
+    </form>
+  </body>
+</html>
