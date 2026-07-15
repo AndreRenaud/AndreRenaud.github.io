@@ -26,9 +26,8 @@
       <label for="s1">
         <article class="slide title">
           <img src="../images/r36s.jpg" alt="Pristine R36S unit" class="hero" />
-          <h1>A $30 Linux Computer in Your Pocket</h1>
-          <p class="subtitle">Embedded Linux with the R36S</p>
-          <p class="hook">Same kernel as a server. Today: how to build every byte on its SD card.</p>
+          <h1>R36S - Quad Core Gaming Handheld</h1>
+          <p class="subtitle">A $60 Linux Computer in Your Pocket</p>
         </article>
       </label>
 
@@ -37,20 +36,22 @@
         <article class="slide">
           <span class="slide-num">2 / 12</span>
           <h1>The Hardware</h1>
-          <img
-            src="../images/r36s-internal-large.png"
-            alt="Labeled R36S internals"
-            class="side-img"
-          />
-          <ul>
-            <li>Quad-core ARM @ ~1.3&nbsp;GHz</li>
-            <li>1&nbsp;GB RAM</li>
-            <li>640&times;480 screen</li>
-            <li>Battery, speaker, buttons</li>
-            <li>microSD + USB-C</li>
-          </ul>
-          <p class="key-message">A PC with the layers stripped away &mdash; all on one board.</p>
-          <p><span class="demo">DEMO</span> Pass it around.</p>
+          <div class="cols">
+            <div>
+              <ul>
+                <li>Quad-core ARM @ ~1.3&nbsp;GHz</li>
+                <li>1&nbsp;GB RAM</li>
+                <li>640&times;480 screen</li>
+                <li>Battery, speaker, buttons</li>
+                <li>microSD + USB-C</li>
+              </ul>
+            </div>
+            <img
+              src="../images/r36s-internal-large.png"
+              alt="Labeled R36S internals"
+              class="side-img"
+            />
+          </div>
         </article>
       </label>
 
@@ -62,7 +63,7 @@
           <table>
             <thead>
               <tr>
-                <th>Your day job</th>
+                <th>PC</th>
                 <th>Embedded</th>
               </tr>
             </thead>
@@ -100,11 +101,12 @@
             <span class="arrow" aria-hidden="true">&rarr;</span>
             <span>Kernel + device tree</span>
             <span class="arrow" aria-hidden="true">&rarr;</span>
+            <span>Filesystem</span>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
             <span>Your app</span>
           </div>
           <p class="key-message">
-            No flash chip &mdash; it boots straight from the SD card. Pull the card and it can't be
-            bricked.
+            Boots straight from the SD card. Pull the card and it can't be bricked.
           </p>
         </article>
       </label>
@@ -118,12 +120,13 @@
           <pre>
 U-Boot 2024.04 (r36s)
 [    0.000000] Booting Linux...
-buildroot login:</pre>
+buildroot login:</pre
+          >
           <ul>
             <li>3.3&nbsp;V &mdash; <em>never</em> RS-232</li>
             <li>1.5&nbsp;Mbaud</li>
+            <li><pre>picocom -b 1500000 /dev/ttyUSB0</pre></li>
           </ul>
-          <p><span class="demo">DEMO</span> Boot it live.</p>
         </article>
       </label>
 
@@ -137,8 +140,11 @@ buildroot login:</pre>
 button-a {
     gpios = &lt;&amp;gpio1 RK_PA2 GPIO_ACTIVE_LOW&gt;;
     linux,code = &lt;BTN_EAST&gt;;
-};</pre>
+};</pre
+          >
           <p class="key-message">The chip is already supported. The board is mostly this file.</p>
+          <p>Linux's version of the schematics.</p>
+          <img src="schematic.png" alt="Buttons Schematic" class="side-img" />
         </article>
       </label>
 
@@ -152,7 +158,8 @@ button-a {
 git clone .../buildroot-r36s
 cd buildroot-r36s
 make r36s_defconfig
-make      # ~45 min -> sdcard.img</pre>
+make      # ~45 min -> sdcard.img</pre
+          >
           <p class="key-message">Runs from RAM, so pulling the power is always safe.</p>
         </article>
       </label>
@@ -163,9 +170,17 @@ make      # ~45 min -> sdcard.img</pre>
           <span class="slide-num">8 / 12</span>
           <h1>It's All on GitHub</h1>
           <ul>
-            <li><a href="https://github.com/AndreRenaud/linux-r36s">linux-r36s</a> &mdash; the kernel</li>
-            <li><a href="https://github.com/AndreRenaud/u-boot-r36s">u-boot-r36s</a> &mdash; the bootloader</li>
-            <li><a href="https://github.com/AndreRenaud/buildroot-r36s">buildroot-r36s</a> &mdash; ties it together</li>
+            <li>
+              <a href="https://github.com/AndreRenaud/linux-r36s">linux-r36s</a> &mdash; the kernel
+            </li>
+            <li>
+              <a href="https://github.com/AndreRenaud/u-boot-r36s">u-boot-r36s</a> &mdash; the
+              bootloader
+            </li>
+            <li>
+              <a href="https://github.com/AndreRenaud/buildroot-r36s">buildroot-r36s</a> &mdash;
+              ties it together
+            </li>
           </ul>
           <p class="key-message">Porting = a device tree + kernel config. Not writing an OS.</p>
         </article>
@@ -183,7 +198,8 @@ make      # ~45 min -> sdcard.img</pre>
           <pre>
 => tftp 0x2000000 Image
 => tftp 0x1f00000 rk3326-r36s.dtb
-=> booti 0x2000000 - 0x1f00000</pre>
+=> booti 0x2000000 - 0x1f00000</pre
+          >
           <p><span class="demo">DEMO</span> Stop U-Boot, boot a fresh image.</p>
         </article>
       </label>
@@ -198,7 +214,8 @@ make      # ~45 min -> sdcard.img</pre>
 ffmpeg -i clip.mp4 -f fbdev /dev/fb0
 
 # make some noise
-aplay sample.wav</pre>
+aplay sample.wav</pre
+          >
           <p class="key-message">No drivers to write &mdash; just open a file.</p>
           <p><span class="demo">DEMO</span> Play a video and a sound.</p>
         </article>
@@ -209,10 +226,10 @@ aplay sample.wav</pre>
         <article class="slide">
           <span class="slide-num">11 / 12</span>
           <h1>Ship Your Own App</h1>
-          <p>An SDL2 app the device boots straight into. The controls arrive as a plain joystick.</p>
-          <p class="key-message">
-            Fast enough for 2D games, dashboards and kiosks (glmark2 ~336).
+          <p>
+            An SDL2 app the device boots straight into. The controls arrive as a plain joystick.
           </p>
+          <p class="key-message">Fast enough for 2D games, dashboards and kiosks (glmark2 ~336).</p>
           <p><span class="demo">DEMO</span> The demo app, live.</p>
         </article>
       </label>
@@ -224,7 +241,7 @@ aplay sample.wav</pre>
           <h1>Go Build Something</h1>
           <ul>
             <li>A game, a synth, a dashboard, an instrument UI</li>
-            <li>It's $30 &mdash; you can't brick it</li>
+            <li>It's $60 & you can't brick it</li>
           </ul>
           <p>
             More:

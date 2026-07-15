@@ -209,6 +209,9 @@ th {
 .cols > div {
   flex: 1 1 45%;
   min-width: 16rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
 }
 
 /* --- Title slide (slide 1) --- */
@@ -242,10 +245,10 @@ th {
 
 /* --- Floated image (slide 2) --- */
 .side-img {
-  float: right;
+  align-self: flex-start;
+  margin-left: auto;
   max-width: 20rem;
   max-height: 28rem;
-  margin: 0 0 1rem 1.5rem;
   border-radius: 0.5rem;
 }
 
