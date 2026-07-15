@@ -28,5 +28,10 @@
         Boot Speed</a
       >
     </li>
+    <li>
+      <a href="rv1106">
+        <img src="images/rv1106-icon.png" alt="RV1106 Linux info" />RV1106 Boot Speed</a
+      >
+    </li>
   </ul>
 </nav>

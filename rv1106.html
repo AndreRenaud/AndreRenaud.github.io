@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Boot speed optimisation on a Rockchip RV1106 camera booting from SPI NAND"
+  />
+  <link rel="stylesheet" href="ignavus.css" />
+  <title>RV1106 boot speed - Ignavus.net</title>
+
+  <!--navstart-->
+  <link rel="manifest" href="/manifest.json" />
+
+  <input type="checkbox" name="hamburger" />
+  <nav>
+    <ul>
+      <li>
+        <a href="./"> <img src="images/main-icon.png" alt="Main home page" />Home</a>
+      </li>
+      <li>
+        <a href="xosd">
+          <img src="images/xosd-icon.png" alt="XOSD - X11 On Screen Display library" />XOSD</a
+        >
+      </li>
+      <li>
+        <a href="bach-sleepout">
+          <img src="images/bach-icon.png" alt="My Bach/Sleepout plans & info" />Bach/Sleepout</a
+        >
+      </li>
+      <li>
+        <a href="r36s">
+          <img src="images/r36s-icon.png" alt="R36S handheld game console Linux info" />R36S
+          Hacking</a
+        >
+      </li>
+      <li>
+        <a href="mango-pi-mini">
+          <img src="images/mango-pi-mini-icon.png" alt="MangoPi MQ Dual mini Linux info" />MangoPI
+          MQ Boot Speed</a
+        >
+      </li>
+      <li>
+        <a href="rv1106">
+          <img src="images/rv1106-icon.png" alt="RV1106 Linux info" />RV1106 Boot Speed</a
+        >
+      </li>
+    </ul>
+  </nav>
+  <!--navend-->
+
+  <main>
+    <article>
+      <h1>Getting an RV1106 camera to boot in ~1 second</h1>
+
+      <p>
+        This is a write-up of getting an embedded camera product based around the
+        <a href="https://www.rock-chips.com/a/en/products/RV11_Series/2022/0529/1573.html"
+          >Rockchip RV1106</a
+        >
+        to boot from cold power-on to a running application in about a second. The unit boots from
+        SPI NAND flash, and the boot chain is the usual embedded Linux stack: bootrom &rarr; U-Boot
+        SPL &rarr; U-Boot &rarr; Linux &rarr; BusyBox init &rarr; the application (written in Go).
+      </p>
+
+      <p>
+        None of the individual changes here are clever. The interesting part is that almost all of
+        them fall out of two questions:
+        <em>what is being read from flash that doesn't need to be?</em> and
+        <em>what is running at boot that the product doesn't need?</em>
+      </p>
+
+      <h2>Measure first</h2>
+      <p>
+        Every timing measurement was taken by timestamping the debug serial port with
+        <a href="https://github.com/tbird20d/grabserial">grabserial</a>, with the console running at
+        1.5&nbsp;Mbaud so the logging itself doesn't distort the numbers.
+      </p>
+      <table>
+        <tr>
+          <th>Stage</th>
+          <th>Budget</th>
+        </tr>
+        <tr>
+          <td>Bootrom</td>
+          <td>~300 ms</td>
+        </tr>
+        <tr>
+          <td>U-Boot SPL</td>
+          <td>~250 ms</td>
+        </tr>
+        <tr>
+          <td>U-Boot</td>
+          <td>~350 ms</td>
+        </tr>
+        <tr>
+          <td>Linux kernel</td>
+          <td>~600 ms</td>
+        </tr>
+        <tr>
+          <td>Init &amp; application start</td>
+          <td>~300 ms</td>
+        </tr>
+      </table>
+
+      <p>
+        U-Boot also gained a small patch to display read speeds in the <code>mtd</code> command
+        output, so raw NAND throughput could be verified rather than guessed at.
+        A lot of "boot speed" changes are really "flash throughput" changes in disguise,
+        and you want to know which one you're looking at.
+      </p>
+
+      <h2>U-Boot: do less, read less</h2>
+      <dl>
+        <dt>Zero boot delay, quiet console</dt>
+        <dd>
+          <code>CONFIG_BOOTDELAY=0</code>, plus <code>CONFIG_SYS_CONSOLE_INFO_QUIET</code> and
+          turning off <code>CONFIG_DISPLAY_CPUINFO</code>. You can still interrupt autoboot by
+          holding a key from power-on; you just don't pay for a delay when you don't. With the
+          console at 1.5&nbsp;Mbaud, what little logging remains doesn't stall anything.
+        </dd>
+
+        <dt>Static environment</dt>
+        <dd>
+          The U-Boot environment is compiled into U-Boot itself rather than stored on flash. This
+          eliminates an SPI NAND read (and CRC scan) of the environment partition, along with all
+          the machinery for locating and validating it. As a bonus, a corrupted environment can no
+          longer render a unit unbootable, since there is no writable environment to corrupt.
+        </dd>
+
+        <dt>No MMC support</dt>
+        <dd>
+          The unit boots from SPI NAND, so MMC support was ripped out of U-Boot entirely. Probing
+          MMC controllers that have nothing useful attached was costing roughly 200&nbsp;ms of pure
+          waste.
+        </dd>
+
+        <dt>Only read as much kernel as actually exists</dt>
+        <dd>
+          The stock boot command read the entire 6.5&nbsp;MB kernel partition into RAM, even though
+          the FIT image in it is much smaller. A small patch added
+          <code>fdt header get &lt;var&gt; totalsize</code>, so the boot command now reads just the
+          first 4&nbsp;KB of the partition, extracts the real FIT image size from its header, then
+          reads exactly that many bytes.
+          <aside>
+            A FIT image is a flattened device tree, so its header already carries the total size of
+            the image.
+          </aside>
+        </dd>
+
+        <dt>Tiny SPL FIT handling</dt>
+        <dd>
+          <code>CONFIG_SPL_FIT_IMAGE_TINY</code> with the image size capped via
+          <code>CONFIG_SPL_FIT_IMAGE_KB=512</code> keeps the SPL stage small and its load of U-Boot
+          proper short.
+        </dd>
+      </dl>
+
+      <h2>Linux kernel</h2>
+      <dl>
+        <dt>Faster flash for everyone</dt>
+        <dd>
+          The SPI NAND was clocked up from 75&nbsp;MHz to 125&nbsp;MHz with quad-read enabled. This
+          is the single most broadly useful change, because every stage after the bootrom loads from
+          the same chip (SPL, U-Boot, kernel and root filesystem) all benefit at once.
+        </dd>
+
+        <dt>Aggressive config pruning</dt>
+        <dd>
+          The kernel config was trimmed across several passes: Ethernet dropped (the unit only uses
+          USB), then WiFi, Bluetooth, sound, F2FS, YAFFS and NFS, then the second MMC controller,
+          debugfs, IKCONFIG, KSM and the unused squashfs decompressors. A smaller kernel means less
+          NAND to read, less to decompress, and fewer drivers probing at boot.
+        </dd>
+
+        <dt>Quiet, and no bootargs handoff</dt>
+        <dd>
+          <code>quiet</code> on the kernel command line, with the whole command line baked into the
+          device tree <code>chosen</code> node.
+        </dd>
+
+        <dt>Read-only root, <code>panic=1</code></dt>
+        <dd>
+          With a read-only root filesystem there is nothing to fsck and no journal to replay, and
+          <code>panic=1</code> means a failed boot reboots and retries rather than sitting at a dead
+          console.
+        </dd>
+      </dl>
+
+      <h2>Root filesystem: squashfs on UBI, with every redundant check removed</h2>
+      <dl>
+        <dt>zstd squashfs on ubiblock</dt>
+        <dd>
+          The root filesystem moved from YAFFS to a zstd-compressed squashfs on a
+          <code>ubiblock</code> device. Mounting a read-only squashfs is far faster than bringing up
+          a writable NAND filesystem, and zstd at level 22 with 128&nbsp;KB blocks minimises how
+          much flash has to be read in the first place.
+        </dd>
+
+        <dt>UBI fastmap instead of a full attach scan</dt>
+        <dd>
+          Normally UBI attaches by scanning the headers of every eraseblock on the device. Fastmap
+          (<code>ubi.fm_autoconvert=1</code>) stores the attach information in a few blocks instead,
+          making attach time roughly constant.
+          <p>
+            There is a wrinkle: because the volume is read-only, UBI would never actually write the
+            fastmap out. So a late init script checks <code>dmesg</code> for "attached by fastmap"
+            and, if it's absent, creates and deletes a scratch volume. This forces the fastmap to
+            be written so the <em>next</em> boot gets the fast path. A dedicated 8&nbsp;MiB "spacer"
+            volume in the UBI image gives the relocated volume table somewhere to live.
+          </p>
+        </dd>
+
+        <dt>Skip the whole-volume CRC check</dt>
+        <dd>
+          <code>ubiblock</code> opens a static UBI volume at every boot, and by default that
+          triggers a full read-and-CRC pass over the entire ~32&nbsp;MB volume. The
+          <code>skip-check</code> volume flag turns that off. This is safe here
+          because the data is already protected by three other layers:
+          squashfs metadata CRCs, per-eraseblock UBI header CRCs, and the NAND's own ECC. That read
+          was pure redundancy.
+        </dd>
+
+        <dt>Layout tuned for the boot path</dt>
+        <dd>
+          The UBI volume layout was arranged so the root filesystem volume sits exactly where boot
+          expects it, with root on <code>ubiblock0_1</code> and no searching or indirection at mount
+          time.
+        </dd>
+      </dl>
+
+      <h2>Userspace: nothing on the critical path except the app</h2>
+      <dl>
+        <dt>Minimal init</dt>
+        <dd>
+          BusyBox init with a minimal <code>inittab</code>: mount, hostname, run <code>rcS</code>,
+          done. The unused buildroot init scripts (crond, sysctl, dropbear) are deleted at
+          image-build time, and other stale startup scripts were dropped rather than left to run
+          harmlessly-but-slowly.
+        </dd>
+
+        <dt>The application starts early, in the background</dt>
+        <dd>
+          The camera application's init script runs early in the <code>rcS</code> sequence: the
+          camera sensor's kernel module is insmodded and the application launched immediately, in
+          the background. Everything after it in the init sequence is housekeeping that the user
+          never waits on.
+        </dd>
+
+        <dt>Debug services are event-driven, not boot-time</dt>
+        <dd>
+          All the developer conveniences still exist, they just don't run at boot. A monitor
+          script polls the USB detect GPIO, and only when a USB host is actually plugged in does it
+          construct the USB gadget (ACM serial and ECM ethernet via configfs), then start udhcpd and
+          dropbear (ssh). In the field none of that ever runs, so it costs zero
+          boot time and zero power.
+        </dd>
+
+        <dt>Buildroot trimmed to match</dt>
+        <dd>
+          Unused packages removed, WiFi and BlueZ dumped, a pared-down custom BusyBox config, and a
+          uclibc toolchain to keep the binaries small.
+        </dd>
+      </dl>
+
+      <h2>Themes</h2>
+      <p>
+        Almost every win above is a variation on <b>"stop reading flash you don't need"</b>: the
+        environment partition, the empty tail of the kernel partition, the UBI attach scan, the
+        redundant CRC pass, the oversized kernel. On SPI NAND at tens of MB/s, every megabyte not
+        read is tens of milliseconds back.
+      </p>
+      <p>
+        The second theme is <b>"nothing runs at boot unless the product needs it"</b>. The debug and
+        development conveniences (ssh, serial gadget) weren't deleted. They
+        were instead moved off the boot path and gated on the physical USB detect line instead.
+        The product in the field pays nothing for them.
+      </p>
+      <p>
+        Finally, redundancy was only removed where another layer already provided the same
+        guarantee. Skipping the UBI volume CRC is safe because NAND ECC, UBI header CRCs and
+        squashfs CRCs all still stand behind the data. Don't cargo-cult
+        <code>skip-check</code> onto writable volumes &mdash; work out what is actually protecting
+        your bits first.
+      </p>
+    </article>
+  </main>
+</html>
