@@ -273,14 +273,12 @@
         The second theme is <b>"nothing runs at boot unless the product needs it"</b>. The debug and
         development conveniences (ssh, serial gadget) weren't deleted. They
         were instead moved off the boot path and gated on the physical USB detect line instead.
-        The product in the field pays nothing for them.
       </p>
       <p>
         Finally, redundancy was only removed where another layer already provided the same
         guarantee. Skipping the UBI volume CRC is safe because NAND ECC, UBI header CRCs and
-        squashfs CRCs all still stand behind the data. Don't cargo-cult
-        <code>skip-check</code> onto writable volumes &mdash; work out what is actually protecting
-        your bits first.
+        squashfs CRCs all still stand behind the data. Don't enable
+        <code>skip-check</code> onto writable volumes without confirming the downsides.
       </p>
     </article>
   </main>
