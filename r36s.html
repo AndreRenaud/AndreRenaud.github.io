@@ -97,6 +97,7 @@
 
       <details>
         <summary>Labeled internal photo</summary>
+        <span id="internal-photo"></span>
         <p>
           <svg viewBox="0 0 360 480">
             <style>
@@ -206,6 +207,7 @@
 
       <details>
         <summary>Hardware details</summary>
+        <span id="hardware"></span>
         <p>
           The R36S is very similar to the
           <a href="https://wiki.odroid.com/odroid_go_super/start">ODroid Go Super</a>. Or the
@@ -392,6 +394,7 @@
 
       <details>
         <summary>Original Software Info</summary>
+        <span id="original-software"></span>
         The unit that I purchased came with the following software version info:
         <ul>
           <li>
@@ -404,6 +407,7 @@
 
       <details>
         <summary>Software</summary>
+        <span id="software"></span>
         <p>
           Mainline Linux and U-Boot do not support the R36S, but they support its RK3326. These
           branches add the R36S:
@@ -450,6 +454,7 @@
 
       <details>
         <summary>Build Instructions</summary>
+        <span id="build"></span>
         These instructions are for a Debian or Ubuntu machine on x86_64. Other Linux distributions
         need similar packages.
         <pre>
@@ -482,6 +487,7 @@ sudo dd if=output/images/sdcard.img of=/dev/sdX bs=4M conv=fsync
 
       <details>
         <summary>Using the Image</summary>
+        <span id="using-the-image"></span>
         <ul>
           <li>
             Serial console: connect a 3.3 V serial adapter to the UART pads (see the photo). Use
@@ -537,6 +543,7 @@ reboot
 
       <details>
         <summary>SD Card Layout</summary>
+        <span id="sd-card-layout"></span>
         <p>
           The RK3326 has no on-board flash. Its boot ROM loads U-Boot from the SD card, then U-Boot
           loads Linux.
@@ -581,6 +588,7 @@ reboot
 
       <details>
         <summary>Boot Time</summary>
+        <span id="boot-time"></span>
         <p>Times after a reboot, from the reset (<code>reboot: Restarting system</code>):</p>
         <table>
           <tr>
@@ -620,6 +628,7 @@ reboot
 
       <details>
         <summary>Quake II Controls</summary>
+        <span id="quake2-controls"></span>
         <table>
           <tr>
             <th>Control</th>
@@ -666,6 +675,7 @@ reboot
 
       <details>
         <summary>Writing Your Own Application</summary>
+        <span id="own-application"></span>
         <p>
           The script <code>/etc/init.d/S12userapp</code> starts Quake II as the user
           <code>player</code>. To start your application, change this script (in Buildroot:
@@ -720,6 +730,7 @@ reboot
 
       <details>
         <summary>Boot To Ebitengine</summary>
+        <span id="ebitengine"></span>
         <p>
           An <a href="https://ebitengine.org">Ebitengine</a> game can draw directly on the LCD,
           without X11 or Wayland. Ebitengine uses EGL, OpenGL ES and GBM/KMS for this (Ebitengine
@@ -766,6 +777,7 @@ reboot
 
       <details>
         <summary>Benchmarks & Hardware Testing</summary>
+        <span id="benchmarks"></span>
         <h4>Preamble</h4>
         These benchmarks are run with the performance scheduler enabled, to ensure the CPU is always
         run as fast as possible. Note: Some of these benchmark programs are not built in the default
@@ -1112,6 +1124,7 @@ amixer sset Master 255 && curl -L -o /tmp/sample.wav https://www2.cs.uic.edu/~i1
 
       <details>
         <summary>Test Tools</summary>
+        <span id="test-tools"></span>
         <p>The image includes these benchmark and test tools:</p>
         <ul>
           <li>

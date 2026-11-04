@@ -176,6 +176,12 @@ details summary {
   cursor: pointer;
 }
 
+/* Section anchors sit just after the summary; a link to one opens the
+   details, and this margin keeps the summary itself on screen. */
+details > [id] {
+  scroll-margin-top: 3em;
+}
+
 dt {
   font-weight: bold;
 }
