@@ -719,6 +719,52 @@ reboot
       </details>
 
       <details>
+        <summary>Boot To Ebitengine</summary>
+        <p>
+          An <a href="https://ebitengine.org">Ebitengine</a> game can draw directly on the LCD,
+          without X11 or Wayland. Ebitengine uses EGL, OpenGL ES and GBM/KMS for this (Ebitengine
+          v2.11, at this time the main branch). It loads these libraries when the game starts.
+        </p>
+        <ol>
+          <li>
+            Build the game with Go for linux/arm64. Put it in the root filesystem, for example with
+            a Buildroot package.
+          </li>
+          <li>
+            Start the game from <code>S12userapp</code> as the user <code>player</code>. This user
+            can use the display, sound and input devices.
+          </li>
+        </ol>
+        <p>Ebitengine uses "R36S Gamepad" as a standard gamepad. Sound plays through ALSA.</p>
+        <p>
+          Times from the reset, for the
+          <a href="https://ebitengine.org/en/examples/flappy.html">Flappy Gopher</a> example:
+        </p>
+        <table>
+          <tr>
+            <th>Event</th>
+            <th>Time</th>
+          </tr>
+          <tr>
+            <td>U-Boot starts the kernel</td>
+            <td>1.0 s</td>
+          </tr>
+          <tr>
+            <td>The game starts</td>
+            <td>3.2 s</td>
+          </tr>
+          <tr>
+            <td>The first frame shows</td>
+            <td>5.6 s</td>
+          </tr>
+        </table>
+        <p>
+          On the first boot after you write the SD card, the first frame shows at 7.2 s. Mesa must
+          then compile its shaders. It keeps them for the subsequent boots.
+        </p>
+      </details>
+
+      <details>
         <summary>Benchmarks & Hardware Testing</summary>
         <h4>Preamble</h4>
         These benchmarks are run with the performance scheduler enabled, to ensure the CPU is always
