@@ -50,22 +50,24 @@
     <article>
       <h1>R36S Hacking</h1>
 
+      <ul>
+        <li>
+          <b>Updated November 2026:</b> this page is now about Linux 7.3, U-Boot v2026.10 and
+          Buildroot 2026.08.
+        </li>
+      </ul>
+
       <p>
         <img src="images/r36s.jpg" style="float: right; max-width: 20%" alt="Pristine R36S unit" />
-        The R36S is a hand-held gaming console available online.
+        The R36S is a hand-held game console that you can buy online.
         <br />
-        This page is about re-purposing it as a generic Linux device for custom software - ie:
-        writing & running your own applications on it. If you want to use the R36S for its normal
-        purpose (gaming etc..), then I would recommend you look at
-        <a href="https://github.com/christianhaitian/arkos/wiki">ArkOS</a>, or one of
+        This page is about how to use the R36S as a Linux platform for your own software. To use
+        it as a game console, use <a href="https://github.com/christianhaitian/arkos/wiki">ArkOS</a>
+        or one of
         <a href="https://retrohandheldguides.com/r36s-custom-firmware/">
           the other custom firmware
         </a>
-        systems that support it.
-        <br />
-        <b
-          >This page is for doing fully custom developments, using the R36S as a hardware platform.
-        </b>
+        systems.
         <br />
 
         It has the following basic hardware:
@@ -75,10 +77,8 @@
           RK3326 processor
           <ul>
             <li>Quad-core ARM Cortex-A35 CPU (64-bit)</li>
-            <li>
-              Up to 1.5GHz (although it appears to only be capable of 1.3GHz with current timing
-              settings)
-            </li>
+            <li>Mali-G31 GPU</li>
+            <li>Up to 1.5 GHz. This software runs the CPU at a maximum of 1.3 GHz.</li>
             <li>
               <a href="https://rockchip.fr/RK3326%20datasheet%20V1.2.pdf" target="_blank"
                 >Datasheet</a
@@ -212,10 +212,7 @@
           <a href="https://anbernic.com/products/anbernic-new-rg351v">ANBERNIC RG351V</a>
         </p>
         <ul>
-          <li>
-            LCD: DSI attached 640x480 panel. No datasheet available, put looks like it uses an
-            NV3051D controller
-          </li>
+          <li>LCD: 640x480 MIPI DSI panel with an NV3051D controller (no datasheet).</li>
         </ul>
 
         <h4>GPIO Assignments</h4>
@@ -406,107 +403,144 @@
       </details>
 
       <details>
-        <summary>Mainline support</summary>
+        <summary>Software</summary>
         <p>
-          The R36S is not supported directly by mainline Linux or U-Boot. However the core chip
-          (RK3326) is, so it mostly just needs a custom device tree and kernel configuration to
-          work.
+          Mainline Linux and U-Boot do not support the R36S, but they support its RK3326. These
+          branches add the R36S:
         </p>
-        <p>The customised sources are available from:</p>
         <ul>
           <li>
-            Linux Kernel (v6.10 based):
-            <a href="https://github.com/AndreRenaud/linux-r36s">
+            Linux 7.3:
+            <a href="https://github.com/AndreRenaud/linux-r36s/tree/r36s-v7.3">
               github.com/AndreRenaud/linux-r36s
             </a>
+            (branch <code>r36s-v7.3</code>)
           </li>
           <li>
-            U-Boot (v2024.04 based):
-            <a href="https://github.com/AndreRenaud/u-boot-r36s">
+            U-Boot v2026.10:
+            <a href="https://github.com/AndreRenaud/u-boot-r36s/tree/r36s-v2026.10">
               github.com/AndreRenaud/u-boot-r36s
             </a>
+            (branch <code>r36s-v2026.10</code>)
           </li>
           <li>
-            Buildroot (v2024.05 based):
-            <a href="https://github.com/AndreRenaud/buildroot-r36s">
+            Buildroot 2026.08.1:
+            <a href="https://github.com/AndreRenaud/buildroot-r36s/tree/r36s-2026.08">
               github.com/AndreRenaud/buildroot-r36s
             </a>
+            (branch <code>r36s-2026.08</code>)
           </li>
         </ul>
         <p>
-          These images (in particular the buildroot image, which is responsible for packaging the
-          other repositories up) are capable of producing an SD card image which is entirely built
-          from source.
+          Buildroot gets Linux and U-Boot from GitHub at fixed commits. It builds the full SD card
+          image from source. The image starts the Quake II demo
+          (<a href="https://www.yamagi.org/quake2/">Yamagi Quake II</a>, OpenGL ES 3) at boot.
         </p>
+        <p>These parts operate correctly:</p>
+        <ul>
+          <li>The LCD, with a boot logo</li>
+          <li>The GPU (Mesa Panfrost, OpenGL ES 3)</li>
+          <li>Sound through the speaker (RK817 codec)</li>
+          <li>All buttons and the two analog sticks, as one gamepad</li>
+          <li>USB Ethernet on the USB-C data port, in U-Boot and Linux</li>
+          <li>The battery, CPU frequency scaling and temperature sensors</li>
+          <li>Reboot</li>
+        </ul>
       </details>
 
       <details>
         <summary>Build Instructions</summary>
-        All these instructions assume that you are running a relatively recent Debian-based Linux
-        machine on x86_64. They should work without too many changes on other distributions - your
-        milage may vary. The full image is managed by a customised version of
-        <a href="https://buildroot.org">Buildroot</a>. This has been customised with a configuration
-        that points to the U-Boot and Linux sources mentioned above. It should download and build
-        everything necessary
+        These instructions are for a Debian or Ubuntu machine on x86_64. Other Linux distributions
+        need similar packages.
         <pre>
 # Install the necessary tools on your Linux machine
-sudo apt update && sudo apt install device-tree-compiler build-essential gcc git bc curl
+sudo apt update && sudo apt install build-essential git bc cpio unzip rsync file wget python3
 
-git clone https://github.com/AndreRenaud/buildroot-r36s.git
+git clone -b r36s-2026.08 https://github.com/AndreRenaud/buildroot-r36s.git
 cd buildroot-r36s
 make r36s_defconfig
 make
         </pre>
-        The final command takes quite a while - this will download and build everything that is
-        required. On my machine (AMD Ryzen 9 7950X 16-Core Processor), this takes around 45 minutes.
-        When finished, it will create <code>output/images/sdcard.img</code>. This is suitable for
-        booting the R36S to a Linux prompt. It includes a demonstration application to confirm
-        things are functioning.
+        The last command downloads and builds all the software. On an AMD Ryzen 9 7950X3D
+        (16 cores), this takes approximately 45 minutes. The result is
+        <code>output/images/sdcard.img</code> (1.6 GB). Write it to an SD card of 2 GB or larger:
+        <pre>
+sudo dd if=output/images/sdcard.img of=/dev/sdX bs=4M conv=fsync
+        </pre>
+        <p>
+          <b>Caution:</b> replace <code>/dev/sdX</code> with the device of your SD card. Make sure
+          that it is the correct device. The command erases all data on it.
+        </p>
+        <p>
+          <b>Note:</b> the build downloads the id Software Quake II demo data. This data is not
+          free software. Its licence allows only non-commercial use, and it does not allow public
+          display. The image includes the licence, in
+          <code>/usr/share/games/quake2/demo-license.txt</code>. To build without the data,
+          disable <code>BR2_PACKAGE_YQUAKE2_DEMO_DATA</code> (<code>make menuconfig</code>).
+        </p>
+      </details>
 
-        <h2>Network booting the new images</h2>
+      <details>
+        <summary>Using the Image</summary>
+        <ul>
+          <li>
+            Serial console: connect a 3.3 V serial adapter to the UART pads (see the photo). Use
+            1500000 baud, 8N1.
+          </li>
+          <li>Log in as <code>root</code>. The password is <code>root</code>.</li>
+          <li>
+            Ethernet does not start automatically. To start it, type
+            <code>ip link set eth0 up && udhcpc -i eth0</code>. Then you can connect with SSH.
+          </li>
+          <li>
+            To set the volume, type <code>amixer sset Master 175</code> (range 0 to 255). 175 is
+            comfortable on the speaker.
+          </li>
+          <li>To stop Quake II, type <code>/etc/init.d/S12userapp stop</code>.</li>
+          <li>
+            To try a new kernel, copy <code>Image</code> and <code>rk3326-r36s.dtb</code> to
+            <code>/boot</code>, then reboot.
+          </li>
+          <li>
+            To get the U-Boot prompt, push Ctrl-C many times on the serial console while the R36S
+            starts.
+          </li>
+        </ul>
+
+        <h4>Network boot</h4>
+        <p>
+          U-Boot can load the kernel and device tree from a TFTP server. The root filesystem stays
+          on the SD card. The ASIX AX88772B adapter is tested. U-Boot also has drivers for AX88179,
+          RTL8152 and SMSC95xx adapters.
+        </p>
         <ol>
+          <li>Connect the Ethernet adapter to the USB-C data port.</li>
           <li>
-            Plug in a supported USB-C Ethernet adapter, attach a serial port to the debug console.
-            Power the unit on & stop it at the boot prompt
+            Copy <code>output/images/image.itb</code> to your TFTP server, as
+            <code>r36s/image.itb</code>.
+          </li>
+          <li>
+            On the R36S, type these commands:
             <pre>
-Hit ctrl+c key to enter uboot console
-ctrl+c key pressed - drop to console
+fw_setenv tftpserver 192.168.1.10
+fw_setenv netboot 1
+reboot
             </pre>
-          </li>
-          <li>
-            Download the new images
-            <pre>
-usb start && setenv autoload n && bootp && setenv serverip 192.168.2.141 && tftp 0x02000000 rockchip/Image && tftp 0x01f00000 rockchip/rk3326-r36s.dtb && tftp 0x10000000 rockchip/rootfs.cpio.uboot
-                </pre
-            >
-          </li>
-          <li>
-            Or using fat
-            <pre>
-load mmc 0:1 0x02000000 Image && load mmc 0:1 0x01f00000 rk3326-r36s.dtb && load mmc 0:1 0x10000000 rootfs.cpio.uboot
-                </pre
-            >
-          </li>
-          <li>
-            Set up the boot args & boot the new images
-            <pre>
-setenv bootargs console=ttyS2,1500000n8 earlycon root=/dev/ram ip=any vt.global_cursor_default=0 && booti 0x02000000 0x10000000 0x01f00000
-                </pre
-            >
+            Use the IP address of your TFTP server. The network must also have a DHCP server.
           </li>
         </ol>
+        <p>
+          If the network boot fails, U-Boot boots from the SD card. To stop the network boot, type
+          <code>fw_setenv netboot</code>.
+        </p>
       </details>
 
       <details>
         <summary>SD Card Layout</summary>
         <p>
-          The RK3326 boots directly from the SD card - ie: there is no on-board flash chip or
-          anything containing the bootloader. The bootlaoder itself lives on the SD card, and the
-          on-CPU bootrom is smart enough to start this up and execute this code. Once the bootloader
-          (U-Boot) is running, then it can grab the full Linux kernel/filesystem and start things
-          running.
+          The RK3326 has no on-board flash. Its boot ROM loads U-Boot from the SD card, then U-Boot
+          loads Linux.
         </p>
-        <p>This layout is as follows:</p>
         <table>
           <tr>
             <th>Offset</th>
@@ -524,113 +558,162 @@ setenv bootargs console=ttyS2,1500000n8 earlycon root=/dev/ram ip=any vt.global_
             <td>U-Boot</td>
           </tr>
           <tr>
-            <td>10MB</td>
-            <td>500MB</td>
-            <td>FAT Filesystem</td>
+            <td>10MiB</td>
+            <td>510MiB</td>
+            <td>
+              FAT filesystem, mounted on <code>/boot</code>: <code>Image</code>,
+              <code>rk3326-r36s.dtb</code>, <code>uboot.env</code> and <code>image.itb</code>
+            </td>
+          </tr>
+          <tr>
+            <td>520MiB</td>
+            <td>1GiB</td>
+            <td>ext4 root filesystem (read-write)</td>
           </tr>
         </table>
         <p>
-          Because the Linux system built here runs entirely in-RAM, there is no writeable filesystem
-          on the SD card (it is included read-only inside the Linux boot image). However it would be
-          possible to add another partition after the FAT filesystem, format it as EXT4, and use
-          this as a boot filesystem if required.
+          U-Boot boots <code>Image</code> and <code>rk3326-r36s.dtb</code>. If this fails, it boots
+          <code>image.itb</code> (the same kernel and device tree, in one file). The U-Boot
+          environment is the file <code>uboot.env</code>. To read or change it from Linux, use
+          <code>fw_printenv</code> and <code>fw_setenv</code>.
         </p>
       </details>
 
       <details>
-        <summary>Building an SDL application</summary>
-        <p>
-          Using the <a href="https://github.com/veandco/go-sdl2">Go-SDL2</a> library, it is fairly
-          simple to produce a standalone image that boots into your application. If this image is
-          packaged into a unified package (ie: kernel + filesystem), then it is easy to build & load
-          onto a new unit.
-        </p>
-        <p>
-          A simple example of this is provided at
-          <a href="https://github.com/AndreRenaud/r36s-demo-app">r36s-demo-app</a>. This is included
-          and automatically run on startup in the buildroot image from above.
-        </p>
-        <p>SDL interprets the controls as a dual-joystick controller with a lot of buttons</p>
+        <summary>Boot Time</summary>
+        <p>Times after a reboot, from the reset (<code>reboot: Restarting system</code>):</p>
         <table>
           <tr>
-            <th>Button</th>
-            <th>SDL Joystick Button</th>
+            <th>Event</th>
+            <th>Time</th>
           </tr>
           <tr>
-            <td>DPad up</td>
-            <td>8</td>
+            <td>U-Boot starts the kernel</td>
+            <td>1.0 s</td>
           </tr>
           <tr>
-            <td>DPad down</td>
-            <td>9</td>
+            <td>Quake II starts</td>
+            <td>3.2 s</td>
           </tr>
           <tr>
-            <td>DPad left</td>
-            <td>10</td>
+            <td>The first level is loaded</td>
+            <td>11.3 s</td>
+          </tr>
+        </table>
+        <p>These changes make the boot fast:</p>
+        <ul>
+          <li>
+            U-Boot starts the data cache before it relocates itself. It starts the LCD panel while
+            it reads the kernel from the SD card.
+          </li>
+          <li>U-Boot reads the SD card in DDR50 mode, and loads the kernel without a FIT image.</li>
+          <li>
+            The kernel configuration is small. The drivers for the boot are built in, so no modules
+            load at boot.
+          </li>
+          <li>
+            Before Quake II starts, udev sets up only the input, DRM and sound devices. The other
+            devices continue in the background.
+          </li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>Quake II Controls</summary>
+        <table>
+          <tr>
+            <th>Control</th>
+            <th>Action</th>
           </tr>
           <tr>
-            <td>DPad right</td>
-            <td>11</td>
+            <td>Left stick, D-pad</td>
+            <td>Move</td>
           </tr>
           <tr>
-            <td>Select</td>
-            <td>12</td>
+            <td>Right stick</td>
+            <td>Look (as with a mouse)</td>
           </tr>
           <tr>
-            <td>FN</td>
-            <td>16</td>
-          </tr>
-          <tr>
-            <td>Start</td>
-            <td>13</td>
-          </tr>
-          <tr>
-            <td>X</td>
-            <td>2</td>
-          </tr>
-          <tr>
-            <td>Y</td>
-            <td>3</td>
+            <td>R2, R3</td>
+            <td>Fire</td>
           </tr>
           <tr>
             <td>A</td>
-            <td>1</td>
+            <td>Jump</td>
           </tr>
           <tr>
-            <td>B</td>
-            <td>0</td>
+            <td>B, L2</td>
+            <td>Crouch</td>
           </tr>
           <tr>
-            <td>Left Joystick Press</td>
-            <td>14</td>
+            <td>L1 / R1</td>
+            <td>Previous / next weapon</td>
           </tr>
           <tr>
-            <td>Right Joystick Press</td>
-            <td>15</td>
+            <td>Y / X</td>
+            <td>Use item / next item</td>
           </tr>
           <tr>
-            <td>Vol +</td>
-            <td>18</td>
+            <td>L3</td>
+            <td>Centre the view</td>
           </tr>
           <tr>
-            <td>Vol -</td>
-            <td>19</td>
+            <td>Select / Start / FN</td>
+            <td>Inventory / menu / help</td>
+          </tr>
+        </table>
+      </details>
+
+      <details>
+        <summary>Writing Your Own Application</summary>
+        <p>
+          The script <code>/etc/init.d/S12userapp</code> starts Quake II as the user
+          <code>player</code>. To start your application, change this script (in Buildroot:
+          <code>board/r36s/overlay/etc/init.d/S12userapp</code>).
+        </p>
+        <p>
+          Use SDL with the KMS/DRM video driver and OpenGL ES. The image has SDL2 and SDL3. For an
+          example in Go, see
+          <a href="https://github.com/AndreRenaud/r36s-demo-app">r36s-demo-app</a>. It is in the
+          image, but it does not start at boot.
+        </p>
+        <p>
+          The buttons and the two analog sticks are one input device, "R36S Gamepad" (the
+          <code>r36s-gamepad</code> daemon). SDL3 maps it as a standard gamepad, so use the SDL
+          gamepad API:
+        </p>
+        <table>
+          <tr>
+            <th>R36S</th>
+            <th>SDL gamepad</th>
           </tr>
           <tr>
-            <td>L1</td>
-            <td>4</td>
+            <td>A / B / X / Y</td>
+            <td>East / South / North / West</td>
           </tr>
           <tr>
-            <td>L2</td>
-            <td>6</td>
+            <td>L1 / R1</td>
+            <td>Left / right shoulder</td>
           </tr>
           <tr>
-            <td>R1</td>
-            <td>5</td>
+            <td>L2 / R2</td>
+            <td>Left / right trigger</td>
           </tr>
           <tr>
-            <td>R2</td>
-            <td>7</td>
+            <td>L3 / R3 (push the stick)</td>
+            <td>Left / right stick</td>
+          </tr>
+          <tr>
+            <td>Select / Start / FN</td>
+            <td>Back / Start / Guide</td>
+          </tr>
+          <tr>
+            <td>D-pad</td>
+            <td>D-pad</td>
+          </tr>
+          <tr>
+            <td>Left / right analog stick</td>
+            <td>Left / right stick axes</td>
           </tr>
         </table>
       </details>
@@ -979,6 +1062,25 @@ ffmpeg -i /tmp/video.mp4 -pix_fmt bgra -vf "transpose=2,scale=640:480" -f fbdev 
         <pre>
 amixer sset Master 255 && curl -L -o /tmp/sample.wav https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand3.wav && aplay /tmp/sample.wav</pre
         >
+      </details>
+
+      <details>
+        <summary>Test Tools</summary>
+        <p>The image includes these benchmark and test tools:</p>
+        <ul>
+          <li>
+            CPU and memory: <code>mhz</code>, <code>dhrystone</code>, <code>whetstone</code>,
+            <code>stress-ng</code>, <code>memtester</code>
+          </li>
+          <li>SD card: <code>fio</code>, <code>bonnie++</code>, <code>iozone</code></li>
+          <li>
+            Graphics: <code>glmark2-es2-drm</code>, <code>kmscube</code>, <code>modetest</code>
+          </li>
+          <li>Input: <code>evtest</code>, <code>jstest</code></li>
+          <li>
+            Sound and video: <code>aplay</code>, <code>speaker-test</code>, <code>ffmpeg</code>
+          </li>
+        </ul>
       </details>
     </article>
   </main>
